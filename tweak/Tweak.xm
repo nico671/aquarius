@@ -35,11 +35,13 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			if (!topLabel) {
 			mostlySetUpTopLabel();
 			[self addSubview:topLabel];
+			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
 		}
 		if (!bottomLabel) {
 			mostlySetUpBottomLabel();
 			[self addSubview:bottomLabel];
+			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
 			//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
@@ -57,11 +59,13 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			if (!topLabel) {
 			mostlySetUpTopLabel();
 			[self addSubview:topLabel];
+			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
 		}
 		if (!bottomLabel) {
 			mostlySetUpBottomLabel();
 			[self addSubview:bottomLabel];
+			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
 	} else if (configurations == 2 && controller.context == 2) {
@@ -79,10 +83,12 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			mostlySetUpTopLabel();
 			[self addSubview:topLabel];
 			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
+			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 		}
 		if (!bottomLabel) {
 			mostlySetUpBottomLabel();
 			[self addSubview:bottomLabel];
+			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
 	} else if (configurations == 3  && controller.context == 2) {
@@ -98,11 +104,13 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 		if (!topLabel) {
 			mostlySetUpTopLabel();
 			[self addSubview:topLabel];
+			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
 		}
 		if (!bottomLabel) {
 			mostlySetUpBottomLabel();
 			[self addSubview:bottomLabel];
+			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
 	} else{ 
@@ -317,10 +325,6 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %end
  
 %hook _UIStatusBarVisualProvider_Split54
-+(CGSize)notchSize {
-    CGSize const orig = %orig;
-    return CGSizeMake(orig.width, 18);
-}
 +(double)height {
     return 20;
 }

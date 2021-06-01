@@ -323,7 +323,6 @@ static void mostlySetUpTopLabel() {
 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
     [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-	[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 	
 }
 
@@ -339,7 +338,6 @@ static void mostlySetUpBottomLabel() {
 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	[bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
 	[bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-	[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 }
 
 static void setUpTheArtworkBackground() {
@@ -348,9 +346,7 @@ static void setUpTheArtworkBackground() {
 [songBackground setClipsToBounds:YES];
 [songBackground setAdjustsImageWhenHighlighted:NO];
 [songBackground setAlpha:musicPlayerAlpha];
-[songBackground.layer setCornerRadius:musicPlayerCornerRadius];
- 
- [songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
- 
-
+[songBackground.layer setCornerRadius:musicPlayerCornerRadius]; 
+[songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
+	
