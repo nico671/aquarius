@@ -1,0 +1,49 @@
+
+name: aquarius
+icmd: sbreload 
+all:
+    targetios: 14.0
+    archs:
+        - arm64
+        - arm64e
+aquarius:
+    type: tweak 
+    targetios: 14.0
+    dir: tweak
+    files:
+        - MarqueeLabel.m
+        - Tweak.xm
+    libs:
+        - bulletin
+        - kitten
+        - gcuniversal
+    frameworks:
+        - MediaRemote
+        - CoreGraphics
+        - QuartzCore
+        - UIKit
+        - Cephei
+aquariusprefs:
+    type: prefs
+    dir: aquariusprefs
+    targetios: 14.0
+    libs:
+        - gcuniversal
+    files:
+        - AQRRootListController.m
+        - CLCRootListController.m
+        - LKSRootListController.m
+        - MSPRootListController.m
+        - OTLRootListController.m
+        - SETRootListController.m
+        - SPRRootListController.m
+        - STSRootListController.m
+        - XXXSymbolsLinkCell.m
+    frameworks:
+        - Cephei
+        - CepheiPrefs 
+        - CoreGraphics
+        - QuartzCore
+        - Preferences 
+        - SpringBoardServices
+        - OnBoardingKit
