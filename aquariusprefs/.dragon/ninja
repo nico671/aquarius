@@ -2,7 +2,7 @@ name = aquariusprefs
 lowername = aquariusprefs
 
 # Build file for aquariusprefs
-# Generated at 05/31/21 23:27:29
+# Generated at 06/01/21 13:17:32
 
 stagedir = _
 location = /Library/PreferenceBundles/$name.bundle
@@ -102,24 +102,24 @@ rule linkarm64
 rule linkarm64e
   command = $ld -arch arm64e $internallflags $internalldflags -o $out $in 
   description = Linking $in with $ld [arm64e]
-rule stage
-  command = $stage && $stage2
-  description = Running Stage for $name
-rule lipo
-  command = $lipo -create $in -output $out
-  description = Merging architechtures
-rule objcarm64
-  command = $cc -arch arm64 $internalcflags -c $in -o $out
-  description = Compiling $in with $cc [arm64]
 rule debug
   command = $dsym \"$in\" 2&> /dev/null; cp $in $out
   description = Generating Debug Symbols for $name
+rule stage
+  command = $stage && $stage2
+  description = Running Stage for $name
 rule sign
   command = $codesign $entflag$entfile $in && cp $in $out
   description = Signing $name
+rule objcarm64
+  command = $cc -arch arm64 $internalcflags -c $in -o $out
+  description = Compiling $in with $cc [arm64]
 rule objcarm64e
   command = $cc -arch arm64e $internalcflags -c $in -o $out
   description = Compiling $in with $cc [arm64e]
+rule lipo
+  command = $lipo -create $in -output $out
+  description = Merging architechtures
 
 build $builddir/arm64/AQRRootListController.m.o: objcarm64 $
     AQRRootListController.m

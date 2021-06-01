@@ -30,3 +30,12 @@
 3588	3629	1622518053490366694	.dragon/_/Library/MobileSubstrate/DynamicLibraries/aquarius.dylib	3f4b46616043507a
 0	15	0	stage	989139b60fa1933b
 0	258	1622555618949060369	.dragon/build/logos/Tweak.xm.mm	1ef9ec6a30ac1f6e
+1	134	1622567852925894893	.dragon/build/logos/Tweak.xm.mm	1ef9ec6a30ac1f6e
+134	747	1622567853536245883	.dragon/build/arm64/Tweak.xm.mm.o	42e067e9dae4185d
+135	748	1622567853536253925	.dragon/build/arm64e/Tweak.xm.mm.o	414d03943e3a35dd
+748	934	1622567853725586711	.dragon/build/aquarius.arm64	fdce36bec592d1e1
+748	935	1622567853725568379	.dragon/build/aquarius.arm64e	4cd10f6616673547
+935	957	1622567853752234447	.dragon/sign/.dragon/_/Library/MobileSubstrate/DynamicLibraries/aquarius.dylib.unsym	3c1d13c85f7bb983
+957	1030	1622567853823724295	.dragon/sign/.dragon/_/Library/MobileSubstrate/DynamicLibraries/aquarius.dylib.unsigned	128b5d965e9ab331
+1030	1064	1622567853858989801	.dragon/_/Library/MobileSubstrate/DynamicLibraries/aquarius.dylib	3f4b46616043507a
+0	14	0	stage	989139b60fa1933b
