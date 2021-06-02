@@ -293,7 +293,7 @@ if (isBackgroundColored){
 				[shuffleButton setImage:[UIImage systemImageNamed:@"shuffle"] forState: UIControlStateNormal];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.updateColors" object:nil];
 			}
-			}
+		}
   	});
 	if (haveNotifs) {
 			if (![songLabel isEqualToString:previousTitle]){
