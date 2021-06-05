@@ -2,7 +2,7 @@
 name: aquarius
 icmd: sbreload 
 all:
-    targetios: 14.0
+    targetvers: 14.0
     archs:
         - arm64
         - arm64e
@@ -17,6 +17,7 @@ aquarius:
         - bulletin
         - kitten
         - gcuniversal
+        - mitsuha
     frameworks:
         - MediaRemote
         - CoreGraphics

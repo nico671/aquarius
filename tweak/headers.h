@@ -1,11 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <CoreText/CoreText.h>
-#import <EventKit/EventKit.h>
+#import <UIKit/UIKit.h>
 #import <Cephei/HBPreferences.h>
-#import <sys/utsname.h>
-#import <Cephei/HBPreferences.h>
-#import <objc/runtime.h>
-#import <dlfcn.h>
 #import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
@@ -13,8 +8,16 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 #import <Kitten/libKitten.h>
-#import <UIKit/UIKit.h>
-#import <CallKit/CallKit.h>
+
+
+@interface SBUILegibilityLabel : UILabel
+@end
+
+@interface SBFLockScreenDateView : UIView {
+	SBUILegibilityLabel* _timeLabel;
+}
+@property (nonatomic,retain) UIColor * textColor;
+@end
 
 @interface SBIconView
 @property (nonatomic, assign, readwrite, getter=isLabelHidden) BOOL labelHidden;
@@ -36,9 +39,12 @@
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @end
 
-@interface NCNotificationShortLookView : UIView
+@interface NCNotificationShortLookView : UIView {
+	BOOL _banner;
+}
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @property NSArray *subviews;
+@property (assign,setter=_setBanner:,getter=_isBanner,nonatomic) BOOL banner;  
 @end
 
 @interface SBApplication : NSObject
@@ -233,13 +239,6 @@
 -(void) shuffle:(UIButton*)sender;
 @end
 
-@interface SPTNowPlayingCoverArtCell : UIView
-@end
-
-@interface SPTNowPlayingCoverArtImageView : UIView
-@end
-
-
 @interface MRUNowPlayingView : UIView
 @property (nonatomic, retain) MRUNowPlayingControlsView *controlsView;
 @end
@@ -318,8 +317,10 @@ static void mostlySetUpTopLabel() {
 	[topLabel setFont:[UIFont systemFontOfSize:15]];
 	[topLabel setTextAlignment:NSTextAlignmentLeft];
 	[topLabel setAlpha:1];
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
-	[topLabel setTextColor:customColor];
+	if (musicPlayerColorsEnabled) {
+		UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
+		[bottomLabel setTextColor:customColor];
+	}
 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
     [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
@@ -332,9 +333,9 @@ static void mostlySetUpBottomLabel() {
 	[bottomLabel setTextAlignment:NSTextAlignmentLeft];
 	[bottomLabel setAlpha:1];
 	if (musicPlayerColorsEnabled) {
-			UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
-			[bottomLabel setTextColor:customColor];
-		}
+		UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
+		[bottomLabel setTextColor:customColor];
+	}
 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	[bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
 	[bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;

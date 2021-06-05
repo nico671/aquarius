@@ -20,7 +20,7 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class _UIStatusBarCellularSignalView; @class NCNotificationShortLookView; @class _UIStatusBarVisualProvider_Split54; @class NCNotificationListCell; @class _UIStatusBarSignalView; @class MRUNowPlayingControlsView; @class SBIconView; @class MRUNowPlayingTransportControlsView; @class SBIconProgressView; @class PLPlatterHeaderContentView; @class MRUNowPlayingLabelView; @class MRUNowPlayingHeaderView; @class _UIBatteryView; @class CSAdjunctItemView; @class _UIStatusBar; @class _UIStatusBarWifiSignalView; @class NCNotificationContentView; @class SpringBoard; @class _UIStatusBarStringView; @class SBMediaController; 
+@class CSAdjunctItemView; @class _UIStatusBarWifiSignalView; @class _UIStatusBarVisualProvider_Split54; @class _UIStatusBarSignalView; @class SBIconView; @class _UIStatusBarCellularSignalView; @class MRUNowPlayingTransportControlsView; @class MRUNowPlayingControlsView; @class SpringBoard; @class NCNotificationShortLookView; @class MRUNowPlayingLabelView; @class NCNotificationContentView; @class _UIStatusBar; @class _UIBatteryView; @class SBIconProgressView; @class _UIStatusBarStringView; @class SBFLockScreenDateView; @class NCNotificationListCell; @class SBMediaController; @class PLPlatterHeaderContentView; @class MRUNowPlayingHeaderView; 
 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }
 #line 1 "Tweak.xm"
@@ -76,7 +76,6 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 		[self.headerView.artworkView setHidden:YES];
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 40, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 53, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-		[self.headerView.artworkView setHidden:YES];
 		if (!songImageForSmall) {
 			mostlySetUpTheAlbumArtwork();
 			[self addSubview:songImageForSmall];
@@ -319,7 +318,7 @@ static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGO
 				[shuffleButton setImage:[UIImage systemImageNamed:@"shuffle"] forState: UIControlStateNormal];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.updateColors" object:nil];
 			}
-			}
+		}
   	});
 	if (haveNotifs) {
 			if (![songLabel isEqualToString:previousTitle]){
@@ -456,8 +455,10 @@ static void _logos_method$notifications$NCNotificationShortLookView$setNeedsLayo
 	yesmf = [self.subviews objectAtIndex:0];
 	yesmf.hidden = YES;
 	}
-	if (leafCornerNotifs)
+	 
+	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+	}
 }
 
 
@@ -495,6 +496,17 @@ static void _logos_method$springy$SBIconView$setNeedsLayout(_LOGOS_SELF_TYPE_NOR
 
 
 
+
+static void (*_logos_orig$lockybaby$SBFLockScreenDateView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static void _logos_method$lockybaby$SBFLockScreenDateView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); 
+ 
+static void _logos_method$lockybaby$SBFLockScreenDateView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
+	_logos_orig$lockybaby$SBFLockScreenDateView$setNeedsLayout(self, _cmd);
+	SBUILegibilityLabel *dateLabel = (SBUILegibilityLabel*)MSHookIvar<SBUILegibilityLabel*>(self, "_timeLabel");
+	dateLabel.textColor = [UIColor redColor];
+}
+
+
+
 void reloadPrefs() { 
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
@@ -528,7 +540,7 @@ void reloadPrefs() {
 	
 }
 
-static __attribute__((constructor)) void _logosLocalCtor_9d55ae74(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_55843e16(int __unused argc, char __unused **argv, char __unused **envp) {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
@@ -571,5 +583,6 @@ static __attribute__((constructor)) void _logosLocalCtor_9d55ae74(int __unused a
 	if (isSpringySectionEnabled){
 		{Class _logos_class$springy$SBIconProgressView = objc_getClass("SBIconProgressView"); { MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPieWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPieWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$);}{ MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPauseUIWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$);}Class _logos_class$springy$SBIconView = objc_getClass("SBIconView"); { MSHookMessageEx(_logos_class$springy$SBIconView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconView$setNeedsLayout);}}
 	}
+	{Class _logos_class$lockybaby$SBFLockScreenDateView = objc_getClass("SBFLockScreenDateView"); { MSHookMessageEx(_logos_class$lockybaby$SBFLockScreenDateView, @selector(setNeedsLayout), (IMP)&_logos_method$lockybaby$SBFLockScreenDateView$setNeedsLayout, (IMP*)&_logos_orig$lockybaby$SBFLockScreenDateView$setNeedsLayout);}}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

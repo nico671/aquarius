@@ -23,7 +23,7 @@
 %hook MRUNowPlayingControlsView 
 -(void)setNeedsLayout{
 MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
-	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES]; // for the artwork background option, looks shit with the standard artwork there, unfortunately not working right noew along with the rest of the artwork background stuff
+	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES]; 
 	if (controller.context == 2 && configurations == 0) {
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMidY(self.headerView.frame)-15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		//resizing controls, almost same for everytime i do this
@@ -50,7 +50,6 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 		[self.headerView.artworkView setHidden:YES];
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 40, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 53, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-		[self.headerView.artworkView setHidden:YES];
 		if (!songImageForSmall) {
 			mostlySetUpTheAlbumArtwork();
 			[self addSubview:songImageForSmall];
@@ -430,8 +429,10 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	yesmf = [self.subviews objectAtIndex:0];
 	yesmf.hidden = YES;
 	}
-	if (leafCornerNotifs)
+	 //SBUILegibilityLabel *dateLabel = (SBUILegibilityLabel*)MSHookIvar<SBUILegibilityLabel*>(self, "_timeLabel");
+	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+	}
 }
 %end
 %end
@@ -465,6 +466,17 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	%orig;
 	self.labelHidden = 1;
 
+}
+
+%end
+%end
+
+%group lockybaby
+%hook SBFLockScreenDateView 
+-(void)setNeedsLayout {
+	%orig;
+	SBUILegibilityLabel *dateLabel = (SBUILegibilityLabel*)MSHookIvar<SBUILegibilityLabel*>(self, "_timeLabel");
+	dateLabel.textColor = [UIColor redColor];
 }
 
 %end
@@ -545,5 +557,6 @@ void reloadPrefs() { //prefs
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
+	%init(lockybaby);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }
