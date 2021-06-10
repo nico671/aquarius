@@ -79,6 +79,22 @@
                         <key>label</key>
                         <string>SpringBoard Settings</string>
                         </dict>
+                        <dict>
+                            <key>AquariusSub</key>
+                             <string>Miscellaneous</string>
+                            <key>cell</key>
+                            <string>PSLinkCell</string>
+                            <key>detail</key>
+                            <string>MSCRootListController</string>
+                            <key>cellClass</key>
+                            <string>XXXSymbolsLinkCell</string>
+                            <key>icon</key>
+                            <string>questionmark.circle</string>
+                            <key>isController</key>
+                            <true/>
+                            <key>label</key>
+                            <string>Status Bar Settings</string>
+                            </dict>
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>

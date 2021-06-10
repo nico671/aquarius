@@ -2,7 +2,7 @@ name = aquariusprefs
 lowername = aquariusprefs
 
 # Build file for aquariusprefs
-# Generated at 06/04/21 00:43:54
+# Generated at 06/10/21 15:15:10
 
 stagedir = _
 location = /Library/PreferenceBundles/$name.bundle
@@ -102,24 +102,24 @@ rule linkarm64
 rule linkarm64e
   command = $ld -arch arm64e $internallflags $internalldflags -o $out $in 
   description = Linking $in with $ld [arm64e]
-rule debug
-  command = $dsym \"$in\" 2&> /dev/null; cp $in $out
-  description = Generating Debug Symbols for $name
 rule sign
   command = $codesign $entflag$entfile $in && cp $in $out
   description = Signing $name
 rule objcarm64
   command = $cc -arch arm64 $internalcflags -c $in -o $out
   description = Compiling $in with $cc [arm64]
-rule lipo
-  command = $lipo -create $in -output $out
-  description = Merging architechtures
 rule objcarm64e
   command = $cc -arch arm64e $internalcflags -c $in -o $out
   description = Compiling $in with $cc [arm64e]
+rule debug
+  command = $dsym \"$in\" 2&> /dev/null; cp $in $out
+  description = Generating Debug Symbols for $name
 rule stage
   command = $stage && $stage2
   description = Running Stage for $name
+rule lipo
+  command = $lipo -create $in -output $out
+  description = Merging architechtures
 
 build $builddir/arm64/AQRRootListController.m.o: objcarm64 $
     AQRRootListController.m
@@ -138,6 +138,8 @@ build $builddir/arm64/SPRRootListController.m.o: objcarm64 $
 build $builddir/arm64/STSRootListController.m.o: objcarm64 $
     STSRootListController.m
 build $builddir/arm64/XXXSymbolsLinkCell.m.o: objcarm64 XXXSymbolsLinkCell.m
+build $builddir/arm64/NTFRootListController.m.o: objcarm64 $
+    NTFRootListController.m
 build $builddir/$name.arm64: linkarm64 $
     $builddir/arm64/AQRRootListController.m.o $
     $builddir/arm64/CLCRootListController.m.o $
@@ -147,7 +149,8 @@ build $builddir/$name.arm64: linkarm64 $
     $builddir/arm64/SETRootListController.m.o $
     $builddir/arm64/SPRRootListController.m.o $
     $builddir/arm64/STSRootListController.m.o $
-    $builddir/arm64/XXXSymbolsLinkCell.m.o
+    $builddir/arm64/XXXSymbolsLinkCell.m.o $
+    $builddir/arm64/NTFRootListController.m.o
 build $builddir/arm64e/AQRRootListController.m.o: objcarm64e $
     AQRRootListController.m
 build $builddir/arm64e/CLCRootListController.m.o: objcarm64e $
@@ -165,6 +168,8 @@ build $builddir/arm64e/SPRRootListController.m.o: objcarm64e $
 build $builddir/arm64e/STSRootListController.m.o: objcarm64e $
     STSRootListController.m
 build $builddir/arm64e/XXXSymbolsLinkCell.m.o: objcarm64e XXXSymbolsLinkCell.m
+build $builddir/arm64e/NTFRootListController.m.o: objcarm64e $
+    NTFRootListController.m
 build $builddir/$name.arm64e: linkarm64e $
     $builddir/arm64e/AQRRootListController.m.o $
     $builddir/arm64e/CLCRootListController.m.o $
@@ -174,7 +179,8 @@ build $builddir/$name.arm64e: linkarm64e $
     $builddir/arm64e/SETRootListController.m.o $
     $builddir/arm64e/SPRRootListController.m.o $
     $builddir/arm64e/STSRootListController.m.o $
-    $builddir/arm64e/XXXSymbolsLinkCell.m.o
+    $builddir/arm64e/XXXSymbolsLinkCell.m.o $
+    $builddir/arm64e/NTFRootListController.m.o
 build $internalsymtarget: lipo $builddir/$name.arm64 $builddir/$name.arm64e
 build $internalsigntarget: debug $internalsymtarget
 build $build_target_file: sign $internalsigntarget

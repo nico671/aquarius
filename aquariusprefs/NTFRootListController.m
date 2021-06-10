@@ -7,10 +7,8 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
-
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
-
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
 #import <Preferences/PSListController.h>
@@ -18,7 +16,6 @@
 @interface NTFRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @end
-
 
 @implementation NTFRootListController
 - (id)specifiers {

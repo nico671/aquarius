@@ -159,7 +159,7 @@ return self;
     [versionLabel setFont:[UIFont systemFontOfSize:22 weight: UIFontWeightMedium] ];
     versionLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
      [versionLabel setTextAlignment:NSTextAlignmentCenter];
-    versionLabel.text = @"v1.7.4";
+    versionLabel.text = @"v1.7.4.1-1";
 
     [self addSubview:packageNameLabel];
     [self addSubview:developerLabel];

@@ -28,7 +28,6 @@
 			<false/>
             <key>PostNotification</key>
             <string>com.nico671.preferenceschanged</string>
-
          </dict>
   
     <dict>
@@ -196,6 +195,47 @@
 					<key>label</key>
 					<string>Leaf Look Corner Radius?</string>
 				 </dict>
+				       
+ <dict>
+	<key>cell</key>
+	<string>PSGroupCell</string>
+	<key>label</key>
+	<string>Custom Image Background</string>
+ </dict>
+				 <dict>
+					<key>cell</key>
+					<string>PSSwitchCell</string>
+					<key>default</key>
+					<true/>
+					<key>defaults</key>
+					<string>aquariusprefs</string>
+					<key>PostNotification</key>
+					<string>com.nico671.preferenceschanged</string>
+					<key>key</key>
+					<string>customImageBackground?</string>
+					<key>label</key>
+					<string>have a custom image for the player background?</string>
+					<key>default</key>
+					<false/>
+				 </dict>
+				 <dict>
+					<key>cell</key>
+					<string>PSLinkCell</string>
+					<key>cellClass</key>
+					<string>GcImagePickerCell</string>
+					<key>label</key>
+					<string>Custom Image</string>
+					<key>defaults</key>
+					<string>aquariusprefs</string>
+					<key>key</key>
+					<string>customBackgroundImage</string>
+					<key>usesPhotos</key>
+					<true/>
+					<key>usesVideos</key>
+					<false/>
+					<key>videoQuality</key>
+					<integer>1</integer>
+				</dict>
 	</array>
 	<key>title</key>
 	<string>settings</string>

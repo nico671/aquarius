@@ -22,7 +22,7 @@
 
 %hook MRUNowPlayingControlsView 
 -(void)setNeedsLayout{
-MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
+	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
 	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES]; 
 	if (controller.context == 2 && configurations == 0) {
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMidY(self.headerView.frame)-15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
@@ -44,7 +44,12 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
-			//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
+		if (!shuffleButton){
+			setUpShuffleButton();
+			[self insertSubview:shuffleButton atIndex:0];
+			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
+	}//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
 		}
 	} else if (configurations == 1 && controller.context == 2) {	
 		[self.headerView.artworkView setHidden:YES];
@@ -67,6 +72,12 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
+			if (!shuffleButton){
+			setUpShuffleButton();
+			[self insertSubview:shuffleButton atIndex:0];
+			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
+	}
 	} else if (configurations == 2 && controller.context == 2) {
 		[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
 		[self.timeControlsView setHidden:YES];
@@ -90,6 +101,12 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
+			if (!shuffleButton){
+			setUpShuffleButton();
+			[self insertSubview:shuffleButton atIndex:0];
+			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
+	}
 	} else if (configurations == 3  && controller.context == 2) {
 		//small option
 		[self.headerView.artworkView setHidden:YES];
@@ -112,19 +129,28 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
 			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
 		}
-	} else{ 
-		%orig;
-		}
+		if (!shuffleButton){
+			setUpShuffleButton();
+			[self insertSubview:shuffleButton atIndex:0];
+			[shuffleButton.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+			[shuffleButton.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
+			[shuffleButton.widthAnchor constraintEqualToConstant:21].active = YES;
+			[shuffleButton.heightAnchor constraintEqualToConstant:21.0].active = YES;
+			[shuffleButton addTarget:self action:@selector(shuffle:) forControlEvents:UIControlEventTouchDown];
+	}
+	}
 }
 %new 
-
 -(void) shuffle:(UIButton*)sender {
 	[[%c(SBMediaController) sharedInstance] toggleShuffleForEventSource:0];	
+	NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+	[userInfo setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
+	[userInfo setObject:@"SpringBoard" forKey:@"type"];
+	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"net.example.tweak/sendToApp" object:nil userInfo:userInfo];
 }
 %end
 
 %hook MRUNowPlayingLabelView  // hide the original label
-
 - (void)setFrame:(CGRect)arg1{
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (![controller respondsToSelector:@selector(context)] ){
@@ -135,13 +161,11 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 	}
 	else %orig;
 }
-
-
-
 %end
+
 %hook MRUNowPlayingTransportControlsView // coloring for the buttons
 
-- (void)setNeedsLayout { //ik this is bad but i need it to updaye a lot and there are no other methods that update upon the song changing
+- (void)setNeedsLayout {
 
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (musicPlayerColorsEnabled && controller.context == 2) {
@@ -163,17 +187,30 @@ MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _
 }
 
 %end
+%hook SPTMobileMediaKitAudioPlaybackManager
+- (id)initWithPlaybackController:(id)arg1 connectManager:(id)arg2 collectionController:(id)arg3 logger:(id)arg4 keepAliveHandler:(id)arg5 actionLogger:(id)arg6{
+	%orig;
+	[[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.nico671.aquarius/sendToSpotify" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+    NSLog(@"[aquarius] Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
+	[self enableShuffleWithMessage:nil];
+	}];
+	return %orig;
+}
+
+
+- (void)enableShuffleWithMessage:(id)arg1{
+	%orig;
+	NSLog(@"[aquarius] - %@",arg1);
+}
+%end
+
 
 %hook CSAdjunctItemView // sets the height and opacity of the player
 
 -(void)_updateSizeToMimic{
 	%orig;
-	[self setTheFuckUp];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.updateColors" object:nil];
-}
-
-%new 
--(void) setTheFuckUp{
+	[self setTheFuckUp];
 	PLPlatterView *platterView = (PLPlatterView*)MSHookIvar<UIView*>(self, "_platterView");
 	[platterView.backgroundView setAlpha: musicPlayerAlpha];
 	self.layer.cornerRadius = musicPlayerCornerRadius;
@@ -181,67 +218,88 @@ if (musicPlayerLeafLook){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 }
 if(configurations == 0){
-
- if (haveOutline){
-  self.layer.borderWidth = outlineSize;
- if (!haveOutlineSecondaryColorMusicPlayer){
- UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
-  self.layer.borderColor = [customColor CGColor];
-  }
-  else {
-	self.layer.borderColor = [fuckingArtworkColor2 CGColor];
-  }
-  self.layer.cornerRadius = musicPlayerCornerRadius;
-  }
-[self.heightAnchor constraintEqualToConstant:115].active = true; //height
-if (isArtworkBackground){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-
-if (isBackgroundColored){
- [platterView.backgroundView setAlpha: 0];
-  self.backgroundColor = fuckingArtworkColor;
-}
-
-
-
-}
-else if(configurations == 1 || configurations == 2){
-
-   if (haveOutline){
-  self.layer.borderWidth = outlineSize;
-if (!haveOutlineSecondaryColorMusicPlayer){
- UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
-  self.layer.borderColor = [customColor CGColor];
-  }
-  else {
-	    self.layer.borderColor = [fuckingArtworkColor2 CGColor];
-  }
-  self.layer.cornerRadius = musicPlayerCornerRadius;
-  }
-[self.heightAnchor constraintEqualToConstant:130].active = true;
-if (isArtworkBackground){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-
-if (isBackgroundColored){
+	if (isBackgroundColored && !isArtworkBackground){
  [platterView.backgroundView setAlpha: 0];
     self.backgroundColor = fuckingArtworkColor;
 }
+[self.heightAnchor constraintEqualToConstant:115].active = true; //height
+if (isArtworkBackground && !isBackgroundColored){
+setUpTheArtworkBackground();
+[self addSubview:songBackground];
+[self sendSubviewToBack: songBackground];
+[platterView.backgroundView setAlpha: 0];
+[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
 
+if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
+setUpCustomBackground() ;
+[self addSubview:customImageBackground];
+UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
+[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[self sendSubviewToBack: customImageBackground];
+[platterView.backgroundView setAlpha: 0];
+[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
+}
+else if(configurations == 1 || configurations == 2){
+if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
+setUpCustomBackground() ;
+[self addSubview:customImageBackground];
+UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
+[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[self sendSubviewToBack: customImageBackground];
+[platterView.backgroundView setAlpha: 0];
+[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
+if (isBackgroundColored && !isArtworkBackground){
+ [platterView.backgroundView setAlpha: 0];
+    self.backgroundColor = fuckingArtworkColor;
+}
+if (isArtworkBackground && !isBackgroundColored){
+setUpTheArtworkBackground();
+[self addSubview:songBackground];
+[self sendSubviewToBack: songBackground];
+[platterView.backgroundView setAlpha: 0];
+[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
+}
+ 
+
+
+else if(configurations == 3){
+	if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
+setUpCustomBackground();
+[self addSubview:customImageBackground];
+UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
+[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[self sendSubviewToBack: customImageBackground];
+[platterView.backgroundView setAlpha: 0];
+[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
+if (isBackgroundColored && !isArtworkBackground){
+ [platterView.backgroundView setAlpha: 0];
+  
+}
+[self.heightAnchor constraintEqualToConstant:100].active = true;
+if (isArtworkBackground && !isBackgroundColored){
+setUpTheArtworkBackground();
+[self addSubview:songBackground];
+[self sendSubviewToBack: songBackground];
+[platterView.backgroundView setAlpha: 0];
+[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+}
 
 }
-else if(configurations == 3){
-	[self.heightAnchor constraintEqualToConstant:100].active = true;
-  if (haveOutline){
+
+else {
+	%orig;
+}
+
+}
+
+%new 
+-(void) setTheFuckUp{
+	  if (haveOutline){
   self.layer.borderWidth = outlineSize;
   if (!haveOutlineSecondaryColorMusicPlayer){
  UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
@@ -252,24 +310,10 @@ else if(configurations == 3){
   }
   self.layer.cornerRadius = musicPlayerCornerRadius;
   }
+  if (isBackgroundColored){
+	    self.backgroundColor = fuckingArtworkColor;
+  }
 }
-
-  
-if (isArtworkBackground){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-
-if (isBackgroundColored){
- [platterView.backgroundView setAlpha: 0];
-    self.backgroundColor = fuckingArtworkColor;
-}
-
-}
-
 %end
 
 %hook SBMediaController
@@ -286,9 +330,10 @@ if (isBackgroundColored){
 				subtitleLabel = [NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]];
 				songLabel = [NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]];
 				[songBackground setImage:currentArtwork forState:UIControlStateNormal];
-				[songImageForSmall setImage:currentArtwork forState:UIControlStateNormal]; 
-				fuckingArtworkColor = [libKitten primaryColor:currentArtwork];
-				fuckingArtworkColor2 = [libKitten secondaryColor:currentArtwork];
+				[songImageForSmall setImage:currentArtwork forState:UIControlStateNormal];
+				NSArray * tempArtworkColorArray = [currentArtwork dominantColors];
+				fuckingArtworkColor = tempArtworkColorArray[0];
+				fuckingArtworkColor2 = [currentArtwork averageColor];
 				[shuffleButton setImage:[UIImage systemImageNamed:@"shuffle"] forState: UIControlStateNormal];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.updateColors" object:nil];
 			}
@@ -300,11 +345,8 @@ if (isBackgroundColored){
 			}
 			previousTitle = songLabel; //notifications
 	}
-
 }          
 %end
-
-
 %end
 
 %group statusbar
@@ -320,9 +362,7 @@ if (isBackgroundColored){
 UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
 	%orig(customColor);
 }
-
 %end
- 
 %hook _UIStatusBarVisualProvider_Split54
 +(double)height {
     return 20;
@@ -424,12 +464,12 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 -(void)setNeedsLayout {
 	%orig; 
 	if (colorNotifs){
-	self.backgroundColor = [libKitten primaryColor:iconImage];
+	//NSArray * tempNotificationsColorArray = [iconImage ];
+	self.backgroundColor = [iconImage averageColor];
 	self.layer.cornerRadius = notifCornerRadius;
 	yesmf = [self.subviews objectAtIndex:0];
 	yesmf.hidden = YES;
 	}
-	 //SBUILegibilityLabel *dateLabel = (SBUILegibilityLabel*)MSHookIvar<SBUILegibilityLabel*>(self, "_timeLabel");
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
@@ -471,12 +511,12 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %end
 %end
 
-%group lockybaby
-%hook SBFLockScreenDateView 
--(void)setNeedsLayout {
-	%orig;
-	SBUILegibilityLabel *dateLabel = (SBUILegibilityLabel*)MSHookIvar<SBUILegibilityLabel*>(self, "_timeLabel");
-	dateLabel.textColor = [UIColor redColor];
+%group GRUPISUPPORT
+%hook GRPAppCell
+
+-(void)setNeedsLayout{
+iconImage = [self.iconView image];
+self.backgroundColor = [iconImage averageColor];
 }
 
 %end
@@ -511,10 +551,15 @@ void reloadPrefs() { //prefs
 	colorNotifs = [file boolForKey:@"colorNotifs"];
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
-	
+	hideLabels = [file boolForKey:@"customImageBackground?"];
+	colorGrupi = [file boolForKey:@"colorGrupi?"];
 }
 
 %ctor {
+	dlopen("/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib", RTLD_NOW);
+	if (colorGrupi && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib"]) {
+	%init(GRUPISUPPORT);
+	}
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
@@ -544,9 +589,11 @@ void reloadPrefs() { //prefs
 	[file registerBool:&downloadBarEnabled default:NO forKey:@"downloadBarEnabled"];
 	[file registerBool:&colorNotifs default:NO forKey:@"colorNotifs"];
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
-	 [file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
+	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
+	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
+	[file registerBool:&colorGrupi default:NO forKey:@"colorGrupi"];
  	if (isNotificationSectionEnabled) {
-	 	%init(notifications);
+		%init(notifications)
  	}
 	if (musicPlayerEnabled) {
         %init(musicplayer);
@@ -557,6 +604,6 @@ void reloadPrefs() { //prefs
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
-	%init(lockybaby);
+	
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

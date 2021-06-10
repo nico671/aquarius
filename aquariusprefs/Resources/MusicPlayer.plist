@@ -27,7 +27,6 @@
 <string>PSLinkCell</string>
 <key>detail</key>
 <string>SETRootListController</string>
-
 <key>cellClass</key>
 <string>XXXSymbolsLinkCell</string>
 <key>icon</key>
@@ -56,25 +55,24 @@
 </dict>
 
 <dict>
-<key>AquariusSub</key>
- <string>MusicPlayerOutline</string>
-<key>cell</key>
-<string>PSLinkCell</string>
-<key>detail</key>
-<string>OTLRootListController</string>
-<key>cellClass</key>
-<string>XXXSymbolsLinkCell</string>
-<key>icon</key>
-<string>pencil.and.outline</string>
-<key>isController</key>
-<true/>
-<key>label</key>
-<string>Outline</string>
-</dict>
-
+    <key>AquariusSub</key>
+     <string>MusicPlayerOutline</string>
+    <key>cell</key>
+    <string>PSLinkCell</string>
+    <key>detail</key>
+    <string>CLCRootListController</string>
+    <key>cellClass</key>
+    <string>XXXSymbolsLinkCell</string>
+    <key>icon</key>
+    <string>pencil.and.outline</string>
+    <key>isController</key>
+    <false/>
+    <key>label</key>
+    <string>Outline</string>
+    </dict>
   
 </array>
 <key>title</key>
-<string>Aquarius</string>
+<string>Music Player</string>
 </dict>
 </plist>

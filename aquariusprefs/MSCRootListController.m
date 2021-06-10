@@ -1,5 +1,4 @@
 
-#import <Preferences/PSListController.h>
 #import <spawn.h>
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
@@ -8,20 +7,36 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
-
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
-
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
-@interface SETRootListController : PSListController
+#import <Preferences/PSListController.h>
+
+@interface MSCRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
-
 @end
-@implementation SETRootListController
 
+@implementation MSCRootListController
+- (id)specifiers {
+return _specifiers;
+}
 
--(void)respring {
+- (void)loadFromSpecifier:(PSSpecifier *)specifier {
+NSString *sub = [specifier propertyForKey:@"AquariusSub"];
+
+    _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
+    
+}
+- (void)setSpecifier:(PSSpecifier *)specifier {
+    [self loadFromSpecifier:specifier];
+    [super setSpecifier:specifier];
+}
+- (bool)shouldReloadSpecifiersOnResume {
+return false;
+}
+
+- (void)respring {
     UIBlurEffect* blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     UIVisualEffectView* blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
     [blurView setFrame:self.view.bounds];
@@ -31,7 +46,7 @@
     [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [blurView setAlpha:1.0];
     } completion:^(BOOL finished) {
-        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=aquariusprefs"];
+        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=orionprefs"];
         SBSRelaunchAction *restartAction;
         restartAction = [NSClassFromString(@"SBSRelaunchAction") actionWithReason:@"RestartRenderServer" options:SBSRelaunchActionOptionsFadeToBlackTransition targetURL:returnURL];
         [[NSClassFromString(@"FBSSystemService") sharedService] sendActions:[NSSet setWithObject:restartAction] withResult:nil];
@@ -62,26 +77,5 @@
 return self;
 }
 
-- (id)specifiers {
-return _specifiers;
-}
-
-- (void)loadFromSpecifier:(PSSpecifier *)specifier {
-NSString *sub = [specifier propertyForKey:@"AquariusSub"];
-
-    _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
-    
-}
-- (void)setSpecifier:(PSSpecifier *)specifier {
-    [self loadFromSpecifier:specifier];
-    [super setSpecifier:specifier];
-}
-- (bool)shouldReloadSpecifiersOnResume {
-return false;
-}
-
 
 @end
-
-
-

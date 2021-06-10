@@ -1,16 +1,31 @@
 #import <Foundation/Foundation.h>
+#import "GcUniversal/GcImagePickerUtils.h"
 #import <UIKit/UIKit.h>
+#import <dlfcn.h>
 #import <Cephei/HBPreferences.h>
 #import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
 #import "GcUniversal/GcColorPickerUtils.h"
 #import "MarqueeLabel.h"
+#import "GcUniversal/GcImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
-#import <Kitten/libKitten.h>
 
+@interface GRPAppCell
+@property (nonatomic, strong, readwrite) UIImageView *iconView;
+@property (nonatomic, strong, readwrite) UIView *blurView;
+@property (nonatomic, copy, readwrite) UIColor *backgroundColor;
+@end
+
+@interface SPTMobileMediaKitAudioPlaybackManager
+- (void)enableShuffleWithMessage:(id)arg1;
+- (void)disableShuffleWithMessage:(id)arg1;
+@end
 
 @interface SBUILegibilityLabel : UILabel
+@end
+
+@interface NSDistributedNotificationCenter : NSNotificationCenter
 @end
 
 @interface SBFLockScreenDateView : UIView {
@@ -58,6 +73,8 @@
 @end
 
 @interface MTMaterialView: UIView
+@property (nonatomic, copy, readwrite) UIColor *backgroundColor;
+@property(readonly) Class superclass;
 @end
 
 @interface _UIBatteryView
@@ -278,6 +295,7 @@
 BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
+BOOL customImageBackgroundBOOL, colorGrupi;
 BOOL hideLabels;
 id preferences, file, yes;
 NSInteger configurations;
@@ -289,6 +307,7 @@ MarqueeLabel* topLabel;
 UIButton* songImageForSmall;
 UIButton* songBackground;
 UIButton* shuffleButton;
+UIButton *customImageBackground;
 UIImage *currentArtwork;
 UIImage *iconImage;
 NSData* lastArtworkData;
@@ -350,4 +369,27 @@ static void setUpTheArtworkBackground() {
 [songBackground.layer setCornerRadius:musicPlayerCornerRadius]; 
 [songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
+
+static void setUpCustomBackground() {
+	customImageBackground = [UIButton new];
+[customImageBackground setContentMode:UIViewContentModeScaleAspectFill];
+[customImageBackground setClipsToBounds:YES];
+[customImageBackground setAdjustsImageWhenHighlighted:NO];
+[customImageBackground setAlpha:musicPlayerAlpha];
+[customImageBackground.layer setCornerRadius:musicPlayerCornerRadius]; 
+[customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+}
 	
+static void	setUpShuffleButton() {
+shuffleButton = [UIButton new];
+[shuffleButton setContentMode:UIViewContentModeScaleAspectFill];
+[shuffleButton setClipsToBounds:YES];
+[shuffleButton setAdjustsImageWhenHighlighted:NO];
+[shuffleButton setTranslatesAutoresizingMaskIntoConstraints:YES];
+[shuffleButton setTintColor: [UIColor blueColor]];
+[shuffleButton setBackgroundColor:[UIColor redColor]];
+shuffleButton.hidden = NO;
+[shuffleButton setAlpha:1];
+}
+
+ 

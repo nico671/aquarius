@@ -1,4 +1,5 @@
 
+#import <Preferences/PSListController.h>
 #import <spawn.h>
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
@@ -13,33 +14,14 @@
 
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
-#import <Preferences/PSListController.h>
-
 @interface OTLRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
+
 @end
-
-
 @implementation OTLRootListController
-- (id)specifiers {
-return _specifiers;
-}
 
-- (void)loadFromSpecifier:(PSSpecifier *)specifier {
-NSString *sub = [specifier propertyForKey:@"AquariusSub"];
 
-    _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
-    
-}
-- (void)setSpecifier:(PSSpecifier *)specifier {
-    [self loadFromSpecifier:specifier];
-    [super setSpecifier:specifier];
-}
-- (bool)shouldReloadSpecifiersOnResume {
-return false;
-}
-
-- (void)respring {
+-(void)respring {
     UIBlurEffect* blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     UIVisualEffectView* blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
     [blurView setFrame:self.view.bounds];
@@ -49,7 +31,7 @@ return false;
     [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [blurView setAlpha:1.0];
     } completion:^(BOOL finished) {
-        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=orionprefs"];
+        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=aquariusprefs"];
         SBSRelaunchAction *restartAction;
         restartAction = [NSClassFromString(@"SBSRelaunchAction") actionWithReason:@"RestartRenderServer" options:SBSRelaunchActionOptionsFadeToBlackTransition targetURL:returnURL];
         [[NSClassFromString(@"FBSSystemService") sharedService] sendActions:[NSSet setWithObject:restartAction] withResult:nil];
@@ -80,5 +62,24 @@ return false;
 return self;
 }
 
+- (id)specifiers {
+return _specifiers;
+}
 
+- (void)loadFromSpecifier:(PSSpecifier *)specifier {
+NSString *sub = [specifier propertyForKey:@"AquariusSub"];
+
+    _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
+    
+}
+- (void)setSpecifier:(PSSpecifier *)specifier {
+    [self loadFromSpecifier:specifier];
+    [super setSpecifier:specifier];
+}
+- (bool)shouldReloadSpecifiersOnResume {
+return false;
+}
 @end
+
+
+

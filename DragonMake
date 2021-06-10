@@ -8,16 +8,13 @@ all:
         - arm64e
 aquarius:
     type: tweak 
-    targetios: 14.0
     dir: tweak
     files:
         - MarqueeLabel.m
         - Tweak.xm
     libs:
         - bulletin
-        - kitten
         - gcuniversal
-        - mitsuha
     frameworks:
         - MediaRemote
         - CoreGraphics
@@ -27,7 +24,6 @@ aquarius:
 aquariusprefs:
     type: prefs
     dir: aquariusprefs
-    targetios: 14.0
     libs:
         - gcuniversal
     files:
@@ -40,6 +36,7 @@ aquariusprefs:
         - SPRRootListController.m
         - STSRootListController.m
         - XXXSymbolsLinkCell.m
+        - NTFRootListController.m
     frameworks:
         - Cephei
         - CepheiPrefs 
