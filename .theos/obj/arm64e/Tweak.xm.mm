@@ -20,7 +20,7 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class CSAdjunctItemView; @class SPTMobileMediaKitAudioPlaybackManager; @class _UIBatteryView; @class MRUNowPlayingControlsView; @class MRUNowPlayingTransportControlsView; @class _UIStatusBarWifiSignalView; @class NCNotificationContentView; @class _UIStatusBarSignalView; @class SBMediaController; @class SBIconView; @class MRUNowPlayingHeaderView; @class _UIStatusBarVisualProvider_Split54; @class PLPlatterHeaderContentView; @class SpringBoard; @class NCNotificationShortLookView; @class MRUNowPlayingLabelView; @class SBIconProgressView; @class _UIStatusBarCellularSignalView; @class NCNotificationListCell; @class GRPAppCell; @class _UIStatusBarStringView; @class _UIStatusBar; 
+@class SBMediaController; @class MRUNowPlayingControlsView; @class _UIStatusBarVisualProvider_Split54; @class _UIStatusBarCellularSignalView; @class NCNotificationDispatcher; @class SBIconView; @class NCNotificationListCell; @class SBIconProgressView; @class SPTMobileMediaKitAudioPlaybackManager; @class _UIStatusBarSignalView; @class _UIBatteryView; @class MRUNowPlayingLabelView; @class CSAdjunctItemView; @class MRUNowPlayingHeaderView; @class _UIStatusBarWifiSignalView; @class _UIStatusBarStringView; @class PLPlatterHeaderContentView; @class NCNotificationShortLookView; @class _UIStatusBar; @class SpringBoard; @class MRUNowPlayingTransportControlsView; @class NCNotificationContentView; @class NCNotificationStructuredListViewController; 
 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }
 #line 1 "Tweak.xm"
@@ -508,6 +508,7 @@ static void (*_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$)(_LOGOS
  
 
 static void _logos_method$springy$SBIconProgressView$_drawPieWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGPoint arg1){
+	
     UIProgressView *progressView;
 	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 	progressView.progressTintColor = [UIColor cyanColor];
@@ -519,6 +520,15 @@ static void _logos_method$springy$SBIconProgressView$_drawPieWithCenter$(_LOGOS_
 	progressView.clipsToBounds = YES;
 	[self addSubview:progressView];
 	[self bringSubviewToFront: progressView];
+	if (self.displayingPaused == YES){
+		pauseButton = [[UIButton alloc]init];
+		[pauseButton setContentMode:UIViewContentModeScaleAspectFill];
+		[pauseButton setClipsToBounds:YES];
+		[pauseButton setAdjustsImageWhenHighlighted:NO];
+		[pauseButton setTranslatesAutoresizingMaskIntoConstraints:YES];
+		[pauseButton setTintColor: [UIColor cyanColor]];
+		[pauseButton setImage:[UIImage systemImageNamed:@"pause"] forState:UIControlStateNormal];
+	}
 }
 static void _logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGPoint arg1){
 	
@@ -537,12 +547,18 @@ static void _logos_method$springy$SBIconView$setNeedsLayout(_LOGOS_SELF_TYPE_NOR
 
 
 
-static void (*_logos_orig$GRUPISUPPORT$GRPAppCell$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL GRPAppCell* _LOGOS_SELF_CONST, SEL); static void _logos_method$GRUPISUPPORT$GRPAppCell$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL GRPAppCell* _LOGOS_SELF_CONST, SEL); 
+static void (*_logos_orig$groupednotifications$NCNotificationStructuredListViewController$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL); static void _logos_method$groupednotifications$NCNotificationStructuredListViewController$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$)(_LOGOS_SELF_TYPE_NORMAL NCNotificationDispatcher* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$(_LOGOS_SELF_TYPE_NORMAL NCNotificationDispatcher* _LOGOS_SELF_CONST, SEL, id, id); 
 
 
-static void _logos_method$GRUPISUPPORT$GRPAppCell$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL GRPAppCell* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-iconImage = [self.iconView image];
-self.backgroundColor = [iconImage averageColor];
+static void _logos_method$groupednotifications$NCNotificationStructuredListViewController$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
+	self.masterListView.hidden = YES;
+}
+
+
+
+static void _logos_method$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$(_LOGOS_SELF_TYPE_NORMAL NCNotificationDispatcher* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id arg1, id arg2){
+	_logos_orig$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$(self, _cmd, arg1, arg2);
+	NSLog(@"[aquarius] - %@",arg1);
 }
 
 
@@ -577,15 +593,11 @@ void reloadPrefs() {
 	colorNotifs = [file boolForKey:@"colorNotifs"];
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
-	hideLabels = [file boolForKey:@"customImageBackground?"];
-	colorGrupi = [file boolForKey:@"colorGrupi?"];
+	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
+	colorGrupi = [file boolForKey:@"colorGrupi"];
 }
 
-static __attribute__((constructor)) void _logosLocalCtor_f456ea7b(int __unused argc, char __unused **argv, char __unused **envp) {
-	dlopen("/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib", RTLD_NOW);
-	if (colorGrupi && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib"]) {
-	{Class _logos_class$GRUPISUPPORT$GRPAppCell = objc_getClass("GRPAppCell"); { MSHookMessageEx(_logos_class$GRUPISUPPORT$GRPAppCell, @selector(setNeedsLayout), (IMP)&_logos_method$GRUPISUPPORT$GRPAppCell$setNeedsLayout, (IMP*)&_logos_orig$GRUPISUPPORT$GRPAppCell$setNeedsLayout);}}
-	}
+static __attribute__((constructor)) void _logosLocalCtor_e8a8b40b(int __unused argc, char __unused **argv, char __unused **envp) {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
@@ -617,7 +629,7 @@ static __attribute__((constructor)) void _logosLocalCtor_f456ea7b(int __unused a
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
-	[file registerBool:&colorGrupi default:NO forKey:@"colorGrupi"];
+	[file registerBool:&colorGrupi default:YES forKey:@"colorGrupi"];
  	if (isNotificationSectionEnabled) {
 
 
@@ -630,6 +642,6 @@ static __attribute__((constructor)) void _logosLocalCtor_f456ea7b(int __unused a
 	if (isSpringySectionEnabled){
 		{Class _logos_class$springy$SBIconProgressView = objc_getClass("SBIconProgressView"); { MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPieWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPieWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$);}{ MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPauseUIWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$);}Class _logos_class$springy$SBIconView = objc_getClass("SBIconView"); { MSHookMessageEx(_logos_class$springy$SBIconView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconView$setNeedsLayout);}}
 	}
-	
+	{Class _logos_class$groupednotifications$NCNotificationStructuredListViewController = objc_getClass("NCNotificationStructuredListViewController"); { MSHookMessageEx(_logos_class$groupednotifications$NCNotificationStructuredListViewController, @selector(setNeedsLayout), (IMP)&_logos_method$groupednotifications$NCNotificationStructuredListViewController$setNeedsLayout, (IMP*)&_logos_orig$groupednotifications$NCNotificationStructuredListViewController$setNeedsLayout);}Class _logos_class$groupednotifications$NCNotificationDispatcher = objc_getClass("NCNotificationDispatcher"); { MSHookMessageEx(_logos_class$groupednotifications$NCNotificationDispatcher, @selector(destination:requestsClearingNotificationRequestsInSections:), (IMP)&_logos_method$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$, (IMP*)&_logos_orig$groupednotifications$NCNotificationDispatcher$destination$requestsClearingNotificationRequestsInSections$);}}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

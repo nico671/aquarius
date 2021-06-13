@@ -482,6 +482,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
 -(void)_drawPieWithCenter:(CGPoint)arg1{
+	
     UIProgressView *progressView;
 	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 	progressView.progressTintColor = [UIColor cyanColor];
@@ -493,6 +494,15 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	progressView.clipsToBounds = YES;
 	[self addSubview:progressView];
 	[self bringSubviewToFront: progressView];
+	if (self.displayingPaused == YES){
+		pauseButton = [[UIButton alloc]init];
+		[pauseButton setContentMode:UIViewContentModeScaleAspectFill];
+		[pauseButton setClipsToBounds:YES];
+		[pauseButton setAdjustsImageWhenHighlighted:NO];
+		[pauseButton setTranslatesAutoresizingMaskIntoConstraints:YES];
+		[pauseButton setTintColor: [UIColor cyanColor]];
+		[pauseButton setImage:[UIImage systemImageNamed:@"pause"] forState:UIControlStateNormal];
+	}
 }
 -(void)_drawPauseUIWithCenter:(CGPoint)arg1{
 	
@@ -511,17 +521,23 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %end
 %end
 
-%group GRUPISUPPORT
-%hook GRPAppCell
+%group groupednotifications
+%hook NCNotificationStructuredListViewController
 
 -(void)setNeedsLayout{
-iconImage = [self.iconView image];
-self.backgroundColor = [iconImage averageColor];
+	self.masterListView.hidden = YES;
+}
+
+%end
+%hook NCNotificationDispatcher
+-(void)destination:(id)arg1 requestsClearingNotificationRequestsInSections:(id)arg2{
+	%orig;
+	NSLog(@"[aquarius] - %@",arg1);
 }
 
 %end
 %end
-void reloadPrefs() { //prefs
+void reloadPrefs() { 
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
 	hideSnapImage = [file boolForKey:@"hideSnapImage"];
@@ -551,15 +567,11 @@ void reloadPrefs() { //prefs
 	colorNotifs = [file boolForKey:@"colorNotifs"];
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
-	hideLabels = [file boolForKey:@"customImageBackground?"];
-	colorGrupi = [file boolForKey:@"colorGrupi?"];
+	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
+	colorGrupi = [file boolForKey:@"colorGrupi"];
 }
 
 %ctor {
-	dlopen("/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib", RTLD_NOW);
-	if (colorGrupi && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Grupi.dylib"]) {
-	%init(GRUPISUPPORT);
-	}
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
@@ -591,7 +603,7 @@ void reloadPrefs() { //prefs
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
-	[file registerBool:&colorGrupi default:NO forKey:@"colorGrupi"];
+	[file registerBool:&colorGrupi default:YES forKey:@"colorGrupi"];
  	if (isNotificationSectionEnabled) {
 		%init(notifications)
  	}
@@ -604,6 +616,6 @@ void reloadPrefs() { //prefs
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
-	
+	%init(groupednotifications);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

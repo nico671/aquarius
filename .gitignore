@@ -2,3 +2,9 @@
 .theos/
 packages/
 build.ninja
+GroupingCell.h
+GroupingCell.m
+GRPView.h
+GRPView.m
+GRPManager.h
+GRPManager.m

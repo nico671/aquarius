@@ -93,7 +93,7 @@
                             <key>isController</key>
                             <true/>
                             <key>label</key>
-                            <string>Status Bar Settings</string>
+                            <string>Miscellaneous Settings</string>
                             </dict>
             <dict>
                 <key>cell</key>

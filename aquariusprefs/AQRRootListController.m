@@ -122,6 +122,7 @@ return self;
     UILabel *packageNameLabel;
     UILabel *developerLabel;
     UILabel *versionLabel;
+    UIImageView *iconView;
 }
 
 @end
@@ -134,16 +135,17 @@ return self;
 	if (self) {
 		int width = self.contentView.bounds.size.width;
         int height = self.contentView.bounds.size.width;
-        CGRect rect = CGRectMake(-130,0,width,height);
+        CGRect rect = CGRectMake(0,0,width,height);
 
 
     CGRect nameFrame = CGRectMake(CGRectGetMidX(rect), 90, width, 50);
     CGRect developerFrame = CGRectMake(CGRectGetMidX(rect), 50, width, 50);
     CGRect versionFrame = CGRectMake(CGRectGetMidX(rect), 130, width, 50);
+    iconView = [[UIImageView alloc] initWithFrame:nameFrame];
+    iconView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/aquariusprefs.bundle/icon.png"];
+
 
     packageNameLabel = [[UILabel alloc] initWithFrame:nameFrame];
-    [packageNameLabel setFont:[UIFont systemFontOfSize:50 weight: UIFontWeightSemibold] ];
-    packageNameLabel.textColor = [UIColor whiteColor];
     [packageNameLabel setTextAlignment:NSTextAlignmentCenter];
     packageNameLabel.text = @"Aquarius";
 
@@ -164,6 +166,8 @@ return self;
     [self addSubview:packageNameLabel];
     [self addSubview:developerLabel];
     [self addSubview:versionLabel];
+    [self addSubview:iconView];
+    self.backgroundColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
 
     }
     	return self;
@@ -183,26 +187,7 @@ return self;
 }
 
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
-	int width = self.contentView.bounds.size.width;
-    CGRect frame = CGRectMake(0, 0, width, 215);
 
-    bgView = [[UIView alloc] initWithFrame:frame];
-
-     UIColor *topColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
-    UIColor *bottomColor = [UIColor colorWithRed:1.0 green:0.80 blue:0.75 alpha:1.0];
-
-    CAGradientLayer *theViewGradient = [CAGradientLayer layer];
-    theViewGradient.colors = [NSArray arrayWithObjects: (id)topColor.CGColor, (id)bottomColor.CGColor, nil];
-    theViewGradient.startPoint = CGPointMake(0.0, 0.0);
-    theViewGradient.endPoint = CGPointMake(0.0, 1.0);
-    theViewGradient.frame = bgView.bounds;
-
-    [bgView.layer insertSublayer:theViewGradient atIndex:0];
-    [self insertSubview:bgView atIndex:0];
-
-}
 
 
 - (CGFloat)preferredHeightForWidth:(CGFloat)width inTableView:(id)tableView {

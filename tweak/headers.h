@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "GcUniversal/GcImagePickerUtils.h"
 #import <UIKit/UIKit.h>
+#import "GRPView.h"
+#import "GRPManager.h"
 #import <dlfcn.h>
 #import <Cephei/HBPreferences.h>
 #import "JBBulletinManager.h"
@@ -11,10 +13,21 @@
 #import "GcUniversal/GcImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface GRPAppCell
-@property (nonatomic, strong, readwrite) UIImageView *iconView;
-@property (nonatomic, strong, readwrite) UIView *blurView;
-@property (nonatomic, copy, readwrite) UIColor *backgroundColor;
+
+@interface NCNotificationStructuredListViewController : UIViewController
+@property (nonatomic,retain) NCNotificationListView * masterListView;
+@end
+
+@interface CSNotificationAdjunctListViewController
+@property (nonatomic,strong,readwrite) UIStackView *stackView;
+@property (nonatomic, retain) GRPView *basicallyAVC;
+-(void)adjunctListModel:(id)arg1 didAddItem:(id)arg2 ;
+-(void)adjunctListModel:(id)arg1 didRemoveItem:(id)arg2 ;
+-(void)_didUpdateDisplay;
+-(CGSize)sizeToMimic;
+-(void)_insertItem:(id)arg1 animated:(BOOL)arg2 ;
+-(void)_removeItem:(id)arg1 animated:(BOOL)arg2 ;
+-(BOOL)isPresentingContent;
 @end
 
 @interface SPTMobileMediaKitAudioPlaybackManager
@@ -41,6 +54,7 @@
 @end
 @interface SBIconProgressView : UIView
 @property (nonatomic,assign,readwrite) CGFloat displayedFraction;
+@property (nonatomic,assign,readwrite) BOOL displayingPaused;
 @end
 
 
@@ -135,9 +149,6 @@
 @end
 
 @interface CSMediaControlsViewController : UIViewController // iOS 13
-@end
-@interface CSNotificationAdjunctListViewController : UIViewController
-
 @end
 @class MPCPlayerResponseItem, MRUVisualStylingProvider, UIView, UILabel, CAGradientLayer, CADisplayLink, AVTimeFormatter, NSString;
 @interface MRUNowPlayingTimeControlsView : UIView // iOS 14
@@ -301,7 +312,6 @@ id preferences, file, yes;
 NSInteger configurations;
 NSString *previousTitle = @"poggers";
 double musicPlayerAlpha, outlineSize, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius;
-NSDictionary *preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"];
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 UIButton* songImageForSmall;
@@ -320,7 +330,7 @@ NSString *subtitleLabel;
 UIColor *fuckingArtworkColor;
 UIColor *fuckingArtworkColor2;
 MTMaterialView *yesmf;
-
+UIButton *pauseButton;
 static void mostlySetUpTheAlbumArtwork() {
   songImageForSmall = [UIButton new];
 	[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
@@ -391,5 +401,3 @@ shuffleButton = [UIButton new];
 shuffleButton.hidden = NO;
 [shuffleButton setAlpha:1];
 }
-
- 
