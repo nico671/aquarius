@@ -87,3 +87,13 @@
 0	28	0	stage	ef4676f4e1bbb1af
 0	26	0	stage	ef4676f4e1bbb1af
 0	26	0	stage	ef4676f4e1bbb1af
+0	1346	1623620642548575415	.dragon/build/arm64/OTLRootListController.m.o	4aab98b3420b77e
+1	1346	1623620642548882029	.dragon/build/arm64e/OTLRootListController.m.o	2f5c6dfe0db43fa
+0	1359	1623620642563153791	.dragon/build/arm64/AQRRootListController.m.o	96c75c70b578656b
+0	1360	1623620642563283952	.dragon/build/arm64e/AQRRootListController.m.o	f5b5cf5379a081b9
+1360	1502	1623620642707704920	.dragon/build/aquariusprefs.arm64	e1cdc833d9be111c
+1360	1503	1623620642709977377	.dragon/build/aquariusprefs.arm64e	136fe00e1e5c5542
+1503	1523	1623620642732161136	.dragon/sign/.dragon/_/Library/PreferenceBundles/aquariusprefs.bundle/aquariusprefs.unsym	73aa9e1fc3842ac6
+1523	1554	1623620642762883411	.dragon/sign/.dragon/_/Library/PreferenceBundles/aquariusprefs.bundle/aquariusprefs.unsigned	2a53234145f72f47
+1554	1579	1623620642788170346	.dragon/_/Library/PreferenceBundles/aquariusprefs.bundle/aquariusprefs	50d51eb11719122
+0	28	0	stage	ef4676f4e1bbb1af

@@ -75,7 +75,7 @@ return self;
 		}
 	}
 	return _specifiers;
-    NSLog(@"[aquarius] - %@",self.savedSpecifiers);
+    //(@"[aquarius] - %@",self.savedSpecifiers);
 }
 -(void)reloadSpecifiers {
 	[super reloadSpecifiers];

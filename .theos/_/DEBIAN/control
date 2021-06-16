@@ -6,5 +6,5 @@ Maintainer: nico671 <nico671dev@gmail.com>
 Author: nico671 <nico671dev0@gmail.com>
 Section: Tweaks
 Depends: com.mrgcgamer.libgcuniversal, net.limneos.libbulletin, ws.hbang.common (>= 1.16)
-Version: 1.7.4.2-37
-Installed-Size: 580
+Version: 1.7.4.2-151
+Installed-Size: 616

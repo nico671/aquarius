@@ -1,4 +1,5 @@
 #import "headers.h"
+
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
@@ -12,7 +13,6 @@
 	%orig(arg1);
 }
 %end
-
 %hook SpringBoard
 - (void)applicationDidFinishLaunching:(id)arg1 { // reload data after a respring
     %orig;
@@ -187,22 +187,22 @@
 }
 
 %end
-%hook SPTMobileMediaKitAudioPlaybackManager
-- (id)initWithPlaybackController:(id)arg1 connectManager:(id)arg2 collectionController:(id)arg3 logger:(id)arg4 keepAliveHandler:(id)arg5 actionLogger:(id)arg6{
-	%orig;
-	[[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.nico671.aquarius/sendToSpotify" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-    NSLog(@"[aquarius] Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
-	[self enableShuffleWithMessage:nil];
-	}];
-	return %orig;
-}
+// %hook SPTMobileMediaKitAudioPlaybackManager
+// - (id)initWithPlaybackController:(id)arg1 connectManager:(id)arg2 collectionController:(id)arg3 logger:(id)arg4 keepAliveHandler:(id)arg5 actionLogger:(id)arg6{
+// 	%orig;
+// 	[[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.nico671.aquarius/sendToSpotify" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+//     NSLog(@"[aquarius] Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
+// 	[self enableShuffleWithMessage:nil];
+// 	}];
+// 	return %orig;
+// }
 
 
-- (void)enableShuffleWithMessage:(id)arg1{
-	%orig;
-	NSLog(@"[aquarius] - %@",arg1);
-}
-%end
+// - (void)enableShuffleWithMessage:(id)arg1{
+// 	%orig;
+// 	NSLog(@"[aquarius] - %@",arg1);
+// }
+// %end
 
 
 %hook CSAdjunctItemView // sets the height and opacity of the player
@@ -520,21 +520,53 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 
 %end
 %end
-
-%group groupednotifications
+%group groupedNOTI
 %hook NCNotificationStructuredListViewController
-
--(void)setNeedsLayout{
-	self.masterListView.hidden = YES;
+%property (nonatomic, retain) AQRGRPView *grpView;
+-(void)insertNotificationRequest:(id)arg1{
+	self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(0,0,100,90)];
+	NCNotificationRequest * request;
+	request = arg1;
+	self.grpView.selectedAppID = request.bulletin.sectionID;
+	%orig;
+	[[AQRManager sharedInstance] insertNotificationRequest:arg1];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
 }
+
+-(void)removeNotificationRequest:(NCNotificationRequest *)arg1 {
+	%orig;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
+	[[AQRManager sharedInstance] removeNotificationRequest:arg1];
+}
+
 
 %end
-%hook NCNotificationDispatcher
--(void)destination:(id)arg1 requestsClearingNotificationRequestsInSections:(id)arg2{
-	%orig;
-	NSLog(@"[aquarius] - %@",arg1);
-}
 
+%hook CSNotificationAdjunctListViewController
+%property (nonatomic, retain) AQRGRPView *grpView;
+-(void)viewDidLoad {
+    %orig;
+        UIStackView *stackView = [self valueForKey:@"_stackView"];
+        self.grpView = [[AQRGRPView alloc] init];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.notifAdded/Removed" object:nil];
+        self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
+      	 NSMutableArray *constraints = [@[
+        [self.grpView.centerXAnchor constraintEqualToAnchor:stackView.centerXAnchor],
+          [self.grpView.leadingAnchor constraintEqualToAnchor:stackView.leadingAnchor constant:10],
+          [self.grpView.trailingAnchor constraintEqualToAnchor:stackView.trailingAnchor constant:-10],
+          [self.grpView.heightAnchor constraintEqualToConstant:90]
+        ] mutableCopy];
+        [stackView addArrangedSubview:self.grpView];
+        [NSLayoutConstraint activateConstraints:constraints];
+}
+%new 
+-(void)setTheFuckUp{
+[self.grpView updateView];
+}
+-(void)viewDidAppear: (BOOL)arg1{
+	%orig;
+	[self.grpView updateView];
+}
 %end
 %end
 void reloadPrefs() { 
@@ -570,6 +602,7 @@ void reloadPrefs() {
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
 	colorGrupi = [file boolForKey:@"colorGrupi"];
 }
+
 
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
@@ -616,6 +649,6 @@ void reloadPrefs() {
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
-	%init(groupednotifications);
+%init(groupedNOTI);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

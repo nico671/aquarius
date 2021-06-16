@@ -79,22 +79,6 @@
                         <key>label</key>
                         <string>SpringBoard Settings</string>
                         </dict>
-                        <dict>
-                            <key>AquariusSub</key>
-                             <string>Miscellaneous</string>
-                            <key>cell</key>
-                            <string>PSLinkCell</string>
-                            <key>detail</key>
-                            <string>MSCRootListController</string>
-                            <key>cellClass</key>
-                            <string>XXXSymbolsLinkCell</string>
-                            <key>icon</key>
-                            <string>questionmark.circle</string>
-                            <key>isController</key>
-                            <true/>
-                            <key>label</key>
-                            <string>Miscellaneous Settings</string>
-                            </dict>
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
@@ -113,22 +97,7 @@
                 <key>action</key>
                 <string>myTwitter</string>
             </dict>
-              <dict>
-                <key>big</key>
-                <true/>
-                <key>cellClass</key>
-                <string>HBTwitterCell</string>
-                <key>height</key>
-                <integer>56</integer>
-                <key>label</key>
-                <string>Dave Van Wijk's Twitter</string>
-                <key>user</key>
-                <string>DaveWijk</string>
-                <key>action</key>
-                <string>twitterDave</string>
-            </dict>
              <dict>
-            
                 <key>big</key>
                 <true/>
                 <key>cellClass</key>
@@ -138,8 +107,7 @@
                 <key>label</key>
                 <string>Litten's Twitter</string>
                 <key>user</key>
-                <string>schneelittchen</string>
-                
+                <string>schneelittchen</string>   
             </dict>
 </array>
 <key>title</key>

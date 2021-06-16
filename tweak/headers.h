@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "GcUniversal/GcImagePickerUtils.h"
 #import <UIKit/UIKit.h>
-#import "GRPView.h"
-#import "GRPManager.h"
 #import <dlfcn.h>
 #import <Cephei/HBPreferences.h>
 #import "JBBulletinManager.h"
@@ -12,15 +10,44 @@
 #import "MarqueeLabel.h"
 #import "GcUniversal/GcImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AQRGRPCell.h"
+#import "AQRGRPView.h"
+#import "AQRManager.h"
+
+
+@interface NCNotificationMasterListView : UIView
+@end
+
+@interface NCNotificationGroupList : NSObject
+@property (nonatomic,strong,readwrite) NSMutableArray *orderedRequests;
+@end
+@interface NCNotificationStructuredSectionList : NSObject
+@end
+
+@interface NCNotificationMasterList : NSObject 
+@property (nonatomic,retain) NSMutableArray * notificationSections;   
+@end
+
 
 
 @interface NCNotificationStructuredListViewController : UIViewController
-@property (nonatomic,retain) NCNotificationListView * masterListView;
+@property (nonatomic, strong, retain) NCNotificationMasterList *masterList;
+@property (nonatomic,readonly) UIScrollView * scrollView;
+@property (nonatomic, retain) AQRGRPView *grpView;
+@property (nonatomic, strong, readwrite) NCNotificationMasterListView *masterListView;
 @end
 
-@interface CSNotificationAdjunctListViewController
+@interface SBDashBoardNotificationAdjunctListViewController : UIViewController
+@property (nonatomic, retain) AQRGRPView *grpView;
+@end
+
+@interface NCNotificationCombinedListViewController : UIViewController
+@end
+
+@interface CSNotificationAdjunctListViewController : UIViewController
+@property (nonatomic, retain) AQRGRPView *grpView;
+@property (getter=isPresentingContent,nonatomic,readonly) BOOL presentingContent;
 @property (nonatomic,strong,readwrite) UIStackView *stackView;
-@property (nonatomic, retain) GRPView *basicallyAVC;
 -(void)adjunctListModel:(id)arg1 didAddItem:(id)arg2 ;
 -(void)adjunctListModel:(id)arg1 didRemoveItem:(id)arg2 ;
 -(void)_didUpdateDisplay;
@@ -84,11 +111,6 @@
 @interface UIView (Private)
 -(UIViewController *)_viewControllerForAncestor;
 -(void)setOverrideUserInterfaceStyle:(NSInteger)style;
-@end
-
-@interface MTMaterialView: UIView
-@property (nonatomic, copy, readwrite) UIColor *backgroundColor;
-@property(readonly) Class superclass;
 @end
 
 @interface _UIBatteryView
