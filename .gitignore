@@ -1,4 +1,9 @@
 .dragon/
 .theos/
 packages/
-build.ninja
+tweak/AQRManager.m
+tweak/AQRManager.h
+tweak/AQRGRPView.m
+tweak/AQRGRPView.h
+tweak/AQRGRPCell.m
+tweak/AQRGRPCell.h
