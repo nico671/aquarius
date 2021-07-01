@@ -22,7 +22,7 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class NCNotificationShortLookView; @class NCNotificationContentView; @class MRUNowPlayingHeaderView; @class _UIStatusBar; @class MRUNowPlayingControlsView; @class _UIStatusBarSignalView; @class MRUNowPlayingLabelView; @class MRUNowPlayingTransportControlsView; @class SBIconProgressView; @class _UIStatusBarVisualProvider_Split54; @class _UIStatusBarCellularSignalView; @class CSAdjunctItemView; @class _UIStatusBarWifiSignalView; @class _UIStatusBarStringView; @class CSNotificationAdjunctListViewController; @class SBIconView; @class NCNotificationStructuredListViewController; @class NCNotificationListCell; @class SBMediaController; @class _UIBatteryView; @class PLPlatterHeaderContentView; @class SpringBoard; 
+@class _UIStatusBarWifiSignalView; @class CSAdjunctItemView; @class _UIBatteryView; @class SBIconProgressView; @class MRUNowPlayingTransportControlsView; @class _UIStatusBarSignalView; @class _UIStatusBar; @class SBMediaController; @class SpringBoard; @class NCNotificationListCell; @class NCNotificationShortLookView; @class _UIStatusBarCellularSignalView; @class PLPlatterHeaderContentView; @class SBIconView; @class MRUNowPlayingHeaderView; @class NCNotificationContentView; @class MRUNowPlayingLabelView; @class _UIStatusBarVisualProvider_Split54; @class _UIStatusBarStringView; @class MRUNowPlayingControlsView; 
 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }
 #line 3 "Tweak.xm"
@@ -546,55 +546,93 @@ static void _logos_method$springy$SBIconView$setNeedsLayout(_LOGOS_SELF_TYPE_NOR
 
 
 
-static void (*_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$)(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL, id); static void (*_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$)(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL, NCNotificationRequest *); static void _logos_method$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST, SEL, NCNotificationRequest *); static void (*_logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad)(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST, SEL); static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST, SEL); static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$)(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST, SEL, BOOL); 
-
-__attribute__((used)) static AQRGRPView * _logos_property$groupedNOTI$NCNotificationStructuredListViewController$grpView(NCNotificationStructuredListViewController * __unused self, SEL __unused _cmd) { return (AQRGRPView *)objc_getAssociatedObject(self, (void *)_logos_property$groupedNOTI$NCNotificationStructuredListViewController$grpView); };
-__attribute__((used)) static void _logos_property$groupedNOTI$NCNotificationStructuredListViewController$setGrpView(NCNotificationStructuredListViewController * __unused self, SEL __unused _cmd, AQRGRPView * rawValue) { objc_setAssociatedObject(self, (void *)_logos_property$groupedNOTI$NCNotificationStructuredListViewController$grpView, rawValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
-static void _logos_method$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id arg1){
-	self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(0,0,100,90)];
-	NCNotificationRequest * request;
-	request = arg1;
-	self.grpView.selectedAppID = request.bulletin.sectionID;
-	_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$(self, _cmd, arg1);
-	[[AQRManager sharedInstance] insertNotificationRequest:arg1];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
-}
-
-static void _logos_method$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$(_LOGOS_SELF_TYPE_NORMAL NCNotificationStructuredListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, NCNotificationRequest * arg1) {
-	_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$(self, _cmd, arg1);
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
-	[[AQRManager sharedInstance] removeNotificationRequest:arg1];
-}
 
 
 
 
 
-__attribute__((used)) static AQRGRPView * _logos_property$groupedNOTI$CSNotificationAdjunctListViewController$grpView(CSNotificationAdjunctListViewController * __unused self, SEL __unused _cmd) { return (AQRGRPView *)objc_getAssociatedObject(self, (void *)_logos_property$groupedNOTI$CSNotificationAdjunctListViewController$grpView); };
-__attribute__((used)) static void _logos_property$groupedNOTI$CSNotificationAdjunctListViewController$setGrpView(CSNotificationAdjunctListViewController * __unused self, SEL __unused _cmd, AQRGRPView * rawValue) { objc_setAssociatedObject(self, (void *)_logos_property$groupedNOTI$CSNotificationAdjunctListViewController$grpView, rawValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
-static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
-    _logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad(self, _cmd);
-        UIStackView *stackView = [self valueForKey:@"_stackView"];
-        self.grpView = [[AQRGRPView alloc] init];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.notifAdded/Removed" object:nil];
-        self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
-      	 NSMutableArray *constraints = [@[
-        [self.grpView.centerXAnchor constraintEqualToAnchor:stackView.centerXAnchor],
-          [self.grpView.leadingAnchor constraintEqualToAnchor:stackView.leadingAnchor constant:10],
-          [self.grpView.trailingAnchor constraintEqualToAnchor:stackView.trailingAnchor constant:-10],
-          [self.grpView.heightAnchor constraintEqualToConstant:90]
-        ] mutableCopy];
-        [stackView addArrangedSubview:self.grpView];
-        [NSLayoutConstraint activateConstraints:constraints];
-}
- 
-static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-[self.grpView updateView];
-}
-static void _logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$(_LOGOS_SELF_TYPE_NORMAL CSNotificationAdjunctListViewController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, BOOL arg1){
-	_logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$(self, _cmd, arg1);
-	[self.grpView updateView];
-}
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
 
 
 void reloadPrefs() { 
@@ -628,11 +666,10 @@ void reloadPrefs() {
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
-	colorGrupi = [file boolForKey:@"colorGrupi"];
 }
 
 
-static __attribute__((constructor)) void _logosLocalCtor_3cc337ce(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_d875f389(int __unused argc, char __unused **argv, char __unused **envp) {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
@@ -664,7 +701,6 @@ static __attribute__((constructor)) void _logosLocalCtor_3cc337ce(int __unused a
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
-	[file registerBool:&colorGrupi default:YES forKey:@"colorGrupi"];
  	if (isNotificationSectionEnabled) {
 
 
@@ -677,6 +713,6 @@ static __attribute__((constructor)) void _logosLocalCtor_3cc337ce(int __unused a
 	if (isSpringySectionEnabled){
 		{Class _logos_class$springy$SBIconProgressView = objc_getClass("SBIconProgressView"); { MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPieWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPieWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$);}{ MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPauseUIWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$);}Class _logos_class$springy$SBIconView = objc_getClass("SBIconView"); { MSHookMessageEx(_logos_class$springy$SBIconView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconView$setNeedsLayout);}}
 	}
-{Class _logos_class$groupedNOTI$NCNotificationStructuredListViewController = objc_getClass("NCNotificationStructuredListViewController"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"AQRGRPView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$groupedNOTI$NCNotificationStructuredListViewController, "grpView", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(AQRGRPView *)); class_addMethod(_logos_class$groupedNOTI$NCNotificationStructuredListViewController, @selector(grpView), (IMP)&_logos_property$groupedNOTI$NCNotificationStructuredListViewController$grpView, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(AQRGRPView *)); class_addMethod(_logos_class$groupedNOTI$NCNotificationStructuredListViewController, @selector(setGrpView:), (IMP)&_logos_property$groupedNOTI$NCNotificationStructuredListViewController$setGrpView, _typeEncoding); } { MSHookMessageEx(_logos_class$groupedNOTI$NCNotificationStructuredListViewController, @selector(insertNotificationRequest:), (IMP)&_logos_method$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$, (IMP*)&_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$insertNotificationRequest$);}{ MSHookMessageEx(_logos_class$groupedNOTI$NCNotificationStructuredListViewController, @selector(removeNotificationRequest:), (IMP)&_logos_method$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$, (IMP*)&_logos_orig$groupedNOTI$NCNotificationStructuredListViewController$removeNotificationRequest$);}Class _logos_class$groupedNOTI$CSNotificationAdjunctListViewController = objc_getClass("CSNotificationAdjunctListViewController"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"AQRGRPView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, "grpView", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(AQRGRPView *)); class_addMethod(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, @selector(grpView), (IMP)&_logos_property$groupedNOTI$CSNotificationAdjunctListViewController$grpView, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(AQRGRPView *)); class_addMethod(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, @selector(setGrpView:), (IMP)&_logos_property$groupedNOTI$CSNotificationAdjunctListViewController$setGrpView, _typeEncoding); } { MSHookMessageEx(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, @selector(viewDidLoad), (IMP)&_logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad, (IMP*)&_logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidLoad);}{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, @selector(setTheFuckUp), (IMP)&_logos_method$groupedNOTI$CSNotificationAdjunctListViewController$setTheFuckUp, _typeEncoding); }{ MSHookMessageEx(_logos_class$groupedNOTI$CSNotificationAdjunctListViewController, @selector(viewDidAppear:), (IMP)&_logos_method$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$, (IMP*)&_logos_orig$groupedNOTI$CSNotificationAdjunctListViewController$viewDidAppear$);}}
+
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

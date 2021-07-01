@@ -1,6 +1,7 @@
 
 #import "AQRGRPView.h"
 #import "AQRManager.h"
+#import "functions.h"
 @implementation AQRGRPView
 
 @synthesize selectedAppID;
@@ -14,7 +15,8 @@
 		selectedView = [MTMaterialView new];
 		selectedView.layer.masksToBounds = YES;
 		[self addSubview:selectedView];
-
+		self.contentInset = UIEdgeInsetsMake(0,0,0,10);
+		self.scrollEnabled = YES;
 		//Initialize other instance variables
 		appViews = [NSMutableDictionary new];
 		self.userInteractionEnabled = YES;
@@ -23,46 +25,52 @@
 }
 
 - (void)updateView {
-	NSLog(@"[aquarius] - this was called");
 	NSMutableDictionary *notificationDict = [AQRManager sharedInstance].notificationRequests;
-	NSLog(@"[aquarius] - %@",notificationDict);
 	self.hidden = NO;
 	//Create or update app views from the current notification list
 	[appViews removeAllObjects];
-
+	CGSize appViewSizeVar = appViewSize(lockscreen);
+	CGFloat totalWidth = [[appViews allKeys] count] * appViewSizeVar.width;
+	self.contentSize = CGSizeMake(totalWidth, appViewSizeVar.height);
+	[[AQRManager sharedInstance]getRidOfWaste];
+	CGFloat	startX = 0;
+	CGFloat startY = 0;
+	CGRect screenRect = [[UIScreen mainScreen] bounds];
+CGFloat screenWidth = screenRect.size.width;
 	for (NSString *appID in [notificationDict allKeys]) {
 		AQRGRPCell *appView = [[AQRGRPCell alloc] initWithFrame:CGRectMake(0, 0, appViewSize(lockscreen).width, appViewSize(lockscreen).height) icon:[UIImage _applicationIconImageForBundleIdentifier:appID format:0] identifier:appID numberStyle:[defaults integerForKey:@"numberStyle"]];
+		appView.frame = CGRectMake(startX, startY, appViewSizeVar.width, appViewSizeVar.height);
+		startX += appViewSizeVar.width;
+		if (startX > screenWidth-50){
+			startY += 50;
+			startX = 0;
+		}
+		[appView setNumNotifications:[[AQRManager sharedInstance].notificationRequests[appID]count]];
 		[appView addTarget:self action:@selector(appViewTapped:) forControlEvents:UIControlEventTouchUpInside];
 		[appViews setObject:appView forKey:appID];
 		[self addSubview:appView];
 	}
-
-	//Layout all app views
-	CGSize appViewSizeVar = appViewSize(lockscreen);
-	CGFloat totalWidth = [[appViews allKeys] count] * appViewSizeVar.width;
-	self.contentSize = CGSizeMake(totalWidth, appViewSizeVar.height);
-	CGFloat startX = (CGRectGetWidth(self.frame) - totalWidth)/2;
-	if (startX < 0)
-		startX = 0;
-
-	for (AQRGRPCell *appView in [appViews allValues]) {
-		appView.frame = CGRectMake(startX, 0, appViewSizeVar.width, appViewSizeVar.height);
-		startX += appViewSizeVar.width;
-	}
+	
+	
+		[[AQRManager sharedInstance] getRidOfWaste];
 }
 
 
 
+
 - (void)appViewTapped:(AQRGRPCell*)appView {
-		UIImpactFeedbackGenerator *gen = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+	UIImpactFeedbackGenerator *gen = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+	[[AQRManager sharedInstance] showNotificationRequestsForBundleIdentifier:appView.identifier];
 	[gen prepare];
 	[gen impactOccurred];
+	[[AQRManager sharedInstance].clvc revealNotificationHistory:YES];
+	[[AQRManager sharedInstance] showNotificationRequestsForBundleIdentifier:appView.identifier];
 	[self selectAppID:appView.identifier newNotification:NO];
 }
 
 - (void)selectAppID:(NSString*)appID newNotification:(BOOL)newNotif {
 	NSTimeInterval animationDuration = 0.15;
-
+	[[AQRManager sharedInstance] showNotificationRequestsForBundleIdentifier:appID];
 	//Move the selected view before animating if it's reselecting
 	if (!selectedAppID && appID)
 		selectedView.frame = ((AQRGRPCell*)[appViews objectForKey:appID]).frame;

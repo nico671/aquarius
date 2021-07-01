@@ -35,7 +35,7 @@ aquariusprefs:
         - SETRootListController.m
         - SPRRootListController.m
         - STSRootListController.m
-        - XXXSymbolsLinkCell.m
+        - SFSymbolsCell.m
         - NTFRootListController.m
     frameworks:
         - Cephei

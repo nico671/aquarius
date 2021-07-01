@@ -520,55 +520,95 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 
 %end
 %end
-%group groupedNOTI
-%hook NCNotificationStructuredListViewController
-%property (nonatomic, retain) AQRGRPView *grpView;
--(void)insertNotificationRequest:(id)arg1{
-	self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(0,0,100,90)];
-	NCNotificationRequest * request;
-	request = arg1;
-	self.grpView.selectedAppID = request.bulletin.sectionID;
-	%orig;
-	[[AQRManager sharedInstance] insertNotificationRequest:arg1];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
-}
+// %group groupedNOTI
+// %hook CSNotificationAdjunctListViewController
+// %property (nonatomic, retain) AQRGRPView *grpView;
+// -(void)viewDidLoad {
+//     %orig;
+// 	NSLog(@"[aquarius] - %@",[AQRManager sharedInstance].notificationRequests);
+//         UIStackView *stackView = [self valueForKey:@"_stackView"];
+// 		CGRect screenRect = [[UIScreen mainScreen] bounds];
+// 		CGFloat screenWidth = screenRect.size.width;
+//         self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.view.frame),CGRectGetMinY(self.view.frame),screenWidth-50,500)];
+// 		[AQRManager sharedInstance].view = self.grpView;
+		
+//         self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
+// 		[[AQRManager sharedInstance].view updateView];
+//       	 NSMutableArray *constraints = [@[
+//         [self.grpView.centerXAnchor constraintEqualToAnchor:stackView.centerXAnchor],
+//           [self.grpView.leadingAnchor constraintEqualToAnchor:stackView.leadingAnchor constant:10],
+//           [self.grpView.trailingAnchor constraintEqualToAnchor:stackView.trailingAnchor constant:-10],
+//           [self.grpView.heightAnchor constraintEqualToConstant:90]
+//         ] mutableCopy];
+//         [stackView addArrangedSubview:self.grpView];
+//         [NSLayoutConstraint activateConstraints:constraints];
+// 		[self.grpView updateView];
+// }
+// -(void)_updatePresentingContent {
+//   %orig;
+//     UIStackView *stackView = [self valueForKey:@"_stackView"];
+//     [stackView removeArrangedSubview:self.grpView];
+//     [stackView addArrangedSubview:self.grpView];
+// }
+// -(void)_insertItem:(id)arg1 animated:(BOOL)arg2 {
+//     %orig;
+//     UIStackView *stackView = [self valueForKey:@"_stackView"];
+//     [stackView removeArrangedSubview:self.grpView];
+//     [stackView addArrangedSubview:self.grpView];
+// }
 
--(void)removeNotificationRequest:(NCNotificationRequest *)arg1 {
-	%orig;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.notifAdded/Removed" object:nil];
-	[[AQRManager sharedInstance] removeNotificationRequest:arg1];
-}
+// -(BOOL)isPresentingContent {
+//     return YES;
+// }
 
+// %end
+// @interface NCNotificationListSectionHeaderView : UIView
+// @end
 
-%end
+// %hook NCNotificationStructuredListViewController
+// -(void)insertNotificationRequest:(id)arg1 {
+// 	%orig;
+// 	NCNotificationRequest *req = arg1;   
+//     [[AQRManager sharedInstance] insertNotificationRequest:req];
+//     [[AQRManager sharedInstance].view updateView];
+// }
 
-%hook CSNotificationAdjunctListViewController
-%property (nonatomic, retain) AQRGRPView *grpView;
--(void)viewDidLoad {
-    %orig;
-        UIStackView *stackView = [self valueForKey:@"_stackView"];
-        self.grpView = [[AQRGRPView alloc] init];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.notifAdded/Removed" object:nil];
-        self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
-      	 NSMutableArray *constraints = [@[
-        [self.grpView.centerXAnchor constraintEqualToAnchor:stackView.centerXAnchor],
-          [self.grpView.leadingAnchor constraintEqualToAnchor:stackView.leadingAnchor constant:10],
-          [self.grpView.trailingAnchor constraintEqualToAnchor:stackView.trailingAnchor constant:-10],
-          [self.grpView.heightAnchor constraintEqualToConstant:90]
-        ] mutableCopy];
-        [stackView addArrangedSubview:self.grpView];
-        [NSLayoutConstraint activateConstraints:constraints];
-}
-%new 
--(void)setTheFuckUp{
-[self.grpView updateView];
-}
--(void)viewDidAppear: (BOOL)arg1{
-	%orig;
-	[self.grpView updateView];
-}
-%end
-%end
+// -(void)removeNotificationRequest:(id)arg1 {
+// 	NCNotificationRequest *req = arg1;   
+//     [[AQRManager sharedInstance] removeNotificationRequest:req];
+//     [[AQRManager sharedInstance].view updateView];
+// 	[[AQRManager sharedInstance] updateQuick:req.bulletin.sectionID];
+	
+// }
+// -(void)modifyNotificationRequest:(id)arg1 {
+// 	NCNotificationRequest *req = arg1;   
+//     [[AQRManager sharedInstance] modifyNotificationRequest:req];
+//     [[AQRManager sharedInstance].view updateView];
+	
+// }
+// %end
+// %hook NCNotificationCombinedListViewController
+
+// -(id)init{
+// 	%orig;
+// 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNotifications) name:@"com.nico671.notifAdded/Removed" object:nil];
+// 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(revealNotificationHistory:) name:@"com.nico671.notifAdded/Removed" object:nil];
+// 	return %orig;
+// }
+// -(void)insertNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
+// 	NCNotificationRequest *req = arg1;   
+//     [[AQRManager sharedInstance] insertNotificationRequest:req];
+//     [[AQRManager sharedInstance].view updateView];
+
+	
+// }
+// -(void)removeNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
+//     if (self.aqrAllowChanges) return %orig;  
+// 	NCNotificationRequest *req = arg1;
+// 	[[AQRManager sharedInstance] removeNotificationRequest:req] ;
+// }
+// %end
+// %end
 void reloadPrefs() { 
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
@@ -600,7 +640,6 @@ void reloadPrefs() {
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
-	colorGrupi = [file boolForKey:@"colorGrupi"];
 }
 
 
@@ -636,7 +675,6 @@ void reloadPrefs() {
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
-	[file registerBool:&colorGrupi default:YES forKey:@"colorGrupi"];
  	if (isNotificationSectionEnabled) {
 		%init(notifications)
  	}
@@ -649,6 +687,6 @@ void reloadPrefs() {
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
-%init(groupedNOTI);
+//%init(groupedNOTI);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

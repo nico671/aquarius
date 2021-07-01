@@ -137,7 +137,7 @@ build $builddir/arm64/SPRRootListController.m.o: objcarm64 $
     SPRRootListController.m
 build $builddir/arm64/STSRootListController.m.o: objcarm64 $
     STSRootListController.m
-build $builddir/arm64/XXXSymbolsLinkCell.m.o: objcarm64 XXXSymbolsLinkCell.m
+build $builddir/arm64/SFSymbolsCell.m.o: objcarm64 SFSymbolsCell.m
 build $builddir/arm64/NTFRootListController.m.o: objcarm64 $
     NTFRootListController.m
 build $builddir/$name.arm64: linkarm64 $
@@ -149,7 +149,7 @@ build $builddir/$name.arm64: linkarm64 $
     $builddir/arm64/SETRootListController.m.o $
     $builddir/arm64/SPRRootListController.m.o $
     $builddir/arm64/STSRootListController.m.o $
-    $builddir/arm64/XXXSymbolsLinkCell.m.o $
+    $builddir/arm64/SFSymbolsCell.m.o $
     $builddir/arm64/NTFRootListController.m.o
 build $builddir/arm64e/AQRRootListController.m.o: objcarm64e $
     AQRRootListController.m
@@ -167,7 +167,7 @@ build $builddir/arm64e/SPRRootListController.m.o: objcarm64e $
     SPRRootListController.m
 build $builddir/arm64e/STSRootListController.m.o: objcarm64e $
     STSRootListController.m
-build $builddir/arm64e/XXXSymbolsLinkCell.m.o: objcarm64e XXXSymbolsLinkCell.m
+build $builddir/arm64e/SFSymbolsCell.m.o: objcarm64e SFSymbolsCell.m
 build $builddir/arm64e/NTFRootListController.m.o: objcarm64e $
     NTFRootListController.m
 build $builddir/$name.arm64e: linkarm64e $
@@ -179,7 +179,7 @@ build $builddir/$name.arm64e: linkarm64e $
     $builddir/arm64e/SETRootListController.m.o $
     $builddir/arm64e/SPRRootListController.m.o $
     $builddir/arm64e/STSRootListController.m.o $
-    $builddir/arm64e/XXXSymbolsLinkCell.m.o $
+    $builddir/arm64e/SFSymbolsCell.m.o $
     $builddir/arm64e/NTFRootListController.m.o
 build $internalsymtarget: lipo $builddir/$name.arm64 $builddir/$name.arm64e
 build $internalsigntarget: debug $internalsymtarget

@@ -1,5 +1,6 @@
-THEOS_DEVICE_IP= 192.168.50.75
-DEBUG = 0
+THEOS_DEVICE_IP=192.168.50.75
+
+export DEBUG = 0
 include $(THEOS)/makefiles/common.mk
 export SYSROOT = $(THEOS)/sdks/iPhoneOS14.4.sdk/
 SUBPROJECTS += tweak aquariusprefs

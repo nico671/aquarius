@@ -15,6 +15,8 @@
 	<string>PSSwitchCell</string>
 	<key>default</key>
 	<false/>
+	<key>cellClass</key>
+	<string>MarqueeLabelCell</string>
 	<key>defaults</key>
 	<string>aquariusprefs</string>
 	<key>PostNotification</key>
@@ -29,7 +31,7 @@
 	<key>cell</key>
 	<string>PSLinkCell</string>
 	<key>cellClass</key>
-	<string>GcColorPickerCell</string>
+	<string>FuckYouColorPickerCell</string>
 	<key>label</key>
 	<string>Custom Outline Color</string>
 	<key>defaults</key>

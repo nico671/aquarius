@@ -28,7 +28,7 @@
 <key>detail</key>
 <string>SETRootListController</string>
 <key>cellClass</key>
-<string>XXXSymbolsLinkCell</string>
+<string>SFSymbolsCell</string>
 <key>icon</key>
 <string>gear</string>
 <key>isController</key>
@@ -45,7 +45,7 @@
 <key>detail</key>
 <string>CLCRootListController</string>
 <key>cellClass</key>
-<string>XXXSymbolsLinkCell</string>
+<string>SFSymbolsCell</string>
 <key>icon</key>
 <string>paintbrush.fill</string>
 <key>isController</key>
@@ -62,7 +62,7 @@
     <key>detail</key>
     <string>CLCRootListController</string>
     <key>cellClass</key>
-    <string>XXXSymbolsLinkCell</string>
+    <string>SFSymbolsCell</string>
     <key>icon</key>
     <string>pencil.and.outline</string>
     <key>isController</key>

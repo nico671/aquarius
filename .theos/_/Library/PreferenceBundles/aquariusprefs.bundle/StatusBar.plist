@@ -31,6 +31,8 @@
     <string>PSSwitchCell</string>
     <key>default</key>
     <false/>
+    <key>cellClass</key>
+    <string>MarqueeLabelCell</string>
     <key>defaults</key>
     <string>aquariusprefs</string>
     <key>key</key>
@@ -61,7 +63,7 @@
     <key>cell</key>
     <string>PSLinkCell</string>
     <key>cellClass</key>
-    <string>GcColorPickerCell</string>
+    <string>FuckYouColorPickerCell</string>
     <key>label</key>
     <string>Custom Time Color</string>
     <key>defaults</key>
@@ -96,7 +98,7 @@
     <key>cell</key>
     <string>PSLinkCell</string>
     <key>cellClass</key>
-    <string>GcColorPickerCell</string>
+    <string>FuckYouColorPickerCell</string>
     <key>label</key>
     <string>Battery Tint Color</string>
     <key>defaults</key>
@@ -147,7 +149,7 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>cellClass</key>
-        <string>GcColorPickerCell</string>
+        <string>FuckYouColorPickerCell</string>
         <key>label</key>
         <string>Wifi and Cellular Tint Color</string>
         <key>defaults</key>

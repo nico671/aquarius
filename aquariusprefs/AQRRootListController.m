@@ -7,10 +7,37 @@
 #import <FrontBoardServices/FBSSystemService.h>
 #include <spawn.h>
 #include <UIKit/UIKit.h>
-@implementation AQRRootListController
-- (void)twitterDave {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/davewijk"] options:@{} completionHandler:nil];
+@interface AQRAnimatedTitleView : UIView
+@end
+
+@implementation AQRAnimatedTitleView
+-(instancetype) initWithTitle: (NSString *) title textColor: (UIColor *) textColor {
+    self = [super init];
+    if (self) {
+        // int width = self.contentView.bounds.size.width;
+        // int height = self.contentView.bounds.size.width;
+        // CGRect rect = CGRectMake(0,0,width,height);
+        self.backgroundColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
+    }
+    return self;
 }
+//  -(void)adjustLabelPositionToScrollOffset:(CGFloat)offset {
+//     CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
+//     if(offset >= _minimumOffsetRequired) {
+//       if(adjustment <= 0) {
+//         _yConstraint.constant = 0;
+
+//       } else {
+//         _yConstraint.constant = adjustment;
+//       }
+
+//     } else {
+//       _yConstraint.constant = -100;
+//     }
+//   }
+@end
+@implementation AQRRootListController
+
 
 - (void)sourceCode {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/nico671/aquarius"] options:@{} completionHandler:nil];
@@ -27,7 +54,10 @@
     if ([didShowOBWelcomeController isEqual:@0]) {
 		[self setupWelcomeController];
     }
-
+ if(!self.navigationItem.titleView) {
+ 		AQRAnimatedTitleView *animatedTitleView = [[AQRAnimatedTitleView alloc] initWithTitle:@"Your Title" textColor:[UIColor redColor]];
+ 		self.navigationItem.titleView = animatedTitleView;
+ 	}
     
   
 }
@@ -61,7 +91,11 @@
     welcomeController.view.tintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
     [self presentViewController:welcomeController animated:YES completion:nil];
 }
-
+// -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+// 	if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)]) {
+// 		//[(AQRAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
+// }
+// }
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
@@ -122,9 +156,7 @@ return self;
     UILabel *packageNameLabel;
     UILabel *developerLabel;
     UILabel *versionLabel;
-    UIImageView *iconView;
 }
-
 @end
 
 @implementation AquariusTitleCell
@@ -138,11 +170,9 @@ return self;
         CGRect rect = CGRectMake(0,0,width,height);
 
 
-    CGRect nameFrame = CGRectMake(CGRectGetMidX(rect), 90, width, 50);
-    CGRect developerFrame = CGRectMake(CGRectGetMidX(rect), 50, width, 50);
-    CGRect versionFrame = CGRectMake(CGRectGetMidX(rect), 130, width, 50);
-    iconView = [[UIImageView alloc] initWithFrame:nameFrame];
-    iconView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/aquariusprefs.bundle/icon.png"];
+    CGRect nameFrame = CGRectMake(CGRectGetMinX(rect), 90, width, 50);
+    CGRect developerFrame = CGRectMake(CGRectGetMinX(rect), 50, width, 50);
+    CGRect versionFrame = CGRectMake(CGRectGetMinX(rect), 130, width, 50);
 
 
     packageNameLabel = [[UILabel alloc] initWithFrame:nameFrame];
@@ -166,7 +196,6 @@ return self;
     [self addSubview:packageNameLabel];
     [self addSubview:developerLabel];
     [self addSubview:versionLabel];
-    [self addSubview:iconView];
     self.backgroundColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
 
     }
@@ -185,11 +214,6 @@ return self;
 - (CGFloat)preferredHeightForWidth:(CGFloat)arg1 {
     return 215.0f;
 }
-
-
-
-
-
 - (CGFloat)preferredHeightForWidth:(CGFloat)width inTableView:(id)tableView {
 	return [self preferredHeightForWidth:width];
 }

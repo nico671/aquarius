@@ -13,6 +13,7 @@
 #import "AQRGRPCell.h"
 #import "AQRGRPView.h"
 #import "AQRManager.h"
+#import "sharedheaders.h"
 
 
 @interface NCNotificationMasterListView : UIView
@@ -28,21 +29,16 @@
 @property (nonatomic,retain) NSMutableArray * notificationSections;   
 @end
 
-
-
-@interface NCNotificationStructuredListViewController : UIViewController
-@property (nonatomic, strong, retain) NCNotificationMasterList *masterList;
-@property (nonatomic,readonly) UIScrollView * scrollView;
-@property (nonatomic, retain) AQRGRPView *grpView;
-@property (nonatomic, strong, readwrite) NCNotificationMasterListView *masterListView;
+@interface CSCombinedListViewController : UIViewController
+@property (nonatomic, retain) AQRGRPView *aqrView;
 @end
+
 
 @interface SBDashBoardNotificationAdjunctListViewController : UIViewController
 @property (nonatomic, retain) AQRGRPView *grpView;
 @end
 
-@interface NCNotificationCombinedListViewController : UIViewController
-@end
+
 
 @interface CSNotificationAdjunctListViewController : UIViewController
 @property (nonatomic, retain) AQRGRPView *grpView;
@@ -102,11 +98,6 @@
 @property NSArray *subviews;
 @property (assign,setter=_setBanner:,getter=_isBanner,nonatomic) BOOL banner;  
 @end
-
-@interface SBApplication : NSObject
-@property (nonatomic,readonly) NSString * bundleIdentifier;                                                                                     //@synthesize bundleIdentifier=_bundleIdentifier - In the implementation block
-@end
-
 
 @interface UIView (Private)
 -(UIViewController *)_viewControllerForAncestor;
