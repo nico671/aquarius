@@ -6,8 +6,8 @@
 #import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
-#import "NCColorPickerUtilities.h"
-#import "MarqueeLabel.h"
+#import "NCUtils/NCColorPickerUtilities.h"
+#import "NCUtils/MarqueeLabel.h"
 #import "GcUniversal/GcImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AQRGRPCell.h"
@@ -25,8 +25,8 @@
 @interface NCNotificationStructuredSectionList : NSObject
 @end
 
-@interface NCNotificationMasterList : NSObject 
-@property (nonatomic,retain) NSMutableArray * notificationSections;   
+@interface NCNotificationMasterList : NSObject
+@property (nonatomic,retain) NSMutableArray * notificationSections;
 @end
 
 @interface CSCombinedListViewController : UIViewController
@@ -96,7 +96,7 @@
 }
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @property NSArray *subviews;
-@property (assign,setter=_setBanner:,getter=_isBanner,nonatomic) BOOL banner;  
+@property (assign,setter=_setBanner:,getter=_isBanner,nonatomic) BOOL banner;
 @end
 
 @interface UIView (Private)
@@ -171,7 +171,7 @@
 @property (nonatomic,retain) UIView * elapsedTrack;
 @property (nonatomic,retain) UIView * knobView;
 @property (nonatomic,retain) UIView * remainingTrack;
-@property (nonatomic,retain) AVTimeFormatter * elapsedTimeFormatter; 
+@property (nonatomic,retain) AVTimeFormatter * elapsedTimeFormatter;
 @end
 
 
@@ -366,7 +366,7 @@ static void mostlySetUpTopLabel() {
 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
     [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-	
+
 }
 
 static void mostlySetUpBottomLabel() {
@@ -389,7 +389,7 @@ static void setUpTheArtworkBackground() {
 [songBackground setClipsToBounds:YES];
 [songBackground setAdjustsImageWhenHighlighted:NO];
 [songBackground setAlpha:musicPlayerAlpha];
-[songBackground.layer setCornerRadius:musicPlayerCornerRadius]; 
+[songBackground.layer setCornerRadius:musicPlayerCornerRadius];
 [songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
@@ -399,10 +399,10 @@ static void setUpCustomBackground() {
 [customImageBackground setClipsToBounds:YES];
 [customImageBackground setAdjustsImageWhenHighlighted:NO];
 [customImageBackground setAlpha:musicPlayerAlpha];
-[customImageBackground.layer setCornerRadius:musicPlayerCornerRadius]; 
+[customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
 [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
-	
+
 static void	setUpShuffleButton() {
 shuffleButton = [UIButton new];
 [shuffleButton setContentMode:UIViewContentModeScaleAspectFill];

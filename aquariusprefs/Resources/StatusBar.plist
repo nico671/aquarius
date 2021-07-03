@@ -31,8 +31,6 @@
     <string>PSSwitchCell</string>
     <key>default</key>
     <false/>
-    <key>cellClass</key>
-    <string>MarqueeLabelCell</string>
     <key>defaults</key>
     <string>aquariusprefs</string>
     <key>key</key>
@@ -110,7 +108,7 @@
     <key>fallback</key>
     <string>ffffffff</string>
 </dict>
-            
+
 <dict>
     <key>cell</key>
     <string>PSGroupCell</string>
