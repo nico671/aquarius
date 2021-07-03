@@ -8,7 +8,6 @@
         self.ICONBABY = [UIImage systemImageNamed:[specifier propertyForKey:@"icon"]];
         properties = [specifier valueForKey:@"_properties"];
         properties[@"iconImage"] = self.ICONBABY;
-            NSLog(@"[aquarius] %@", reuseIdentifier);
     }
 
     return self;

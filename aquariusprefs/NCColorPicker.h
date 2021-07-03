@@ -1,4 +1,12 @@
 #import <UIKit/UIKit.h>
+@interface UIColor(HexString)
+
++ (UIColor *) colorWithHexString: (NSString *) hexString;
+
+@end
+
+
+
 @interface PSSpecifier : NSObject
 -(id)propertyForKey:(id)arg1 ;
 -(void)setButtonAction:(SEL)arg1 ;
@@ -15,11 +23,10 @@
 @interface PSTableCell : UITableViewCell 
 -(id)specifier;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier;
--(id)iconImageView;
 
 @end
 
-@interface FuckYouColorPickerCell : PSTableCell <UIColorPickerViewControllerDelegate>
+@interface NCColorPicker : PSTableCell <UIColorPickerViewControllerDelegate>
 @property (atomic,retain) UIView* colorPreview;
 @property (atomic,retain) UIColorPickerViewController* colorViewController;
 @end

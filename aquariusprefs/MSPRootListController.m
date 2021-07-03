@@ -15,9 +15,6 @@
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @end
 @implementation MSPRootListController
-
-
-
 - (instancetype)init {
     self = [super init];
 

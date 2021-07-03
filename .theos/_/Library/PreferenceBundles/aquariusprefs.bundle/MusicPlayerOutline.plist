@@ -31,7 +31,7 @@
 	<key>cell</key>
 	<string>PSLinkCell</string>
 	<key>cellClass</key>
-	<string>FuckYouColorPickerCell</string>
+	<string>NCColorPicker</string>
 	<key>label</key>
 	<string>Custom Outline Color</string>
 	<key>defaults</key>

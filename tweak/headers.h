@@ -6,7 +6,7 @@
 #import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
-#import "GcUniversal/GcColorPickerUtils.h"
+#import "NCColorPickerUtilities.h"
 #import "MarqueeLabel.h"
 #import "GcUniversal/GcImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
@@ -360,7 +360,7 @@ static void mostlySetUpTopLabel() {
 	[topLabel setTextAlignment:NSTextAlignmentLeft];
 	[topLabel setAlpha:1];
 	if (musicPlayerColorsEnabled) {
-		UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
+		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
 		[bottomLabel setTextColor:customColor];
 	}
 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -375,7 +375,7 @@ static void mostlySetUpBottomLabel() {
 	[bottomLabel setTextAlignment:NSTextAlignmentLeft];
 	[bottomLabel setAlpha:1];
 	if (musicPlayerColorsEnabled) {
-		UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
+		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
 		[bottomLabel setTextColor:customColor];
 	}
 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];

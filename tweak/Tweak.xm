@@ -1,5 +1,4 @@
 #import "headers.h"
-
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
@@ -20,10 +19,10 @@
 }
 %end
 
-%hook MRUNowPlayingControlsView 
+%hook MRUNowPlayingControlsView
 -(void)setNeedsLayout{
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
-	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES]; 
+	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES];
 	if (controller.context == 2 && configurations == 0) {
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMidY(self.headerView.frame)-15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		//resizing controls, almost same for everytime i do this
@@ -51,7 +50,7 @@
 			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
 	}//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
 		}
-	} else if (configurations == 1 && controller.context == 2) {	
+	} else if (configurations == 1 && controller.context == 2) {
 		[self.headerView.artworkView setHidden:YES];
 		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 40, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 53, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
@@ -140,9 +139,9 @@
 	}
 	}
 }
-%new 
+%new
 -(void) shuffle:(UIButton*)sender {
-	[[%c(SBMediaController) sharedInstance] toggleShuffleForEventSource:0];	
+	[[%c(SBMediaController) sharedInstance] toggleShuffleForEventSource:0];
 	NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
 	[userInfo setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
 	[userInfo setObject:@"SpringBoard" forKey:@"type"];
@@ -169,17 +168,17 @@
 
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (musicPlayerColorsEnabled && controller.context == 2) {
-		UIColor *leftColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
+		UIColor *leftColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
 		[self.leftButton setStylingProvider:nil];
 		self.leftButton.imageView.layer.filters = nil;
 		[self.leftButton.imageView setTintColor:leftColor];
-		
-		UIColor *middleColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customMiddleButtonColor"];
+
+		UIColor *middleColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customMiddleButtonColor"];
 		[self.middleButton setStylingProvider:nil];
 		self.middleButton.imageView.layer.filters = nil;
 		[self.middleButton.imageView setTintColor:middleColor];
-		
-		UIColor *rightColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customRightButtonColor"];
+
+		UIColor *rightColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customRightButtonColor"];
 		[self.rightButton setStylingProvider:nil];
 		self.rightButton.imageView.layer.filters = nil;
 		[self.rightButton.imageView setTintColor:rightColor];
@@ -235,18 +234,19 @@ if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
 setUpCustomBackground() ;
 [self addSubview:customImageBackground];
 UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[customImageBackground setImage:img forState:UIControlStateNormal];
 [self sendSubviewToBack: customImageBackground];
 [platterView.backgroundView setAlpha: 0];
 [customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
 }
 }
 else if(configurations == 1 || configurations == 2){
+[platterView.heightAnchor constraintEqualToConstant:130].active = true;
 if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
 setUpCustomBackground() ;
 [self addSubview:customImageBackground];
 UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[customImageBackground setImage:img forState:UIControlStateNormal];
 [self sendSubviewToBack: customImageBackground];
 [platterView.backgroundView setAlpha: 0];
 [customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
@@ -263,7 +263,7 @@ setUpTheArtworkBackground();
 [songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
 }
 }
- 
+
 
 
 else if(configurations == 3){
@@ -271,14 +271,13 @@ else if(configurations == 3){
 setUpCustomBackground();
 [self addSubview:customImageBackground];
 UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal]; 
+[customImageBackground setImage:img forState:UIControlStateNormal];
 [self sendSubviewToBack: customImageBackground];
 [platterView.backgroundView setAlpha: 0];
 [customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
 }
 if (isBackgroundColored && !isArtworkBackground){
  [platterView.backgroundView setAlpha: 0];
-  
 }
 [self.heightAnchor constraintEqualToConstant:100].active = true;
 if (isArtworkBackground && !isBackgroundColored){
@@ -297,12 +296,12 @@ else {
 
 }
 
-%new 
+%new
 -(void) setTheFuckUp{
 	  if (haveOutline){
   self.layer.borderWidth = outlineSize;
   if (!haveOutlineSecondaryColorMusicPlayer){
- UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
+ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
   self.layer.borderColor = [customColor CGColor];
   }
   else {
@@ -317,16 +316,16 @@ else {
 %end
 
 %hook SBMediaController
-- (void)setNowPlayingInfo:(id)arg1 { 
+- (void)setNowPlayingInfo:(id)arg1 {
     %orig;
     MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
         if (information) {
 			NSDictionary *dict = (__bridge NSDictionary *)information;
-			currentArtwork = [UIImage imageWithData:[dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData]]; 
+			currentArtwork = [UIImage imageWithData:[dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData]];
 			if (dict) {
 				[bottomLabel setText:[NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]]]; // set song title
 				lastArtworkData = [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData];
-				[topLabel setText:[NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]]]; // set artist and album name          
+				[topLabel setText:[NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]]]; // set artist and album name
 				subtitleLabel = [NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]];
 				songLabel = [NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]];
 				[songBackground setImage:currentArtwork forState:UIControlStateNormal];
@@ -345,7 +344,7 @@ else {
 			}
 			previousTitle = songLabel; //notifications
 	}
-}          
+}
 %end
 %end
 
@@ -353,13 +352,13 @@ else {
 %hook _UIBatteryView
 
 -(void)setFillColor:(UIColor *)color {
-  UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
+  UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
 	%orig(customColor);
 	if(isBatteryHidden) self.hidden = YES;
 }
 
 -(void)setBodyColor:(UIColor *)color {
-UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
+UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
 	%orig(customColor);
 }
 %end
@@ -389,12 +388,12 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %hook _UIStatusBarSignalView
 
 -(void)setActiveColor:(UIColor *)color {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
+	UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
 	%orig(customColor);
 }
 
 -(void)setInactiveColor:(UIColor *)color {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
+	UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
 	%orig(customColor);
 }
 
@@ -403,7 +402,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 
 %hook _UIStatusBar
 -(void)setNeedsLayout{
-	
+
 	if (modernStatusBar){
 	self.visualProviderClass =  @"_UIStatusBarVisualProvider_Split54";
 	}
@@ -422,7 +421,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	}
 }
 -(void)setTextColor:(UIColor *)color {
-				UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
+				UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
 	%orig(customColor);
 }
 
@@ -462,7 +461,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %hook NCNotificationShortLookView
 
 -(void)setNeedsLayout {
-	%orig; 
+	%orig;
 	if (colorNotifs){
 	//NSArray * tempNotificationsColorArray = [iconImage ];
 	self.backgroundColor = [iconImage averageColor];
@@ -482,14 +481,14 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
 -(void)_drawPieWithCenter:(CGPoint)arg1{
-	
+
     UIProgressView *progressView;
 	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 	progressView.progressTintColor = [UIColor cyanColor];
 	[progressView.layer setFrame:CGRectMake(self.center.x-25, self.center.y+15, 50, 7.5)];
 	progressView.trackTintColor = [UIColor systemGrayColor];
 	[progressView setProgress:self.displayedFraction animated:NO];
-	[[progressView layer]setCornerRadius:5];	
+	[[progressView layer]setCornerRadius:5];
 	[[progressView layer]setMasksToBounds:TRUE];
 	progressView.clipsToBounds = YES;
 	[self addSubview:progressView];
@@ -505,7 +504,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	}
 }
 -(void)_drawPauseUIWithCenter:(CGPoint)arg1{
-	
+
 }
 %end
 
@@ -531,7 +530,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 // 		CGFloat screenWidth = screenRect.size.width;
 //         self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.view.frame),CGRectGetMinY(self.view.frame),screenWidth-50,500)];
 // 		[AQRManager sharedInstance].view = self.grpView;
-		
+
 //         self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
 // 		[[AQRManager sharedInstance].view updateView];
 //       	 NSMutableArray *constraints = [@[
@@ -568,23 +567,23 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 // %hook NCNotificationStructuredListViewController
 // -(void)insertNotificationRequest:(id)arg1 {
 // 	%orig;
-// 	NCNotificationRequest *req = arg1;   
+// 	NCNotificationRequest *req = arg1;
 //     [[AQRManager sharedInstance] insertNotificationRequest:req];
 //     [[AQRManager sharedInstance].view updateView];
 // }
 
 // -(void)removeNotificationRequest:(id)arg1 {
-// 	NCNotificationRequest *req = arg1;   
+// 	NCNotificationRequest *req = arg1;
 //     [[AQRManager sharedInstance] removeNotificationRequest:req];
 //     [[AQRManager sharedInstance].view updateView];
 // 	[[AQRManager sharedInstance] updateQuick:req.bulletin.sectionID];
-	
+
 // }
 // -(void)modifyNotificationRequest:(id)arg1 {
-// 	NCNotificationRequest *req = arg1;   
+// 	NCNotificationRequest *req = arg1;
 //     [[AQRManager sharedInstance] modifyNotificationRequest:req];
 //     [[AQRManager sharedInstance].view updateView];
-	
+
 // }
 // %end
 // %hook NCNotificationCombinedListViewController
@@ -596,20 +595,20 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 // 	return %orig;
 // }
 // -(void)insertNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
-// 	NCNotificationRequest *req = arg1;   
+// 	NCNotificationRequest *req = arg1;
 //     [[AQRManager sharedInstance] insertNotificationRequest:req];
 //     [[AQRManager sharedInstance].view updateView];
 
-	
+
 // }
 // -(void)removeNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
-//     if (self.aqrAllowChanges) return %orig;  
+//     if (self.aqrAllowChanges) return %orig;
 // 	NCNotificationRequest *req = arg1;
 // 	[[AQRManager sharedInstance] removeNotificationRequest:req] ;
 // }
 // %end
 // %end
-void reloadPrefs() { 
+void reloadPrefs() {
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
 	hideSnapImage = [file boolForKey:@"hideSnapImage"];
@@ -624,8 +623,8 @@ void reloadPrefs() {
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
 	rightOffsetForText = [file doubleForKey:@"textOffset"];
 	musicPlayerColorsEnabled = [file boolForKey:@"isRoutingButtonHidden"];
-	haveNotifs = [file boolForKey:@"notifications?"]; 
-	showPercentage = [file boolForKey:@"showPercentage"]; 
+	haveNotifs = [file boolForKey:@"notifications?"];
+	showPercentage = [file boolForKey:@"showPercentage"];
 	isBackgroundColored = [file boolForKey:@"isBackgroundColorEnabled"];
 	isArtworkBackground = [file boolForKey:@"isArtworkBackground"];
 	isNotificationSectionEnabled = [file boolForKey:@"isNotificationSectionEnabled"];
@@ -641,8 +640,6 @@ void reloadPrefs() {
 	hideLabels = [file boolForKey:@"hideLabels"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
 }
-
-
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];

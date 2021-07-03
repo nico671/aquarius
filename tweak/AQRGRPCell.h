@@ -9,8 +9,7 @@
 
 @property (copy) NSString *identifier;
 
-- (AQRGRPCell
-*)initWithFrame:(CGRect)frame icon:(UIImage*)icon identifier:(NSString*)appID numberStyle:(NSInteger)style;
+- (AQRGRPCell*)initWithFrame:(CGRect)frame icon:(UIImage*)icon identifier:(NSString*)appID numberStyle:(NSInteger)style;
 - (void)setNumNotifications:(NSInteger)numNotifications;
 - (void)animateBadge:(BOOL)selected duration:(NSTimeInterval)animationDuration;
 

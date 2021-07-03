@@ -55,7 +55,7 @@
                     <key>detail</key>
                     <string>NTFRootListController</string>
                     <key>cellClass</key>
-                    <string>SFSymbolCell</string>
+                    <string>SFSymbolsCell</string>
                     <key>icon</key>
                     <string>scroll</string>
                     <key>isController</key>

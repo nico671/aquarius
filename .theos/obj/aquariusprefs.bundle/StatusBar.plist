@@ -63,7 +63,7 @@
     <key>cell</key>
     <string>PSLinkCell</string>
     <key>cellClass</key>
-    <string>FuckYouColorPickerCell</string>
+    <string>NCColorPicker</string>
     <key>label</key>
     <string>Custom Time Color</string>
     <key>defaults</key>
@@ -98,7 +98,7 @@
     <key>cell</key>
     <string>PSLinkCell</string>
     <key>cellClass</key>
-    <string>FuckYouColorPickerCell</string>
+    <string>NCColorPicker</string>
     <key>label</key>
     <string>Battery Tint Color</string>
     <key>defaults</key>
@@ -149,7 +149,7 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>cellClass</key>
-        <string>FuckYouColorPickerCell</string>
+        <string>NCColorPicker</string>
         <key>label</key>
         <string>Wifi and Cellular Tint Color</string>
         <key>defaults</key>
