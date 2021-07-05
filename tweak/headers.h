@@ -8,7 +8,7 @@
 #import <AudioToolbox/AudioServices.h>
 #import "NCUtils/NCColorPickerUtilities.h"
 #import "NCUtils/MarqueeLabel.h"
-#import "GcUniversal/GcImageUtils.h"
+#import "NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AQRGRPCell.h"
 #import "AQRGRPView.h"
@@ -102,6 +102,10 @@
 @interface UIView (Private)
 -(UIViewController *)_viewControllerForAncestor;
 -(void)setOverrideUserInterfaceStyle:(NSInteger)style;
+@end
+
+@interface SBIconListPageControl
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
 @end
 
 @interface _UIBatteryView
@@ -319,7 +323,7 @@
 BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
-BOOL customImageBackgroundBOOL, colorGrupi;
+BOOL customImageBackgroundBOOL, hidePageDots;
 BOOL hideLabels;
 id preferences, file, yes;
 NSInteger configurations;

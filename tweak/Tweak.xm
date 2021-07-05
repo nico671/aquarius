@@ -330,9 +330,10 @@ else {
 				songLabel = [NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]];
 				[songBackground setImage:currentArtwork forState:UIControlStateNormal];
 				[songImageForSmall setImage:currentArtwork forState:UIControlStateNormal];
-				NSArray * tempArtworkColorArray = [currentArtwork dominantColors];
+				NSDictionary * tempArtworkColorDict = [NCImageUtils dominantColors:currentArtwork detail:0];
+				NSArray *tempArtworkColorArray = [tempArtworkColorDict objectForKey:@"colours"];
 				fuckingArtworkColor = tempArtworkColorArray[0];
-				fuckingArtworkColor2 = [currentArtwork averageColor];
+				fuckingArtworkColor2 = [NCImageUtils averageColor:currentArtwork];
 				[shuffleButton setImage:[UIImage systemImageNamed:@"shuffle"] forState: UIControlStateNormal];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.updateColors" object:nil];
 			}
@@ -464,7 +465,7 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 	%orig;
 	if (colorNotifs){
 	//NSArray * tempNotificationsColorArray = [iconImage ];
-	self.backgroundColor = [iconImage averageColor];
+	self.backgroundColor = [NCImageUtils averageColor:iconImage];
 	self.layer.cornerRadius = notifCornerRadius;
 	yesmf = [self.subviews objectAtIndex:0];
 	yesmf.hidden = YES;
@@ -481,7 +482,7 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
 -(void)_drawPieWithCenter:(CGPoint)arg1{
-
+if (downloadBarEnabled){
     UIProgressView *progressView;
 	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 	progressView.progressTintColor = [UIColor cyanColor];
@@ -503,8 +504,14 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 		[pauseButton setImage:[UIImage systemImageNamed:@"pause"] forState:UIControlStateNormal];
 	}
 }
+}
 -(void)_drawPauseUIWithCenter:(CGPoint)arg1{
+if (downloadBarEnabled){
 
+}
+else {
+	%orig;
+}
 }
 %end
 
@@ -513,10 +520,19 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 
 -(void)setNeedsLayout{
 	%orig;
-	self.labelHidden = 1;
+	if (hideLabels){
+		self.labelHidden = 1;
+	}
+
 
 }
 
+%end
+%hook SBIconListPageControl
+-(void)setNeedsLayout{
+	%orig;
+	self.hidden = YES;
+}
 %end
 %end
 // %group groupedNOTI
@@ -638,7 +654,9 @@ void reloadPrefs() {
 	colorNotifs = [file boolForKey:@"colorNotifs"];
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
+	hidePageDots = [file boolForKey:@"hidePageDots"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
+	
 }
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
@@ -672,6 +690,8 @@ void reloadPrefs() {
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
+	[file registerBool:&hidePageDots default:NO forKey:@"hidePageDots"];
+	
  	if (isNotificationSectionEnabled) {
 		%init(notifications)
  	}

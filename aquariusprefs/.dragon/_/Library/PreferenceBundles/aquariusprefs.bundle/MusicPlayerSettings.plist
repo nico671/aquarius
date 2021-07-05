@@ -10,7 +10,7 @@
         <key>label</key>
         <string>misc settings</string>
       </dict>
-	
+
       <dict>
             <key>cell</key>
             <string>PSSwitchCell</string>
@@ -29,7 +29,7 @@
             <key>PostNotification</key>
             <string>com.nico671.preferenceschanged</string>
          </dict>
-  
+
     <dict>
        <key>cell</key>
        <string>PSSwitchCell</string>
@@ -49,6 +49,8 @@
     <dict>
        <key>cell</key>
        <string>PSSwitchCell</string>
+			 <key>cellClass</key>
+			 <string>MarqueeLabelCell</string>
        <key>default</key>
        <false />
        <key>defaults</key>
@@ -59,7 +61,7 @@
        <string>isArtworkBackground</string>
        <key>label</key>
        <string>Use Artwork as Background? (Must have colored background off)</string>
- 
+
 
     </dict>
 	<dict>
@@ -140,8 +142,8 @@
 			<key>PostNotification</key>
 			<string>com.nico671.preferenceschanged</string>
 		</dict>
-      
-      
+
+
  <dict>
             <key>cell</key>
             <string>PSGroupCell</string>
@@ -195,7 +197,7 @@
 					<key>label</key>
 					<string>Leaf Look Corner Radius?</string>
 				 </dict>
-				       
+
  <dict>
 	<key>cell</key>
 	<string>PSGroupCell</string>
@@ -222,7 +224,7 @@
 					<key>cell</key>
 					<string>PSLinkCell</string>
 					<key>cellClass</key>
-					<string>GcImagePickerCell</string>
+					<string>NCImagePickerCell</string>
 					<key>label</key>
 					<string>Custom Image</string>
 					<key>defaults</key>

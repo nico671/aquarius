@@ -23,7 +23,7 @@
 				<key>detail</key>
 				<string>STSRootListController</string>
 				<key>cellClass</key>
-                <string>XXXSymbolsLinkCell</string>
+                <string>SFSymbolsCell</string>
                 <key>icon</key>
                 <string>candybarphone</string>
 				<key>isController</key>
@@ -39,7 +39,7 @@
 				<key>detail</key>
 				<string>MSPRootListController</string>
 				<key>cellClass</key>
-                <string>XXXSymbolsLinkCell</string>
+                <string>SFSymbolsCell</string>
                 <key>icon</key>
                 <string>music.note.list</string>
 				<key>isController</key>
@@ -55,7 +55,7 @@
                     <key>detail</key>
                     <string>NTFRootListController</string>
                     <key>cellClass</key>
-                    <string>XXXSymbolsLinkCell</string>
+                    <string>SFSymbolsCell</string>
                     <key>icon</key>
                     <string>scroll</string>
                     <key>isController</key>
@@ -71,7 +71,7 @@
                         <key>detail</key>
                         <string>SPRRootListController</string>
                         <key>cellClass</key>
-                        <string>XXXSymbolsLinkCell</string>
+                        <string>SFSymbolsCell</string>
                         <key>icon</key>
                         <string>square.stack.3d.up.fill</string>
                         <key>isController</key>
@@ -96,18 +96,6 @@
                 <string>nico_carbone1</string>
                 <key>action</key>
                 <string>myTwitter</string>
-            </dict>
-             <dict>
-                <key>big</key>
-                <true/>
-                <key>cellClass</key>
-                <string>HBTwitterCell</string>
-                <key>height</key>
-                <integer>56</integer>
-                <key>label</key>
-                <string>Litten's Twitter</string>
-                <key>user</key>
-                <string>schneelittchen</string>   
             </dict>
 </array>
 <key>title</key>
