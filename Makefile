@@ -1,4 +1,4 @@
-THEOS_DEVICE_IP = 172.20.10.1
+THEOS_DEVICE_IP = 192.168.50.75
 THEOS_DEVICE_PORT = 22
 export DEBUG = 0
 include $(THEOS)/makefiles/common.mk

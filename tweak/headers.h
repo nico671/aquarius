@@ -8,7 +8,7 @@
 #import <AudioToolbox/AudioServices.h>
 #import "NCUtils/NCColorPickerUtilities.h"
 #import "NCUtils/MarqueeLabel.h"
-#import "NCImageUtils.h"
+#import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AQRGRPCell.h"
 #import "AQRGRPView.h"
@@ -282,6 +282,8 @@
 @property (nonatomic, retain) MRUNowPlayingTransportControlsView *transportControlsView;
 @property (nonatomic, retain) MRUNowPlayingVolumeControlsView *volumeControlsView;
 -(void) shuffle:(UIButton*)sender;
+@property MarqueeLabel * topLabel;
+-(void)setTheFuckUp;
 @end
 
 @interface MRUNowPlayingView : UIView
@@ -368,9 +370,8 @@ static void mostlySetUpTopLabel() {
 		[bottomLabel setTextColor:customColor];
 	}
 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-    [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-
+	// [topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
+  //   [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
 }
 
 static void mostlySetUpBottomLabel() {
@@ -383,8 +384,8 @@ static void mostlySetUpBottomLabel() {
 		[bottomLabel setTextColor:customColor];
 	}
 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	[bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-	[bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
+	// [bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
+	// [bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
 }
 
 static void setUpTheArtworkBackground() {

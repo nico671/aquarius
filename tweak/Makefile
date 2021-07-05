@@ -8,7 +8,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = aquarius
 
-aquarius_FILES = Tweak.xm NCImageUtils.m #AQRGRPView.m AQRGRPCell.m AQRManager.m
+aquarius_FILES = Tweak.xm #AQRGRPView.m AQRGRPCell.m AQRManager.m
 aquarius_FRAMEWORKS = CoreGraphics QuartzCore UIKit Foundation
 aquarius_PRIVATE_FRAMEWORKS = MediaRemote MaterialKit
 aquarius_LIBRARIES = gcuniversal bulletin NCUtils

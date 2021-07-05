@@ -1,4 +1,4 @@
-#import "headers.h"
+ #import "headers.h"
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
@@ -12,13 +12,6 @@
 	%orig(arg1);
 }
 %end
-%hook SpringBoard
-- (void)applicationDidFinishLaunching:(id)arg1 { // reload data after a respring
-    %orig;
-    [[%c(SBMediaController) sharedInstance] setNowPlayingInfo:0];
-}
-%end
-
 %hook MRUNowPlayingControlsView
 -(void)setNeedsLayout{
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
@@ -59,18 +52,6 @@
 			[self addSubview:songImageForSmall];
 			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 90, 90)];
 		}
-			if (!topLabel) {
-			mostlySetUpTopLabel();
-			[self addSubview:topLabel];
-			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
-		}
-		if (!bottomLabel) {
-			mostlySetUpBottomLabel();
-			[self addSubview:bottomLabel];
-			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
-		}
 			if (!shuffleButton){
 			setUpShuffleButton();
 			[self insertSubview:shuffleButton atIndex:0];
@@ -88,24 +69,7 @@
 			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 85, 85)];
 			//couldnt adjust the size of the artwork so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
 		}
-		if (!topLabel) {
-			mostlySetUpTopLabel();
-			[self addSubview:topLabel];
-			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
-			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-		}
-		if (!bottomLabel) {
-			mostlySetUpBottomLabel();
-			[self addSubview:bottomLabel];
-			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
-		}
-			if (!shuffleButton){
-			setUpShuffleButton();
-			[self insertSubview:shuffleButton atIndex:0];
-			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
-	}
+
 	} else if (configurations == 3  && controller.context == 2) {
 		//small option
 		[self.headerView.artworkView setHidden:YES];
@@ -116,28 +80,23 @@
 			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 85, 85)];
 			//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
 		}
-		if (!topLabel) {
-			mostlySetUpTopLabel();
-			[self addSubview:topLabel];
-			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
-		}
-		if (!bottomLabel) {
-			mostlySetUpBottomLabel();
-			[self addSubview:bottomLabel];
-			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
-		}
-		if (!shuffleButton){
-			setUpShuffleButton();
-			[self insertSubview:shuffleButton atIndex:0];
-			[shuffleButton.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-			[shuffleButton.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
-			[shuffleButton.widthAnchor constraintEqualToConstant:21].active = YES;
-			[shuffleButton.heightAnchor constraintEqualToConstant:21.0].active = YES;
-			[shuffleButton addTarget:self action:@selector(shuffle:) forControlEvents:UIControlEventTouchDown];
 	}
-	}
+  [self setTheFuckUp];
+}
+%new
+-(void)setTheFuckUp{
+  if (!topLabel) {
+    mostlySetUpTopLabel();
+    [self addSubview:topLabel];
+    [topLabel.leftAnchor constraintEqualToAnchor:self.headerView.artworkView.rightAnchor constant:rightOffsetForText].active = YES;
+    [topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
+  }
+  if (!bottomLabel) {
+    mostlySetUpBottomLabel();
+    [self addSubview:bottomLabel];
+    [bottomLabel.leftAnchor constraintEqualToAnchor:self.headerView.artworkView.rightAnchor constant:rightOffsetForText].active = YES;
+    [bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
+  }
 }
 %new
 -(void) shuffle:(UIButton*)sender {
@@ -163,9 +122,7 @@
 %end
 
 %hook MRUNowPlayingTransportControlsView // coloring for the buttons
-
 - (void)setNeedsLayout {
-
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (musicPlayerColorsEnabled && controller.context == 2) {
 		UIColor *leftColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
@@ -340,7 +297,7 @@ else {
 		}
   	});
 	if (haveNotifs) {
-			if (![songLabel isEqualToString:previousTitle]){
+			if ([songLabel isEqualToString:previousTitle]){
 			[[objc_getClass("JBBulletinManager") sharedInstance] showBulletinWithTitle:subtitleLabel message:songLabel bundleID:[[[%c(SBMediaController) sharedInstance] nowPlayingApplication] bundleIdentifier]];
 			}
 			previousTitle = songLabel; //notifications
@@ -656,7 +613,7 @@ void reloadPrefs() {
 	hideLabels = [file boolForKey:@"hideLabels"];
 	hidePageDots = [file boolForKey:@"hidePageDots"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
-	
+
 }
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
@@ -691,7 +648,7 @@ void reloadPrefs() {
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
 	[file registerBool:&hidePageDots default:NO forKey:@"hidePageDots"];
-	
+
  	if (isNotificationSectionEnabled) {
 		%init(notifications)
  	}

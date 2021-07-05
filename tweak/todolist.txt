@@ -1,0 +1,2 @@
+1. fix the music player for all sizes except for the smallest
+3. finish the image picker
