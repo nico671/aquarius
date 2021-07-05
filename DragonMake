@@ -1,4 +1,3 @@
-
 name: aquarius
 icmd: sbreload 
 all:
@@ -10,11 +9,12 @@ aquarius:
     type: tweak 
     dir: tweak
     files:
-        - MarqueeLabel.m
         - Tweak.xm
+        - NCImageUtils.m
     libs:
         - bulletin
         - gcuniversal
+        - NCUtils
     frameworks:
         - MediaRemote
         - CoreGraphics
@@ -26,6 +26,7 @@ aquariusprefs:
     dir: aquariusprefs
     libs:
         - gcuniversal
+        - NCUtils
     files:
         - AQRRootListController.m
         - CLCRootListController.m
@@ -35,7 +36,6 @@ aquariusprefs:
         - SETRootListController.m
         - SPRRootListController.m
         - STSRootListController.m
-        - SFSymbolsCell.m
         - NTFRootListController.m
     frameworks:
         - Cephei
