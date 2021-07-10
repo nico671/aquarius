@@ -1,6 +1,12 @@
  #import "headers.h"
 %group musicplayer
+%hook MPRouteLabel
+-(void)setNeedsLayout{
+      self.hidden = YES;
+}
+%end
 %hook MRUNowPlayingHeaderView // hides the little routing button
+%property UIButton *songImageForSmall;
 - (void)setShowRoutingButton:(BOOL)arg1 {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if(![controller respondsToSelector:@selector(context)]){
@@ -11,113 +17,68 @@
 	}
 	%orig(arg1);
 }
+
+-(void)setFrame:(CGRect *)arg1 { 
+	%orig;
+	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
+	if([controller respondsToSelector:@selector(context)] && controller.context == 2) {
+	//artworksetup
+	self.artworkView.hidden = YES;	
+	}
+
+}
 %end
 %hook MRUNowPlayingControlsView
--(void)setNeedsLayout{
+-(void)setNeedsLayout {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
-	if (isArtworkBackground) [self.headerView.artworkView setHidden:YES];
-	if (controller.context == 2 && configurations == 0) {
-		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMidY(self.headerView.frame)-15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-		//resizing controls, almost same for everytime i do this
-		[self.headerView.artworkView setHidden:YES];
-		if (!songImageForSmall) {
-			mostlySetUpTheAlbumArtwork();
-			[self addSubview:songImageForSmall];
-			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 100, 100)];
-			if (!topLabel) {
-			mostlySetUpTopLabel();
-			[self addSubview:topLabel];
-			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
-		}
-		if (!bottomLabel) {
-			mostlySetUpBottomLabel();
-			[self addSubview:bottomLabel];
-			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:rightOffsetForText].active = YES;
-			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
-		}
-		if (!shuffleButton){
-			setUpShuffleButton();
-			[self insertSubview:shuffleButton atIndex:0];
-			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
-	}//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
-		}
-	} else if (configurations == 1 && controller.context == 2) {
-		[self.headerView.artworkView setHidden:YES];
-		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 40, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-		[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 53, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-		if (!songImageForSmall) {
-			mostlySetUpTheAlbumArtwork();
-			[self addSubview:songImageForSmall];
-			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 90, 90)];
-		}
-			if (!shuffleButton){
-			setUpShuffleButton();
-			[self insertSubview:shuffleButton atIndex:0];
-			[shuffleButton.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-			[shuffleButton.bottomAnchor constraintEqualToAnchor:self.topAnchor constant:3].active = YES;
+	if (controller.context == 2) {
+	if(!songImageForSmall){
+		songImageForSmall = [UIButton new];
+		[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
+		[songImageForSmall setClipsToBounds:YES];
+		[songImageForSmall setAdjustsImageWhenHighlighted:NO];
+		[songImageForSmall setAlpha:1];
+		[songImageForSmall.layer setCornerRadius:8];
+		songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
+	
+	
+	[self insertSubview:songImageForSmall atIndex:0];
+	[songImageForSmall.leadingAnchor constraintEqualToAnchor: self.headerView.artworkView.leadingAnchor constant:5].active = YES;
+	[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor].active = YES;
+	}	
+	if (!bottomLabel){
+	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
+	bottomLabel.adjustsFontSizeToFitWidth = YES;
+	[self addSubview:bottomLabel];
 	}
-	} else if (configurations == 2 && controller.context == 2) {
+	if (!topLabel){
+	topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+	topLabel.adjustsFontSizeToFitWidth = YES;
+	[self addSubview:topLabel];
+	}
+	if (configurations == 3) {
+	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+	}
+	else if (configurations == 0){
+	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame)+5, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+	}
+	else if (configurations == 1){
+	[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
+	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+	}
+	else if (configurations == 2){
 		[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
 		[self.timeControlsView setHidden:YES];
+		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 		[self.headerView.artworkView setHidden:YES];
-		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 40, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-		if (!songImageForSmall) {
-			mostlySetUpTheAlbumArtwork();
-			[self addSubview:songImageForSmall];
-			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 85, 85)];
-			//couldnt adjust the size of the artwork so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
-		}
-
-	} else if (configurations == 3  && controller.context == 2) {
-		//small option
-		[self.headerView.artworkView setHidden:YES];
-		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame) + 5,CGRectGetMinY(self.headerView.frame) + 30, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-		if (!songImageForSmall) {
-			mostlySetUpTheAlbumArtwork();
-			[self addSubview:songImageForSmall];
-			[songImageForSmall setFrame:CGRectMake(self.headerView.artworkView.frame.origin.x,self.headerView.artworkView.frame.origin.y-10, 85, 85)];
-			//couldnt adjust the size of the player so i just made a thing myself (its a button because i have the plan of adding gestures in the future)
-		}
 	}
-  [self setTheFuckUp];
-}
-%new
--(void)setTheFuckUp{
-  if (!topLabel) {
-    mostlySetUpTopLabel();
-    [self addSubview:topLabel];
-    [topLabel.leftAnchor constraintEqualToAnchor:self.headerView.artworkView.rightAnchor constant:rightOffsetForText].active = YES;
-    [topLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:3].active = YES;
-  }
-  if (!bottomLabel) {
-    mostlySetUpBottomLabel();
-    [self addSubview:bottomLabel];
-    [bottomLabel.leftAnchor constraintEqualToAnchor:self.headerView.artworkView.rightAnchor constant:rightOffsetForText].active = YES;
-    [bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.centerYAnchor constant:-20].active = YES;
-  }
-}
-%new
--(void) shuffle:(UIButton*)sender {
-	[[%c(SBMediaController) sharedInstance] toggleShuffleForEventSource:0];
-	NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-	[userInfo setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
-	[userInfo setObject:@"SpringBoard" forKey:@"type"];
-	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"net.example.tweak/sendToApp" object:nil userInfo:userInfo];
+	}
 }
 %end
-
-%hook MRUNowPlayingLabelView  // hide the original label
-- (void)setFrame:(CGRect)arg1{
-	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
-	if (![controller respondsToSelector:@selector(context)] ){
-		%orig;
-	}
-	else if ( controller.context == 2){
-		[self setHidden:YES];
-	}
-	else %orig;
+%hook MRUNowPlayingLabelView
+//shoutout lightmann
+-(void)setNeedsLayout{
+	self.hidden = YES;
 }
 %end
 
@@ -143,23 +104,6 @@
 }
 
 %end
-// %hook SPTMobileMediaKitAudioPlaybackManager
-// - (id)initWithPlaybackController:(id)arg1 connectManager:(id)arg2 collectionController:(id)arg3 logger:(id)arg4 keepAliveHandler:(id)arg5 actionLogger:(id)arg6{
-// 	%orig;
-// 	[[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.nico671.aquarius/sendToSpotify" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-//     NSLog(@"[aquarius] Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
-// 	[self enableShuffleWithMessage:nil];
-// 	}];
-// 	return %orig;
-// }
-
-
-// - (void)enableShuffleWithMessage:(id)arg1{
-// 	%orig;
-// 	NSLog(@"[aquarius] - %@",arg1);
-// }
-// %end
-
 
 %hook CSAdjunctItemView // sets the height and opacity of the player
 
@@ -184,7 +128,8 @@ setUpTheArtworkBackground();
 [self addSubview:songBackground];
 [self sendSubviewToBack: songBackground];
 [platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+[songBackground.heightAnchor constraintEqualToAnchor: self.heightAnchor].active = YES;
+[songBackground.widthAnchor constraintEqualToAnchor: self.widthAnchor].active = YES;
 }
 
 if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
@@ -280,11 +225,11 @@ else {
 			NSDictionary *dict = (__bridge NSDictionary *)information;
 			currentArtwork = [UIImage imageWithData:[dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData]];
 			if (dict) {
-				[bottomLabel setText:[NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]]]; // set song title
 				lastArtworkData = [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData];
-				[topLabel setText:[NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]]]; // set artist and album name
 				subtitleLabel = [NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]];
 				songLabel = [NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]];
+				topLabel.text = songLabel;
+				bottomLabel.text = subtitleLabel;
 				[songBackground setImage:currentArtwork forState:UIControlStateNormal];
 				[songImageForSmall setImage:currentArtwork forState:UIControlStateNormal];
 				NSDictionary * tempArtworkColorDict = [NCImageUtils dominantColors:currentArtwork detail:0];

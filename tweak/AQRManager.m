@@ -21,7 +21,6 @@
                 break;
             }
         }
-
         if (!found) [self.notificationRequests[bundleIdentifier] addObject:req];
     } else {
         self.notificationRequests[bundleIdentifier] = [NSMutableArray new];
@@ -74,7 +73,7 @@
         NSMutableArray *requests = self.notificationRequests[bundleIdentifier];
         for (int i = [requests count] - 1; i >= 0; i--) {
                 [requests removeObjectAtIndex:i];
-            
+
         }
     }
 }

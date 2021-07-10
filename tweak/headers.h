@@ -15,6 +15,14 @@
 #import "AQRManager.h"
 #import "sharedheaders.h"
 
+@interface MPUMarqueeView : UIView
+@property (nonatomic,readonly) UIView * contentView;
+-(void)setMarqueeEnabled:(BOOL)arg1;
+@property (assign,nonatomic) double contentGap;
+-(void)setContentGap:(double)contentGap;
+@property (assign,nonatomic) UIEdgeInsets fadeEdgeInsets;
+-(void)setFadeEdgeInsets:(UIEdgeInsets)fadeEdgeInsets;
+@end
 
 @interface NCNotificationMasterListView : UIView
 @end
@@ -52,6 +60,8 @@
 -(void)_removeItem:(id)arg1 animated:(BOOL)arg2 ;
 -(BOOL)isPresentingContent;
 @end
+
+
 
 @interface SPTMobileMediaKitAudioPlaybackManager
 - (void)enableShuffleWithMessage:(id)arg1;
@@ -130,7 +140,8 @@
 
 @end
 
-@interface _UIStatusBar
+@interface _UIStatusBar : UIView
+@property UIView *isTweakOnIndicator;
 @property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
 @property (nonatomic, strong, readwrite) NSMutableDictionary *items;
 @property (nonatomic,strong, readwrite, getter=_visualProviderClassName, setter=_setVisualProviderClassName:)NSString *visualProviderClass;
@@ -246,8 +257,6 @@
 @property (assign,nonatomic) BOOL forcesUppercaseText;
 @end
 
-@interface MPUMarqueeView : UIView
-@end
 
 @interface MRUNowPlayingLabelView : UIView
 @property (nonatomic,retain) UILabel * titleLabel;
@@ -270,6 +279,7 @@
 @end
 
 @interface MRUNowPlayingHeaderView : UIView
+@property UIButton *songImageForSmall;
 @property (nonatomic,retain) MRUArtworkView * artworkView;
 @property (nonatomic,retain) MRUNowPlayingLabelView * labelView;
 @property (nonatomic,retain) MRUNowPlayingRoutingButton * routingButton;
@@ -281,8 +291,8 @@
 @property (nonatomic, retain) MRUNowPlayingTimeControlsView *timeControlsView;
 @property (nonatomic, retain) MRUNowPlayingTransportControlsView *transportControlsView;
 @property (nonatomic, retain) MRUNowPlayingVolumeControlsView *volumeControlsView;
--(void) shuffle:(UIButton*)sender;
-@property MarqueeLabel * topLabel;
+@property (nonatomic) MarqueeLabel  *topLabel;
+@property (nonatomic) MarqueeLabel  *bottomLabel;
 -(void)setTheFuckUp;
 @end
 
@@ -350,43 +360,37 @@ UIColor *fuckingArtworkColor;
 UIColor *fuckingArtworkColor2;
 MTMaterialView *yesmf;
 UIButton *pauseButton;
-static void mostlySetUpTheAlbumArtwork() {
-  songImageForSmall = [UIButton new];
-	[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
-	[songImageForSmall setClipsToBounds:YES];
-	[songImageForSmall setAdjustsImageWhenHighlighted:NO];
-	[songImageForSmall setAlpha:1];
-	[songImageForSmall.layer setCornerRadius:8];
-	[songImageForSmall setTranslatesAutoresizingMaskIntoConstraints:YES];
-}
+// static void mostlySetUpTheAlbumArtwork() {
+  	
+// }
 
-static void mostlySetUpTopLabel() {
-	topLabel = [MarqueeLabel new];
-	[topLabel setFont:[UIFont systemFontOfSize:15]];
-	[topLabel setTextAlignment:NSTextAlignmentLeft];
-	[topLabel setAlpha:1];
-	if (musicPlayerColorsEnabled) {
-		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
-		[bottomLabel setTextColor:customColor];
-	}
-	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	// [topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-  //   [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-}
+// static void mostlySetUpTopLabel() {
+// 	topLabel = [MarqueeLabel new];
+// 	[topLabel setFont:[UIFont systemFontOfSize:15]];
+// 	[topLabel setTextAlignment:NSTextAlignmentLeft];
+// 	[topLabel setAlpha:1];
+// 	if (musicPlayerColorsEnabled) {
+// 		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
+// 		[bottomLabel setTextColor:customColor];
+// 	}
+// 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+// 	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
+//     [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
+// }
 
-static void mostlySetUpBottomLabel() {
-	bottomLabel = [MarqueeLabel new];
-	[bottomLabel setFont:[UIFont systemFontOfSize:15]];
-	[bottomLabel setTextAlignment:NSTextAlignmentLeft];
-	[bottomLabel setAlpha:1];
-	if (musicPlayerColorsEnabled) {
-		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
-		[bottomLabel setTextColor:customColor];
-	}
-	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	// [bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-	// [bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-}
+// static void mostlySetUpBottomLabel() {
+// 	bottomLabel = [MarqueeLabel new];
+// 	[bottomLabel setFont:[UIFont systemFontOfSize:15]];
+// 	[bottomLabel setTextAlignment:NSTextAlignmentLeft];
+// 	[bottomLabel setAlpha:1];
+// 	if (musicPlayerColorsEnabled) {
+// 		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
+// 		[bottomLabel setTextColor:customColor];
+// 	}
+// 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+// 	[bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
+// 	[bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
+// }
 
 static void setUpTheArtworkBackground() {
 	songBackground = [UIButton new];
@@ -408,14 +412,14 @@ static void setUpCustomBackground() {
 [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
-static void	setUpShuffleButton() {
-shuffleButton = [UIButton new];
-[shuffleButton setContentMode:UIViewContentModeScaleAspectFill];
-[shuffleButton setClipsToBounds:YES];
-[shuffleButton setAdjustsImageWhenHighlighted:NO];
-[shuffleButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-[shuffleButton setTintColor: [UIColor blueColor]];
-[shuffleButton setBackgroundColor:[UIColor redColor]];
-shuffleButton.hidden = NO;
-[shuffleButton setAlpha:1];
-}
+// static void	setUpShuffleButton() {
+// shuffleButton = [UIButton new];
+// [shuffleButton setContentMode:UIViewContentModeScaleAspectFill];
+// [shuffleButton setClipsToBounds:YES];
+// [shuffleButton setAdjustsImageWhenHighlighted:NO];
+// [shuffleButton setTranslatesAutoresizingMaskIntoConstraints:YES];
+// [shuffleButton setTintColor: [UIColor blueColor]];
+// [shuffleButton setBackgroundColor:[UIColor redColor]];
+// shuffleButton.hidden = NO;
+// [shuffleButton setAlpha:1];
+// }

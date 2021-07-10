@@ -1,4 +1,3 @@
-
 #import <Preferences/PSListController.h>
 #import <spawn.h>
 #import <Preferences/PSListController.h>
@@ -8,10 +7,8 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
-
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
-
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
 @interface OTLRootListController : PSListController

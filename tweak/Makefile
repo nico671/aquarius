@@ -10,7 +10,7 @@ TWEAK_NAME = aquarius
 
 aquarius_FILES = Tweak.xm #AQRGRPView.m AQRGRPCell.m AQRManager.m
 aquarius_FRAMEWORKS = CoreGraphics QuartzCore UIKit Foundation
-aquarius_PRIVATE_FRAMEWORKS = MediaRemote MaterialKit
+aquarius_PRIVATE_FRAMEWORKS = MediaRemote
 aquarius_LIBRARIES = gcuniversal bulletin NCUtils
 aquarius_CFLAGS = -fobjc-arc
 aquarius_EXTRA_FRAMEWORKS += Cephei

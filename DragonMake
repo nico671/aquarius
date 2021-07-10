@@ -10,7 +10,6 @@ aquarius:
     dir: tweak
     files:
         - Tweak.xm
-        - NCImageUtils.m
     libs:
         - bulletin
         - gcuniversal
