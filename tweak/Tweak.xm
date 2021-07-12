@@ -1,10 +1,5 @@
  #import "headers.h"
 %group musicplayer
-%hook MPRouteLabel
--(void)setNeedsLayout{
-      self.hidden = YES;
-}
-%end
 %hook MRUNowPlayingHeaderView // hides the little routing button
 %property UIButton *songImageForSmall;
 - (void)setShowRoutingButton:(BOOL)arg1 {
