@@ -5,3 +5,5 @@ tweak/AQRGRPCell.h
 tweak/AQRGRPCell.m
 tweak/AQRGRPView.h
 tweak/AQRGRPView.m
+tweak/AQRManager.h
+tweak/AQRManager.m
