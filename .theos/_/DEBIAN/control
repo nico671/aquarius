@@ -6,5 +6,5 @@ Maintainer: nico671 <nico671dev@gmail.com>
 Author: nico671 <nico671dev0@gmail.com>
 Section: Tweaks
 Depends: com.mrgcgamer.libgcuniversal, net.limneos.libbulletin, ws.hbang.common (>= 1.16), com.twickd.nico-carbone.ncutils
-Version: 1.7.5
-Installed-Size: 460
+Version: 1.7.5-2
+Installed-Size: 456

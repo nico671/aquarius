@@ -108,111 +108,135 @@
 %hook CSAdjunctItemView // sets the height and opacity of the player
 
 -(void)_updateSizeToMimic{
-	%orig;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.updateColors" object:nil];
-	[self setTheFuckUp];
-	PLPlatterView *platterView = (PLPlatterView*)MSHookIvar<UIView*>(self, "_platterView");
-	[platterView.backgroundView setAlpha: musicPlayerAlpha];
-	self.layer.cornerRadius = musicPlayerCornerRadius;
-if (musicPlayerLeafLook){
-	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-}
-if(configurations == 0){
-	if (isBackgroundColored && !isArtworkBackground){
- [platterView.backgroundView setAlpha: 0];
-    self.backgroundColor = fuckingArtworkColor;
-}
-[self.heightAnchor constraintEqualToConstant:115].active = true; //height
-if (isArtworkBackground && !isBackgroundColored){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground.heightAnchor constraintEqualToAnchor: self.heightAnchor].active = YES;
-[songBackground.widthAnchor constraintEqualToAnchor: self.widthAnchor].active = YES;
-}
+		%orig;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.updateColors" object:nil];
+        [self setTheFuckUp];
+        PLPlatterView *platterView = (PLPlatterView *)MSHookIvar<UIView *>(self, "_platterView");
+        [platterView.backgroundView setAlpha:musicPlayerAlpha];
+        self.layer.cornerRadius = musicPlayerCornerRadius;
+        if (musicPlayerLeafLook) {
+          self.layer.maskedCorners =
+              kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+        }
+        if (configurations == 0) {
+          if (isBackgroundColored && !isArtworkBackground) {
+            [platterView.backgroundView setAlpha:0];
+            self.backgroundColor = fuckingArtworkColor;
+          }
+          [self.heightAnchor constraintEqualToConstant:115].active =
+              true; // height
+          if (isArtworkBackground && !isBackgroundColored) {
+            setUpTheArtworkBackground();
+            [self addSubview:songBackground];
+            [self sendSubviewToBack:songBackground];
+            [platterView.backgroundView setAlpha:0];
+            [songBackground.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
+            [songBackground.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+          }
 
-if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
-setUpCustomBackground() ;
-[self addSubview:customImageBackground];
-UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal];
-[self sendSubviewToBack: customImageBackground];
-[platterView.backgroundView setAlpha: 0];
-[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-}
-else if(configurations == 1 || configurations == 2){
-[platterView.heightAnchor constraintEqualToConstant:130].active = true;
-if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
-setUpCustomBackground() ;
-[self addSubview:customImageBackground];
-UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal];
-[self sendSubviewToBack: customImageBackground];
-[platterView.backgroundView setAlpha: 0];
-[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-if (isBackgroundColored && !isArtworkBackground){
- [platterView.backgroundView setAlpha: 0];
-    self.backgroundColor = fuckingArtworkColor;
-}
-if (isArtworkBackground && !isBackgroundColored){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-}
+          if (!isArtworkBackground && !isBackgroundColored &&
+              customImageBackgroundBOOL) {
+            setUpCustomBackground();
+            [self addSubview:customImageBackground];
+            UIImage *img =
+            [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
+                                              withKey:@"customBackgroundImage"];
+            [customImageBackground setImage:img forState:UIControlStateNormal];
+            [self sendSubviewToBack:customImageBackground];
+            [platterView.backgroundView setAlpha:0];
+            [customImageBackground
+                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height)];
+          }
+        } else if (configurations == 1 || configurations == 2) {
+          [platterView.heightAnchor constraintEqualToConstant:130].active =
+              true;
+          if (!isArtworkBackground && !isBackgroundColored &&
+              customImageBackgroundBOOL) {
+            setUpCustomBackground();
+            [self addSubview:customImageBackground];
+            UIImage *img =
+                [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
+                                              withKey:@"customBackgroundImage"];
+            [customImageBackground setImage:img forState:UIControlStateNormal];
+            [self sendSubviewToBack:customImageBackground];
+            [platterView.backgroundView setAlpha:0];
+            [customImageBackground
+                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height)];
+          }
+          if (isBackgroundColored && !isArtworkBackground) {
+            [platterView.backgroundView setAlpha:0];
+            self.backgroundColor = fuckingArtworkColor;
+          }
+          if (isArtworkBackground && !isBackgroundColored) {
+            setUpTheArtworkBackground();
+            [self addSubview:songBackground];
+            [self sendSubviewToBack:songBackground];
+            [platterView.backgroundView setAlpha:0];
+            [songBackground
+                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height)];
+          }
+        }
 
+        else if (configurations == 3) {
+          if (!isArtworkBackground && !isBackgroundColored &&
+              customImageBackgroundBOOL) {
+            setUpCustomBackground();
+            [self addSubview:customImageBackground];
+            UIImage *img =
+                [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
+                                              withKey:@"customBackgroundImage"];
+            [customImageBackground setImage:img forState:UIControlStateNormal];
+            [self sendSubviewToBack:customImageBackground];
+            [platterView.backgroundView setAlpha:0];
+            [customImageBackground
+                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height)];
+          }
+          if (isBackgroundColored && !isArtworkBackground) {
+            [platterView.backgroundView setAlpha:0];
+          }
+          [self.heightAnchor constraintEqualToConstant:100].active = true;
+          if (isArtworkBackground && !isBackgroundColored) {
+            setUpTheArtworkBackground();
+            [self addSubview:songBackground];
+            [self sendSubviewToBack:songBackground];
+            [platterView.backgroundView setAlpha:0];
+            [songBackground
+                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                    self.frame.size.width,
+                                    self.frame.size.height)];
+          }
 
+        }
 
-else if(configurations == 3){
-	if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL){
-setUpCustomBackground();
-[self addSubview:customImageBackground];
-UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
-[customImageBackground setImage:img forState:UIControlStateNormal];
-[self sendSubviewToBack: customImageBackground];
-[platterView.backgroundView setAlpha: 0];
-[customImageBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-if (isBackgroundColored && !isArtworkBackground){
- [platterView.backgroundView setAlpha: 0];
-}
-[self.heightAnchor constraintEqualToConstant:100].active = true;
-if (isArtworkBackground && !isBackgroundColored){
-setUpTheArtworkBackground();
-[self addSubview:songBackground];
-[self sendSubviewToBack: songBackground];
-[platterView.backgroundView setAlpha: 0];
-[songBackground setFrame: CGRectMake(self.frame.origin.x,self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
-}
-
-}
-
-else {
-	%orig;
-}
-
+        else {
+          %orig;
+        }
 }
 
 %new
 -(void) setTheFuckUp{
-	  if (haveOutline){
-  self.layer.borderWidth = outlineSize;
-  if (!haveOutlineSecondaryColorMusicPlayer){
- UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
-  self.layer.borderColor = [customColor CGColor];
+  if (haveOutline) {
+    self.layer.borderWidth = outlineSize;
+    if (!haveOutlineSecondaryColorMusicPlayer) {
+      UIColor *customColor =
+          [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs"
+                                            withKey:@"outlineColor"];
+      self.layer.borderColor = [customColor CGColor];
+    } else {
+      self.layer.borderColor = [fuckingArtworkColor2 CGColor];
+    }
+    self.layer.cornerRadius = musicPlayerCornerRadius;
   }
-  else {
-	    self.layer.borderColor = [fuckingArtworkColor2 CGColor];
-  }
-  self.layer.cornerRadius = musicPlayerCornerRadius;
-  }
-  if (isBackgroundColored){
-	    self.backgroundColor = fuckingArtworkColor;
+  if (isBackgroundColored) {
+    self.backgroundColor = fuckingArtworkColor;
   }
 }
 %end
