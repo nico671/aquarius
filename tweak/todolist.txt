@@ -1,4 +1,0 @@
-
-1. finish the image picker
-2. split up files / headers
-3. fix the color picker

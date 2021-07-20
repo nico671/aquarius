@@ -7,38 +7,13 @@
 #import <FrontBoardServices/FBSSystemService.h>
 #include <spawn.h>
 #include <UIKit/UIKit.h>
-@interface AQRAnimatedTitleView : UIView
-@end
-
-@implementation AQRAnimatedTitleView
--(instancetype) initWithTitle: (NSString *) title textColor: (UIColor *) textColor {
-    self = [super init];
-    if (self) {
-        // int width = self.contentView.bounds.size.width;
-        // int height = self.contentView.bounds.size.width;
-        // CGRect rect = CGRectMake(0,0,width,height);
-        self.backgroundColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
-    }
-    return self;
-}
-//  -(void)adjustLabelPositionToScrollOffset:(CGFloat)offset {
-//     CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
-//     if(offset >= _minimumOffsetRequired) {
-//       if(adjustment <= 0) {
-//         _yConstraint.constant = 0;
-
-//       } else {
-//         _yConstraint.constant = adjustment;
-//       }
-
-//     } else {
-//       _yConstraint.constant = -100;
-//     }
-//   }
-@end
 @implementation AQRRootListController
 
-
+-(void)resetPreferences {
+    HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"aquariusprefs"];
+    [preferences removeAllObjects];
+    [self respring];
+}
 - (void)sourceCode {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/nico671/aquarius"] options:@{} completionHandler:nil];
 }
@@ -54,10 +29,6 @@
     if ([didShowOBWelcomeController isEqual:@0]) {
 		[self setupWelcomeController];
     }
- if(!self.navigationItem.titleView) {
- 		AQRAnimatedTitleView *animatedTitleView = [[AQRAnimatedTitleView alloc] initWithTitle:@"Your Title" textColor:[UIColor redColor]];
- 		self.navigationItem.titleView = animatedTitleView;
- 	}
     
   
 }
@@ -73,9 +44,9 @@
 - (void)setupWelcomeController {
     welcomeController = [[OBWelcomeController alloc] initWithTitle:@"Welcome to Aquarius" detailText:@"Bring modern gestures and many unique features to your device." icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/HalFiPadPrefs.bundle/icon.png"]];
 
-    [welcomeController addBulletedListItemWithTitle:@"Customization" description:@"Redesign the lockscreen music player" image:[UIImage systemImageNamed:@"music.note.list"]];
-    [welcomeController addBulletedListItemWithTitle:@"Colors" description:@"Choose the colors of the player buttons" image:[UIImage systemImageNamed:@"paintpalette.fill"]];
-    [welcomeController addBulletedListItemWithTitle:@"Notifications" description:@"Notifications everytime a new song starts" image:[UIImage systemImageNamed:@"app.badge"]];
+    [welcomeController addBulletedListItemWithTitle:@"Music Player" description:@"Redesign the lockscreen music player" image:[UIImage systemImageNamed:@"music.note.list"]];
+    [welcomeController addBulletedListItemWithTitle:@"Declutter" description:@"remove annoying things from your homescreen" image:[UIImage systemImageNamed:@"paintpalette.fill"]];
+    [welcomeController addBulletedListItemWithTitle:@"Notifications" description:@"Color your notifications and much more" image:[UIImage systemImageNamed:@"app.badge"]];
     [welcomeController addBulletedListItemWithTitle:@"Open Source" description:@"aquarius is open source. feel free to use it!" image:[UIImage systemImageNamed:@"chevron.left.slash.chevron.right"]];
     [welcomeController.buttonTray addCaptionText:@"by nico671"];
 

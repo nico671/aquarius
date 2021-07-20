@@ -1,7 +1,6 @@
- #import "headers.h"
+#import "headers.h"
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
-%property UIButton *songImageForSmall;
 - (void)setShowRoutingButton:(BOOL)arg1 {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if(![controller respondsToSelector:@selector(context)]){
@@ -13,12 +12,12 @@
 	%orig(arg1);
 }
 
--(void)setFrame:(CGRect *)arg1 { 
+-(void)setFrame:(CGRect *)arg1 {
 	%orig;
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if([controller respondsToSelector:@selector(context)] && controller.context == 2) {
 	//artworksetup
-	self.artworkView.hidden = YES;	
+	self.artworkView.hidden = YES;
 	}
 
 }
@@ -35,19 +34,21 @@
 		[songImageForSmall setAlpha:1];
 		[songImageForSmall.layer setCornerRadius:8];
 		songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
-	
-	
+
+
 	[self insertSubview:songImageForSmall atIndex:0];
 	[songImageForSmall.leadingAnchor constraintEqualToAnchor: self.headerView.artworkView.leadingAnchor constant:5].active = YES;
 	[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor].active = YES;
-	}	
+	}
 	if (!bottomLabel){
 	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
 	bottomLabel.adjustsFontSizeToFitWidth = YES;
+	bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
 	[self addSubview:bottomLabel];
 	}
 	if (!topLabel){
 	topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+  	topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
 	topLabel.adjustsFontSizeToFitWidth = YES;
 	[self addSubview:topLabel];
 	}
@@ -55,17 +56,17 @@
 	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 	}
 	else if (configurations == 0){
-	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame)+5, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame)+15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 	}
 	else if (configurations == 1){
 	[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
 	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 	}
 	else if (configurations == 2){
-		[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-		[self.timeControlsView setHidden:YES];
-		[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-		[self.headerView.artworkView setHidden:YES];
+	[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
+	[self.timeControlsView setHidden:YES];
+	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+	[self.headerView.artworkView setHidden:YES];
 	}
 	}
 }
@@ -78,20 +79,21 @@
 %end
 
 %hook MRUNowPlayingTransportControlsView // coloring for the buttons
-- (void)setNeedsLayout {
+- (void)layoutSubviews {
+	%orig;
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (musicPlayerColorsEnabled && controller.context == 2) {
-		UIColor *leftColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
+		UIColor *leftColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
 		[self.leftButton setStylingProvider:nil];
 		self.leftButton.imageView.layer.filters = nil;
 		[self.leftButton.imageView setTintColor:leftColor];
 
-		UIColor *middleColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customMiddleButtonColor"];
+		UIColor *middleColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customMiddleButtonColor"];
 		[self.middleButton setStylingProvider:nil];
 		self.middleButton.imageView.layer.filters = nil;
 		[self.middleButton.imageView setTintColor:middleColor];
 
-		UIColor *rightColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customRightButtonColor"];
+		UIColor *rightColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customRightButtonColor"];
 		[self.rightButton setStylingProvider:nil];
 		self.rightButton.imageView.layer.filters = nil;
 		[self.rightButton.imageView setTintColor:rightColor];
@@ -222,7 +224,7 @@
     self.layer.borderWidth = outlineSize;
     if (!haveOutlineSecondaryColorMusicPlayer) {
       UIColor *customColor =
-          [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs"
+          [GcColorPickerUtils colorFromDefaults:@"aquariusprefs"
                                             withKey:@"outlineColor"];
       self.layer.borderColor = [customColor CGColor];
     } else {
@@ -274,13 +276,13 @@
 %hook _UIBatteryView
 
 -(void)setFillColor:(UIColor *)color {
-  UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
+  UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
 	%orig(customColor);
 	if(isBatteryHidden) self.hidden = YES;
 }
 
 -(void)setBodyColor:(UIColor *)color {
-UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
+UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
 	%orig(customColor);
 }
 %end
@@ -310,12 +312,12 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 %hook _UIStatusBarSignalView
 
 -(void)setActiveColor:(UIColor *)color {
-	UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
+	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
 	%orig(customColor);
 }
 
 -(void)setInactiveColor:(UIColor *)color {
-	UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
+	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
 	%orig(customColor);
 }
 
@@ -343,7 +345,7 @@ UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs
 	}
 }
 -(void)setTextColor:(UIColor *)color {
-				UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
+				UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
 	%orig(customColor);
 }
 
@@ -545,6 +547,92 @@ else {
 // }
 // %end
 // %end
+
+%group Lockscreen
+%hook SBFLockScreenDateSubtitleDateView
+-(void)setNeedsLayout {
+	self.hidden = YES;
+}
+%end
+%hook NCNotificationListSectionRevealHintView
+-(void)setNeedsLayout{
+	if (hideNoOlderNotifs) self.hidden = YES;
+}
+%end
+%hook SBFStaticWallpaperView
+-(void)setNeedsLayout {
+	%orig;
+	UIImage* tempWallpaperImage = (UIImage *)MSHookIvar<UIView *>(self, "_displayedImage");
+	wallpaperAverageColor = [NCImageUtils averageColor:tempWallpaperImage];
+	NSString *tempHexString = [UIColor hexStringFromColor:wallpaperAverageColor];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:tempHexString forKey:@"hexString"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"NotificationMessageEvent" object:nil userInfo:userInfo];
+}
+%end
+
+%hook SBFLockScreenDateView
+-(void)_updateLabels{
+	%orig;
+	SBUILegibilityLabel* timeLabelToBeReplaced = (SBUILegibilityLabel *)MSHookIvar<UIView *>(self, "_timeLabel");
+	timeLabelToBeReplaced.hidden = YES;
+	if (!timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
+	timeLabel = [UILabel new];
+	timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,self.frame.size.height);
+	if (alignment == 0){
+		timeLabel.textAlignment = NSTextAlignmentLeft;
+	}
+	else if (alignment == 1){
+		timeLabel.textAlignment = NSTextAlignmentCenter;
+	}
+	else if (alignment == 2){
+		timeLabel.textAlignment = NSTextAlignmentRight;
+	}
+	[timeLabel setFont:[UIFont systemFontOfSize:72]];
+	[self addSubview:timeLabel];
+	[timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
+	}
+	NSDate * now = [NSDate date];
+	NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+	[outputFormatter setDateFormat:@"h:mm"];
+	NSString *newTimeString = [outputFormatter stringFromDate:now];
+	timeLabel.text = newTimeString;
+
+	if (!dateLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
+	dateLabel = [UILabel new];
+	dateLabel.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+	if (alignment == 0){
+		dateLabel.textAlignment = NSTextAlignmentLeft;
+	}
+	else if (alignment == 1){
+		dateLabel.textAlignment = NSTextAlignmentCenter;
+	}
+	else if (alignment == 2){
+		dateLabel.textAlignment = NSTextAlignmentRight;
+	}
+	[dateLabel setFont:[UIFont systemFontOfSize:24]];
+	[self addSubview:dateLabel];
+	[dateLabel.topAnchor constraintEqualToAnchor:timeLabel.bottomAnchor constant:-30].active= YES;
+	}
+	NSDate * date = [NSDate date];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"EEEE, MMMM dd"];
+	NSString *newDateString = [dateFormatter stringFromDate:date];
+	dateLabel.text = newDateString;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
+}
+%new 
+-(void) setTextColorToWallpaperColor:(NSNotification *) notification {
+    NSDictionary *dict = notification.userInfo;
+    NSString *message = [dict valueForKey:@"hexString"];
+    if (message != nil) {
+        UIColor *tempColor = [UIColor colorFromHexString:message];
+		tempColor = [tempColor colorWithAlphaComponent:1];
+		timeLabel.textColor = tempColor;
+		dateLabel.textColor = tempColor;
+    }
+}
+%end
+%end
 void reloadPrefs() {
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
@@ -557,6 +645,7 @@ void reloadPrefs() {
 	modernStatusBar = [file boolForKey:@"modernStatusBar"];
 	isRoutingButtonHidden = [file boolForKey:@"isRoutingButtonHidden"];
 	configurations = [file integerForKey:@"configuration"];
+	alignment = [file integerForKey:@"alignment"];
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
 	rightOffsetForText = [file doubleForKey:@"textOffset"];
 	musicPlayerColorsEnabled = [file boolForKey:@"isRoutingButtonHidden"];
@@ -577,25 +666,29 @@ void reloadPrefs() {
 	hideLabels = [file boolForKey:@"hideLabels"];
 	hidePageDots = [file boolForKey:@"hidePageDots"];
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
+	isLockscreenSectionEnabled = [file boolForKey:@"isLockscreenSectionEnabled"];
+	hideNoOlderNotifs = [file boolForKey:@"hideNoOlderNotifs"];
 
 }
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
-	[file registerBool:&musicPlayerEnabled default:YES forKey:@"isMusicSectionEnabled"];
+	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
+	[file registerBool:&hideNoOlderNotifs default:NO forKey:@"hideNoOlderNotifs"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
 	[file registerBool:&isTimeHidden default:NO forKey:@"isTimeHidden"];
-	[file registerBool:&hideSnapImage default:YES forKey:@"hideSnapImage"];
+	[file registerBool:&hideSnapImage default:NO forKey:@"hideSnapImage"];
 	[file registerBool:&isBatteryHidden default:NO forKey:@"isBatteryHidden"];
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
-	[file registerBool:&modernStatusBar default:YES forKey:@"modernStatusBar"];
-	[file registerBool:&statusBarSectionEnabled default:YES forKey:@"isStausBarSectionEnabled"];
-	[file registerBool:&isRoutingButtonHidden default:YES forKey:@"isRoutingButtonHidden"];
+	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
+	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStausBarSectionEnabled"];
+	[file registerBool:&isRoutingButtonHidden default:NO forKey:@"isRoutingButtonHidden"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
 	[file registerInteger:&configurations default:0 forKey:@"configuration"];
+	[file registerInteger:&alignment default:0 forKey:@"alignment"];
 	[file registerBool:&musicPlayerColorsEnabled default:NO forKey:@"isColorsEnabled"];
-	[file registerBool:&haveNotifs default:YES forKey:@"notifications?"];
+	[file registerBool:&haveNotifs default:NO forKey:@"notifications?"];
 	[file registerBool:&isBackgroundColored default:NO forKey:@"isBackgroundColorEnabled"];
 	[file registerBool:&isArtworkBackground default:NO forKey:@"isArtworkBackground"];
 	[file registerBool:&haveOutline default:NO forKey:@"haveOutline?"];
@@ -605,7 +698,8 @@ void reloadPrefs() {
 	[file registerDouble:&musicPlayerCornerRadius default:5 forKey:@"musicPlayerCornerRadius"];
 	[file registerDouble:&notifCornerRadius default:5 forKey:@"notifsCornerRadius"];
 	[file registerBool:&haveOutlineSecondaryColorMusicPlayer default:NO forKey:@"haveOutlineSecondaryColorMusicPlayer"];
-	[file registerBool:&isSpringySectionEnabled default:YES forKey:@"isSpringySectionEnabled"];
+	[file registerBool:&isSpringySectionEnabled default:NO forKey:@"isSpringySectionEnabled"];
+	[file registerBool:&isLockscreenSectionEnabled default:NO forKey:@"isLockscreenSectionEnabled"];
 	[file registerBool:&downloadBarEnabled default:NO forKey:@"downloadBarEnabled"];
 	[file registerBool:&colorNotifs default:NO forKey:@"colorNotifs"];
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
@@ -619,12 +713,15 @@ void reloadPrefs() {
 	if (musicPlayerEnabled) {
         %init(musicplayer);
 	}
-	if (statusBarSectionEnabled){
-		%init(statusbar);
-	}
+	
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
-//%init(groupedNOTI);
+	if (statusBarSectionEnabled){
+		%init(statusbar);
+	}
+	if (isLockscreenSectionEnabled){
+		%init(Lockscreen);
+	}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

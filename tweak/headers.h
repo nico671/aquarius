@@ -1,12 +1,13 @@
 #import <Foundation/Foundation.h>
 #import "GcUniversal/GcImagePickerUtils.h"
+#import "GcUniversal/GcColorPickerUtils.h"
 #import <UIKit/UIKit.h>
 #import <dlfcn.h>
 #import <Cephei/HBPreferences.h>
 #import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
-#import "NCUtils/NCColorPickerUtilities.h"
+// #import "NCUtils/NCColorPickerUtilities.h"
 #import "NCUtils/MarqueeLabel.h"
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
@@ -14,14 +15,21 @@
 #import "AQRGRPView.h"
 #import "AQRManager.h"
 #import "sharedheaders.h"
+#import "NCUtils+UIColor.h"
 
-@interface MPUMarqueeView : UIView
-@property (nonatomic,readonly) UIView * contentView;
--(void)setMarqueeEnabled:(BOOL)arg1;
-@property (assign,nonatomic) double contentGap;
--(void)setContentGap:(double)contentGap;
-@property (assign,nonatomic) UIEdgeInsets fadeEdgeInsets;
--(void)setFadeEdgeInsets:(UIEdgeInsets)fadeEdgeInsets;
+
+
+@interface NCNotificationListSectionRevealHintView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+@interface SBFStaticWallpaperImageView : UIImageView
+
+@end
+
+@interface SBUILegibilityLabel : UIView                       //@synthesize attributedText=_attributedText - In the implementation block
+@property (nonatomic,copy) NSString * string;   
+@property (nonatomic,retain) _UILegibilitySettings * legibilitySettings;                                      //@synthesize string=_string - In the implementation block
+@property (nonatomic,copy) UIColor * textColor;
 @end
 
 @interface NCNotificationMasterListView : UIView
@@ -68,16 +76,34 @@
 - (void)disableShuffleWithMessage:(id)arg1;
 @end
 
-@interface SBUILegibilityLabel : UILabel
-@end
-
 @interface NSDistributedNotificationCenter : NSNotificationCenter
 @end
 
-@interface SBFLockScreenDateView : UIView {
-	SBUILegibilityLabel* _timeLabel;
-}
-@property (nonatomic,retain) UIColor * textColor;
+@interface SBFStaticWallpaperView
+@property (nonatomic,strong,readwrite, getter=_sampleImage, setter=_setSampleImage:) UIImage * sampleImage;
+@end
+
+@interface SBFLockScreenDateSubtitleView : UIView
+@end
+
+@interface SBFLockScreenDateSubtitleDateView : SBFLockScreenDateSubtitleView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+
+@class _UILegibilitySettings;
+@interface SBFLockScreenDateView : UIView
+@property UILabel *dateLabel;
+@property UILabel *timeLabel;
+@property (nonatomic,retain) UIColor * textColor;                              
+@property (assign,nonatomic) double alignmentPercent;                                        
+@property (assign,nonatomic) double dateToTimeStretch;                                     
+@property (assign,nonatomic) double maximumSubtitleWidth;                                     
+@property (nonatomic,readonly) double timeBaselineOffsetFromOrigin; 
+@property (nonatomic,readonly) double subtitleBaselineOffsetFromOrigin;
+@property (nonatomic,retain) _UILegibilitySettings * legibilitySettings; 
+@end
+
+@interface MPUMarqueeView
 @end
 
 @interface SBIconView
@@ -335,10 +361,10 @@
 BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
-BOOL customImageBackgroundBOOL, hidePageDots;
+BOOL customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs;
 BOOL hideLabels;
 id preferences, file, yes;
-NSInteger configurations;
+NSInteger configurations, alignment;
 NSString *previousTitle = @"poggers";
 double musicPlayerAlpha, outlineSize, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius;
 MarqueeLabel* bottomLabel;
@@ -354,12 +380,15 @@ NSData* lastArtworkData2;
 UIView *coloredBackground;
 UIView *test;
 UIColor *customColor;
+UIColor *wallpaperAverageColor;
 NSString *songLabel;
 NSString *subtitleLabel;
 UIColor *fuckingArtworkColor;
 UIColor *fuckingArtworkColor2;
 MTMaterialView *yesmf;
 UIButton *pauseButton;
+UILabel *timeLabel;
+UILabel *dateLabel;
 // static void mostlySetUpTheAlbumArtwork() {
   	
 // }

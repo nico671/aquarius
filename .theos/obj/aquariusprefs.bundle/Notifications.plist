@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>items</key>
-	<array>
-        
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-	        </dict>
+    <dict>
+        <key>items</key>
+        <array>
+
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
             <dict>
                 <key>cell</key>
                 <string>PSSwitchCell</string>
                 <key>default</key>
-                <true/>
+                <true />
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>
                 <string>isNotificationSectionEnabled</string>
                 <key>label</key>
                 <string>Enable Notification Section?</string>
+                <key>default</key>
+                <false />
             </dict>
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
                 <key>label</key>
                 <string>Settings</string>
-              </dict>
+            </dict>
             <dict>
                 <key>cell</key>
                 <string>PSSwitchCell</string>
                 <key>default</key>
-                <true/>
+                <true />
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>
                 <string>hideSnapImage</string>
                 <key>label</key>
                 <string>Hide snap bitmoji?</string>
+                <key>default</key>
+                <false />
             </dict>
             <dict>
                 <key>cell</key>
                 <string>PSSwitchCell</string>
                 <key>default</key>
-                <true/>
+                <true />
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>
                 <string>colorNotifs</string>
                 <key>label</key>
                 <string>Color Notifications</string>
+                <key>default</key>
+                <false />
             </dict>
             <dict>
                 <key>cell</key>
                 <string>PSSwitchCell</string>
                 <key>default</key>
-                <false/>
+                <false />
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>
@@ -70,7 +76,7 @@
                 <string>PSGroupCell</string>
                 <key>label</key>
                 <string>Notifications Corner Radius</string>
-              </dict>
+            </dict>
             <dict>
                 <key>cell</key>
                 <string>PSSliderCell</string>
@@ -81,21 +87,20 @@
                 <key>max</key>
                 <real>100</real>
                 <key>showValue</key>
-                <true/>
+                <true />
                 <key>defaults</key>
                 <string>aquariusprefs</string>
-             <key>PostNotification</key>
+                <key>PostNotification</key>
                 <string>com.nico671.preferenceschanged</string>
                 <key>key</key>
                 <string>notifsCornerRadius</string>
                 <key>PostNotification</key>
                 <string>com.nico671.preferenceschanged</string>
             </dict>
-           
-			
-          
-</array>
-<key>title</key>
-<string>Notifications</string>
-</dict>
+
+
+        </array>
+        <key>title</key>
+        <string>Notifications</string>
+    </dict>
 </plist>

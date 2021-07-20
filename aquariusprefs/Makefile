@@ -12,7 +12,7 @@ aquariusprefs_PRIVATE_FRAMEWORKS = Preferences SpringBoardServices OnBoardingKit
 aquariusprefs_LIBRARIES = gcuniversal NCUtils
 aquariusprefs_INSTALL_PATH = /Library/PreferenceBundles
 aquariusprefs_CFLAGS = -fobjc-arc
-aquariusprefs_EXTRA_FRAMEWORKS += CepheiPrefs
+aquariusprefs_EXTRA_FRAMEWORKS += CepheiPrefs Cephei
 
 
 include $(THEOS_MAKE_PATH)/bundle.mk

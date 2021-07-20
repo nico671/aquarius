@@ -11,9 +11,9 @@ aquarius:
     files:
         - Tweak.xm
     libs:
-        - bulletin
-        - gcuniversal
         - NCUtils
+        - gcuniversal
+        - bulletin
     frameworks:
         - MediaRemote
         - CoreGraphics

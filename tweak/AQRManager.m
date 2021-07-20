@@ -1,6 +1,6 @@
 #import "AQRManager.h"
 @implementation AQRManager
-+(AQRManager*)sharedInstance{
++(AQRManager*)sharedInstance {
      static AQRManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

@@ -61,56 +61,6 @@ return self;
         [[NSClassFromString(@"FBSSystemService") sharedService] sendActions:[NSSet setWithObject:restartAction] withResult:nil];
     }];
 }
-- (NSArray *)specifiers {
-	if (!_specifiers) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"StatusBar" target:self];
-		NSArray *chosenIDs = @[@"timeHidden",@"batteryHidden",@"wifiHidden",@"cellularHidden"];
-		self.savedSpecifiers = (!self.savedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.savedSpecifiers;
-		for(PSSpecifier *specifier in _specifiers) {
-			if ([chosenIDs containsObject:[specifier propertyForKey:@"id"]]) {
-				[self.savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
-			}
-
-       
-		}
-	}
-	return _specifiers;
-    //(@"[aquarius] - %@",self.savedSpecifiers);
-}
--(void)reloadSpecifiers {
-	[super reloadSpecifiers];
-	//This will look the exact same as step 5, where we only check if specifiers need to be removed
-	//  NSDictionary *prefs = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"]; {
-
-
-}
--(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
-		[super setPreferenceValue:value specifier:specifier];
-
-		[self toggleSpecifiersVisibility:YES];
-	}
-
-
-
-	-(void)toggleSpecifiersVisibility:(BOOL)animated {
-		PSSpecifier *switchSpecifier = [self specifierForID:@"switch"];
-		BOOL switchValue = [self readPreferenceValue:switchSpecifier];
-				
-		if(!switchValue) {
-		    [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"timeHidden"]] animated:YES];
-		    [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"batteryHidden"]] animated:YES];
-		    [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"wifiHidden"]] animated:YES];
-		    [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"cellularHidden"]] animated:YES];
-		} else if(![self containsSpecifier:self.savedSpecifiers[@"timeHidden"]]) {
-			[self insertSpecifier:self.savedSpecifiers[@"timeHidden"] afterSpecifierID:@"switch" animated:animated];
-		}
-	}
-
-	-(void)viewDidLoad {
-		[super viewDidLoad];
-
-		[self toggleSpecifiersVisibility:NO];
-	}
     
 - (void)loadFromSpecifier:(PSSpecifier *)specifier {
 NSString *sub = [specifier propertyForKey:@"AquariusSub"];
