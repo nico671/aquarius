@@ -37,26 +37,27 @@
 
 
 	[self insertSubview:songImageForSmall atIndex:0];
-	[songImageForSmall.leadingAnchor constraintEqualToAnchor: self.headerView.artworkView.leadingAnchor constant:5].active = YES;
-	[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor].active = YES;
+	[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
+	[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
+	}
+	if (!topLabel){
+	topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+	if (musicPlayerColorsEnabled){
+  		topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
+	}
+	topLabel.adjustsFontSizeToFitWidth = YES;
+	[self addSubview:topLabel];  
 	}
 	if (!bottomLabel){
 	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
 	bottomLabel.adjustsFontSizeToFitWidth = YES;
-	bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
-	[self addSubview:bottomLabel];
+	if (musicPlayerColorsEnabled){
+		bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
 	}
-	if (!topLabel){
-	topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
-  	topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
-	topLabel.adjustsFontSizeToFitWidth = YES;
-	[self addSubview:topLabel];
+	[self addSubview:bottomLabel];
 	}
 	if (configurations == 3) {
 	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-	}
-	else if (configurations == 0){
-	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame)+15, self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
 	}
 	else if (configurations == 1){
 	[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
@@ -74,7 +75,13 @@
 %hook MRUNowPlayingLabelView
 //shoutout lightmann
 -(void)setNeedsLayout{
+	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
+	if(![controller respondsToSelector:@selector(context)]){
+		%orig;
+	}
+	if([controller respondsToSelector:@selector(context)] && controller.context == 2){
 	self.hidden = YES;
+	}
 }
 %end
 
@@ -115,38 +122,7 @@
           self.layer.maskedCorners =
               kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
         }
-        if (configurations == 0) {
-          if (isBackgroundColored && !isArtworkBackground) {
-            [platterView.backgroundView setAlpha:0];
-            self.backgroundColor = fuckingArtworkColor;
-          }
-          [self.heightAnchor constraintEqualToConstant:115].active =
-              true; // height
-          if (isArtworkBackground && !isBackgroundColored) {
-            setUpTheArtworkBackground();
-            [self addSubview:songBackground];
-            [self sendSubviewToBack:songBackground];
-            [platterView.backgroundView setAlpha:0];
-            [songBackground.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
-            [songBackground.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-          }
-
-          if (!isArtworkBackground && !isBackgroundColored &&
-              customImageBackgroundBOOL) {
-            setUpCustomBackground();
-            [self addSubview:customImageBackground];
-            UIImage *img =
-            [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
-                                              withKey:@"customBackgroundImage"];
-            [customImageBackground setImage:img forState:UIControlStateNormal];
-            [self sendSubviewToBack:customImageBackground];
-            [platterView.backgroundView setAlpha:0];
-            [customImageBackground
-                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                                    self.frame.size.width,
-                                    self.frame.size.height)];
-          }
-        } else if (configurations == 1 || configurations == 2) {
+        if (configurations == 1 || configurations == 2) {
           [platterView.heightAnchor constraintEqualToConstant:130].active =
               true;
           if (!isArtworkBackground && !isBackgroundColored &&
@@ -262,12 +238,12 @@
 			}
 		}
   	});
-	if (haveNotifs) {
-			if ([songLabel isEqualToString:previousTitle]){
-			[[objc_getClass("JBBulletinManager") sharedInstance] showBulletinWithTitle:subtitleLabel message:songLabel bundleID:[[[%c(SBMediaController) sharedInstance] nowPlayingApplication] bundleIdentifier]];
-			}
-			previousTitle = songLabel; //notifications
-	}
+	// if (haveNotifs) {
+	// 		if ([songLabel isEqualToString:previousTitle]){
+	// 		[[objc_getClass("JBBulletinManager") sharedInstance] showBulletinWithTitle:subtitleLabel message:songLabel bundleID:[[[%c(SBMediaController) sharedInstance] nowPlayingApplication] bundleIdentifier]];
+	// 		}
+	// 		previousTitle = songLabel; //notifications
+	// }
 }
 %end
 %end
@@ -322,19 +298,6 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 }
 
 %end
-
-
-%hook _UIStatusBar
--(void)setNeedsLayout{
-
-	if (modernStatusBar){
-	self.visualProviderClass =  @"_UIStatusBarVisualProvider_Split54";
-	}
-	else %orig;
-}
-%end
-
-
 
 %hook _UIStatusBarStringView
 
@@ -454,105 +417,33 @@ else {
 %hook SBIconListPageControl
 -(void)setNeedsLayout{
 	%orig;
+	if (hidePageDots) self.hidden = YES;
+}
+%end
+%hook SBDockView
+-(void)setNeedsLayout{
+	if (hideDock){
 	self.hidden = YES;
+	}
+}
+%end
+%hook SBFloatingDockPlatterView
+-(void)setNeedsLayout{
+	if (hideDock){
+	self.hidden = YES;
+	}
 }
 %end
 %end
-// %group groupedNOTI
-// %hook CSNotificationAdjunctListViewController
-// %property (nonatomic, retain) AQRGRPView *grpView;
-// -(void)viewDidLoad {
-//     %orig;
-// 	NSLog(@"[aquarius] - %@",[AQRManager sharedInstance].notificationRequests);
-//         UIStackView *stackView = [self valueForKey:@"_stackView"];
-// 		CGRect screenRect = [[UIScreen mainScreen] bounds];
-// 		CGFloat screenWidth = screenRect.size.width;
-//         self.grpView = [[AQRGRPView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.view.frame),CGRectGetMinY(self.view.frame),screenWidth-50,500)];
-// 		[AQRManager sharedInstance].view = self.grpView;
-
-//         self.grpView.translatesAutoresizingMaskIntoConstraints = NO;
-// 		[[AQRManager sharedInstance].view updateView];
-//       	 NSMutableArray *constraints = [@[
-//         [self.grpView.centerXAnchor constraintEqualToAnchor:stackView.centerXAnchor],
-//           [self.grpView.leadingAnchor constraintEqualToAnchor:stackView.leadingAnchor constant:10],
-//           [self.grpView.trailingAnchor constraintEqualToAnchor:stackView.trailingAnchor constant:-10],
-//           [self.grpView.heightAnchor constraintEqualToConstant:90]
-//         ] mutableCopy];
-//         [stackView addArrangedSubview:self.grpView];
-//         [NSLayoutConstraint activateConstraints:constraints];
-// 		[self.grpView updateView];
-// }
-// -(void)_updatePresentingContent {
-//   %orig;
-//     UIStackView *stackView = [self valueForKey:@"_stackView"];
-//     [stackView removeArrangedSubview:self.grpView];
-//     [stackView addArrangedSubview:self.grpView];
-// }
-// -(void)_insertItem:(id)arg1 animated:(BOOL)arg2 {
-//     %orig;
-//     UIStackView *stackView = [self valueForKey:@"_stackView"];
-//     [stackView removeArrangedSubview:self.grpView];
-//     [stackView addArrangedSubview:self.grpView];
-// }
-
-// -(BOOL)isPresentingContent {
-//     return YES;
-// }
-
-// %end
-// @interface NCNotificationListSectionHeaderView : UIView
-// @end
-
-// %hook NCNotificationStructuredListViewController
-// -(void)insertNotificationRequest:(id)arg1 {
-// 	%orig;
-// 	NCNotificationRequest *req = arg1;
-//     [[AQRManager sharedInstance] insertNotificationRequest:req];
-//     [[AQRManager sharedInstance].view updateView];
-// }
-
-// -(void)removeNotificationRequest:(id)arg1 {
-// 	NCNotificationRequest *req = arg1;
-//     [[AQRManager sharedInstance] removeNotificationRequest:req];
-//     [[AQRManager sharedInstance].view updateView];
-// 	[[AQRManager sharedInstance] updateQuick:req.bulletin.sectionID];
-
-// }
-// -(void)modifyNotificationRequest:(id)arg1 {
-// 	NCNotificationRequest *req = arg1;
-//     [[AQRManager sharedInstance] modifyNotificationRequest:req];
-//     [[AQRManager sharedInstance].view updateView];
-
-// }
-// %end
-// %hook NCNotificationCombinedListViewController
-
-// -(id)init{
-// 	%orig;
-// 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNotifications) name:@"com.nico671.notifAdded/Removed" object:nil];
-// 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(revealNotificationHistory:) name:@"com.nico671.notifAdded/Removed" object:nil];
-// 	return %orig;
-// }
-// -(void)insertNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
-// 	NCNotificationRequest *req = arg1;
-//     [[AQRManager sharedInstance] insertNotificationRequest:req];
-//     [[AQRManager sharedInstance].view updateView];
-
-
-// }
-// -(void)removeNotificationRequest:(NCNotificationRequest *)arg1 forCoalescedNotification:(id)arg2 {
-//     if (self.aqrAllowChanges) return %orig;
-// 	NCNotificationRequest *req = arg1;
-// 	[[AQRManager sharedInstance] removeNotificationRequest:req] ;
-// }
-// %end
-// %end
-
 %group Lockscreen
-%hook SBFLockScreenDateSubtitleDateView
--(void)setNeedsLayout {
-	self.hidden = YES;
+%hook CSCoverSheetViewController
+
+- (void)_transitionChargingViewToVisible:(BOOL)arg1 showBattery:(BOOL)arg2 animated:(BOOL)arg3 { // hide charging view
+
+	%orig(NO, NO, NO);
+
 }
+
 %end
 %hook NCNotificationListSectionRevealHintView
 -(void)setNeedsLayout{
@@ -569,73 +460,329 @@ else {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"NotificationMessageEvent" object:nil userInfo:userInfo];
 }
 %end
+%hook SBUIController
+
+- (void)ACPowerChanged { // heartlines
+
+	%orig;
+
+	if ([self isOnAC]) {
+        [UIView transitionWithView:timeDateView.dateLabel duration:0.1 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+			[timeDateView.dateLabel setText:[NSString stringWithFormat:@"%d%%", [self batteryCapacityAsPercentage]]];
+		} completion:^(BOOL finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [UIView transitionWithView:timeDateView.dateLabel duration:0.1 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    NSDateFormatter* timeFormat = [NSDateFormatter new];
+                    [timeFormat setDateFormat:dateFormat];
+                    [timeDateView.dateLabel setText:[timeFormat stringFromDate:[NSDate date]]];
+                } completion:nil];
+            });
+        }];
+    }
+
+}
+
+%end
+%hook SBBacklightController
+
+- (void)turnOnScreenFullyWithBacklightSource:(long long)source { // update data when screen was turned on
+	%orig;
+	[[PDDokdo sharedInstance] refreshWeatherData];
+}
+
+%end
+%hook CSCoverSheetViewController
+- (void)viewWillAppear:(BOOL)animated { // update data when lockscreen appears
+	%orig;
+	[[PDDokdo sharedInstance] refreshWeatherData];
+}
+%end
 
 %hook SBFLockScreenDateView
+%property (nonatomic, retain) UILabel *timeLabel;
+%property (nonatomic, retain) UILabel *dateLabel;
+%property (nonatomic, retain) UILabel *weatherLabel;
+%property (nonatomic, retain) UIImageView *weatherImageView;
+- (id)initWithFrame:(CGRect)frame { // add notification observer
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
+    id orig = %orig;
+    timeDateView = self;
+
+    return orig;
+
+}
+-(void)setNeedsLayout{
+	%orig;
+	locationFetcher = [[LocationFetcher alloc]init];
+	[locationFetcher start];
+	// locationManager = [[CLLocationManager alloc] init];
+	// locationManagerDelegate = [[SubVC alloc]init];
+	// locationManager.delegate = locationManagerDelegate;
+    // locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	// [locationManager startUpdatingLocation];
+	// wfLocation = [[WFLocation alloc]init];
+	// wfLocation.geoLocation = locationManager.location;
+	// NSLog(@"[aquarius] locationManager.location %@",locationManager.location);
+	// weatherConditions = [[WFWeatherConditions alloc]init];
+	// weatherConditions.location = wfLocation;
+	// NSLog(@"[aquarius] weatherConditions.components %@",weatherConditions.components);
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
+}
 -(void)_updateLabels{
 	%orig;
+	// hiding original stuff
 	SBUILegibilityLabel* timeLabelToBeReplaced = (SBUILegibilityLabel *)MSHookIvar<UIView *>(self, "_timeLabel");
+	SBFLockScreenDateSubtitleDateView* dateLabelToBeHidden = (SBFLockScreenDateSubtitleDateView *)MSHookIvar<UIView *>(self, "_dateSubtitleView");
+	dateLabelToBeHidden.hidden = YES;
 	timeLabelToBeReplaced.hidden = YES;
-	if (!timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
-	timeLabel = [UILabel new];
-	timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,self.frame.size.height);
+	// the time label setup
+	if (!self.timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
+	self.timeLabel = [UILabel new];
+	self.timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,timeLabelHeight);
 	if (alignment == 0){
-		timeLabel.textAlignment = NSTextAlignmentLeft;
+		self.timeLabel.textAlignment = NSTextAlignmentLeft;
 	}
 	else if (alignment == 1){
-		timeLabel.textAlignment = NSTextAlignmentCenter;
+		self.timeLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	else if (alignment == 2){
-		timeLabel.textAlignment = NSTextAlignmentRight;
+		self.timeLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[timeLabel setFont:[UIFont systemFontOfSize:72]];
-	[self addSubview:timeLabel];
-	[timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
+	[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
+	[self addSubview:self.timeLabel];
+	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
 	}
 	NSDate * now = [NSDate date];
-	NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-	[outputFormatter setDateFormat:@"h:mm"];
-	NSString *newTimeString = [outputFormatter stringFromDate:now];
-	timeLabel.text = newTimeString;
+	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+	[timeFormatter setDateFormat:timeFormat];
+	NSString *newTimeString = [timeFormatter stringFromDate:now];
+	self.timeLabel.text = newTimeString;
+	// dateLabel setup
+	if (!self.dateLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
+	self.dateLabel = [UILabel new];
 
-	if (!dateLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
-	dateLabel = [UILabel new];
-	dateLabel.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
 	if (alignment == 0){
-		dateLabel.textAlignment = NSTextAlignmentLeft;
+		self.dateLabel.textAlignment = NSTextAlignmentLeft;
 	}
 	else if (alignment == 1){
-		dateLabel.textAlignment = NSTextAlignmentCenter;
+		self.dateLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	else if (alignment == 2){
-		dateLabel.textAlignment = NSTextAlignmentRight;
+		self.dateLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[dateLabel setFont:[UIFont systemFontOfSize:24]];
-	[self addSubview:dateLabel];
-	[dateLabel.topAnchor constraintEqualToAnchor:timeLabel.bottomAnchor constant:-30].active= YES;
+	[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
+	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
+	[self addSubview:self.dateLabel];
+	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
 	}
 	NSDate * date = [NSDate date];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"EEEE, MMMM dd"];
+	[dateFormatter setDateFormat:dateFormat];
 	NSString *newDateString = [dateFormatter stringFromDate:date];
-	dateLabel.text = newDateString;
+	self.dateLabel.text = newDateString;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
+	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ // i hate having to do this
+	self.weatherLabel = [UILabel new];
+	if (alignment == 0){
+		self.weatherLabel.textAlignment = NSTextAlignmentLeft;
+	}
+	else if (alignment == 1){
+		self.weatherLabel.textAlignment = NSTextAlignmentCenter;
+	}
+	else if (alignment == 2){
+		self.weatherLabel.textAlignment = NSTextAlignmentRight;
+	}
+	[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
+	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
+	[[PDDokdo sharedInstance] refreshWeatherData];
+	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
+	NSString *temperature = [weatherData objectForKey:@"temperature"];
+	NSString *conditions = [weatherData objectForKey:@"conditions"];
+	NSString *combined = [NSString stringWithFormat:@"%@°, %@", temperature,conditions];
+	self.weatherLabel.text = combined;
+	[self addSubview:self.weatherLabel];
+	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
+	}
 }
-%new 
+%new
 -(void) setTextColorToWallpaperColor:(NSNotification *) notification {
     NSDictionary *dict = notification.userInfo;
     NSString *message = [dict valueForKey:@"hexString"];
     if (message != nil) {
         UIColor *tempColor = [UIColor colorFromHexString:message];
 		tempColor = [tempColor colorWithAlphaComponent:1];
-		timeLabel.textColor = tempColor;
-		dateLabel.textColor = tempColor;
+		self.timeLabel.textColor = tempColor;
+		self.weatherLabel.textColor = tempColor;
+		self.dateLabel.textColor = tempColor;
     }
+}
+%end
+%end
+
+%group gesturesAndModernShit
+%hook BSPlatform
+-(long long)homeButtonType {
+	return 2;
+}
+%end
+%hook SBLockHardwareButtonActions
+-(id)initWithHomeButtonType:(NSInteger)arg1 proximitySensorManager:(id)arg2 {
+	if (!newButtonCombo) {
+    return %orig(1, arg2);
+	}
+	else return %orig;
+}
+%end
+
+%hook SBHomeHardwareButtonActions
+-(id)initWitHomeButtonType:(NSInteger)arg1 {
+	if (!newButtonCombo) {
+    return %orig(1);
+	}
+	else return %orig;
+}
+%end
+
+
+%hook SpringBoard
+-(void)applicationDidFinishLaunching:(id)application {
+    applicationDidFinishLaunching = 2;
+    %orig;
+}
+%end
+
+%hook SBPressGestureRecognizer
+- (void)setAllowedPressTypes:(NSArray *)arg1 {
+	if (!newButtonCombo) {
+    NSArray * lockHome = @[@104, @101];
+    NSArray * lockVol = @[@104, @102, @103];
+    if (applicationDidFinishLaunching == 2 && [arg1 isEqual:lockVol]) {
+        %orig(lockHome);
+        applicationDidFinishLaunching--;
+        return;
+    }
+    %orig;
+	}
+	else %orig;
+}
+%end
+
+%hook SBClickGestureRecognizer
+- (void)addShortcutWithPressTypes:(id)arg1 {
+	if (!newButtonCombo) {
+    if (applicationDidFinishLaunching == 1) {
+        applicationDidFinishLaunching--;
+        return;
+    }
+    %orig;
+	} 
+	else %orig;
+}
+%end
+
+%hook SBHomeHardwareButton
+- (id)initWithScreenshotGestureRecognizer:(id)arg1 homeButtonType:(NSInteger)arg2 {
+	if (!newButtonCombo) {
+    return %orig(arg1, 1);
+	}
+	else return %orig;
+}
+%end
+
+%hook SBLockHardwareButton
+- (id)initWithScreenshotGestureRecognizer:(id)arg1 shutdownGestureRecognizer:(id)arg2 proximitySensorManager:(id)arg3 homeHardwareButton:(id)arg4 volumeHardwareButton:(id)arg5 buttonActions:(id)arg6 homeButtonType:(NSInteger)arg7 createGestures:(_Bool)arg8 {
+ 	if (!newButtonCombo) {
+	return %orig(arg1,arg2,arg3,arg4,arg5,arg6,1,arg8);
+	}
+	else return %orig;
+}
+- (id)initWithScreenshotGestureRecognizer:(id)arg1 shutdownGestureRecognizer:(id)arg2 proximitySensorManager:(id)arg3 homeHardwareButton:(id)arg4 volumeHardwareButton:(id)arg5 homeButtonType:(NSInteger)arg6 {
+	if (!newButtonCombo) {
+	return %orig(arg1,arg2,arg3,arg4,arg5,1);
+	}
+	else return %orig;
+}
+%end
+
+%hook SBVolumeHardwareButton
+- (id)initWithScreenshotGestureRecognizer:(id)arg1 shutdownGestureRecognizer:(id)arg2 homeButtonType:(NSInteger)arg3 {
+    if (!newButtonCombo) {
+	return %orig(arg1,arg2,1);
+	}
+	else return %orig;
+}
+%end
+%hook CSQuickActionsView
+- (BOOL)_prototypingAllowsButtons {
+	return haveQuickActions;
+}
+- (void)_layoutQuickActionButtons {
+    CGRect const screenBounds = [UIScreen mainScreen].bounds;
+    int const y = screenBounds.size.height - 90 - [self _buttonOutsets].top;
+
+    [self flashlightButton].frame = CGRectMake(46, y, 50, 50);
+    [self cameraButton].frame = CGRectMake(screenBounds.size.width - 96, y, 50, 50);
+}
+%end
+%hook MTLumaDodgePillSettings
+- (void)setHeight:(double)arg1 {
+	if (hideHomeBar){
+	%orig(0);
+	}
+	else {
+		%orig;
+	}
+}
+%end
+%hook SBHDefaultIconListLayoutProvider
+-(NSUInteger)screenType {
+    return UIScreen.mainScreen.screenSizeCategory - 1;
+}
+%end
+%hook _UIStatusBarData
+-(void)setBackNavigationEntry:(id)arg1 {
+	if (hideBreadcrumbs){
+    return;
+	}
+	else return %orig;
+}
+%end
+%hook _UIStatusBarVisualProvider_Split54
++(CGSize)notchSize {
+    CGSize const orig = %orig;
+    return CGSizeMake(orig.width, 18);
+}
++(double)height {
+	return 20;
+}
+
+%end
+
+%hook _UIBatteryView 
+-(BOOL)_currentlyShowsPercentage {
+	if (showsPercentage){
+       return YES;
+	}
+	else return %orig;
+  
+}
+-(BOOL)_shouldShowBolt {
+	if (showsPercentage){
+		return NO;
+	}
+	else return %orig;
+}
+%end
+%hook SBMainSwitcherViewController
+-(void)setNeedsLayout{
+	self.hidden = YES;
 }
 %end
 %end
 void reloadPrefs() {
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
-	statusBarSectionEnabled = [file boolForKey:@"isStausBarSectionEnabled"];
+	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
+	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
 	hideSnapImage = [file boolForKey:@"hideSnapImage"];
 	leafCornerNotifs = [file boolForKey:@"leafCornerNotifs"];
 	isBatteryHidden = [file boolForKey:@"isBatteryHidden"];
@@ -647,6 +794,7 @@ void reloadPrefs() {
 	configurations = [file integerForKey:@"configuration"];
 	alignment = [file integerForKey:@"alignment"];
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
+	weatherLabelHeight = [file doubleForKey:@"weatherLabelHeight"];
 	rightOffsetForText = [file doubleForKey:@"textOffset"];
 	musicPlayerColorsEnabled = [file boolForKey:@"isRoutingButtonHidden"];
 	haveNotifs = [file boolForKey:@"notifications?"];
@@ -658,6 +806,8 @@ void reloadPrefs() {
 	outlineSize = [file doubleForKey:@"sizeOfOutline"];
 	musicPlayerCornerRadius = [file doubleForKey:@"musicPlayerCornerRadius"];
 	notifCornerRadius = [file doubleForKey:@"notifCornerRadius"];
+	dateLabelHeight = [file doubleForKey:@"dateLabelHeight"];
+	timeLabelHeight = [file doubleForKey:@"timeLabelHeight"];
 	haveOutlineSecondaryColorMusicPlayer = [file boolForKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	isSpringySectionEnabled = [file boolForKey:@"isSpringySectionEnabled"];
 	downloadBarEnabled = [file boolForKey:@"downloadBarEnabled"];
@@ -668,11 +818,26 @@ void reloadPrefs() {
 	customImageBackgroundBOOL = [file boolForKey:@"customImageBackground?"];
 	isLockscreenSectionEnabled = [file boolForKey:@"isLockscreenSectionEnabled"];
 	hideNoOlderNotifs = [file boolForKey:@"hideNoOlderNotifs"];
+	weatherLabelEnabled = [file boolForKey:@"weatherLabelEnabled"];
+	hideHomeBar = [file boolForKey:@"hideHomeBar"];
+	hideDock = [file boolForKey:@"hideDock"];
+	enableGestures = [file boolForKey:@"enableGestures"];
+	haveQuickActions = [file boolForKey:@"haveQuickActions"];
+	showsPercentage = [file boolForKey:@"showsPercentage"];
+	hideBreadcrumbs = [file boolForKey:@"hideBreadcrumbs"];
+	dateFormat = [file objectForKey:@"dateFormat"];
+	timeFormat = [file objectForKey:@"timeFormat"];
 
 }
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
+	[file registerBool:&hideHomeBar default:NO forKey:@"hideHomeBar"];
+	[file registerBool:&haveQuickActions default:NO forKey:@"haveQuickActions"];
+	[file registerBool:&enableGestures default:NO forKey:@"enableGestures"];
+	[file registerBool:&newButtonCombo default:NO forKey:@"notchedDeviceButtonCombo"];
+	[file registerObject:&dateFormat default:@"EEEE, MMMM dd" forKey:@"dateFormat"];
+	[file registerObject:&timeFormat default:@"h:mm" forKey:@"timeFormat"];
 	[file registerBool:&hideNoOlderNotifs default:NO forKey:@"hideNoOlderNotifs"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
 	[file registerBool:&isTimeHidden default:NO forKey:@"isTimeHidden"];
@@ -681,17 +846,21 @@ void reloadPrefs() {
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
 	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
-	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStausBarSectionEnabled"];
+	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStatusBarSectionEnabled"];
 	[file registerBool:&isRoutingButtonHidden default:NO forKey:@"isRoutingButtonHidden"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
+	[file registerDouble:&timeLabelHeight default:72 forKey:@"timeLabelHeight"];
+	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
+	[file registerDouble:&weatherLabelHeight default:24 forKey:@"weatherLabelHeight"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
-	[file registerInteger:&configurations default:0 forKey:@"configuration"];
+	[file registerInteger:&configurations default:3 forKey:@"configuration"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];
 	[file registerBool:&musicPlayerColorsEnabled default:NO forKey:@"isColorsEnabled"];
 	[file registerBool:&haveNotifs default:NO forKey:@"notifications?"];
 	[file registerBool:&isBackgroundColored default:NO forKey:@"isBackgroundColorEnabled"];
 	[file registerBool:&isArtworkBackground default:NO forKey:@"isArtworkBackground"];
 	[file registerBool:&haveOutline default:NO forKey:@"haveOutline?"];
+	[file registerBool:&hideDock default:NO forKey:@"hideDock"];
 	[file registerBool:&showPercentage default:NO forKey:@"showPercentage"];
 	[file registerBool:&isNotificationSectionEnabled default:NO forKey:@"isNotificationSectionEnabled"];
 	[file registerDouble:&outlineSize default:5 forKey:@"sizeOfOutline"];
@@ -706,6 +875,9 @@ void reloadPrefs() {
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
 	[file registerBool:&hidePageDots default:NO forKey:@"hidePageDots"];
+	[file registerBool:&showsPercentage default:NO forKey:@"showsPercentage"];
+	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
+	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 
  	if (isNotificationSectionEnabled) {
 		%init(notifications)
@@ -713,7 +885,6 @@ void reloadPrefs() {
 	if (musicPlayerEnabled) {
         %init(musicplayer);
 	}
-	
 	if (isSpringySectionEnabled){
 		%init(springy);
 	}
@@ -722,6 +893,9 @@ void reloadPrefs() {
 	}
 	if (isLockscreenSectionEnabled){
 		%init(Lockscreen);
+	}
+	if (enableGestures){
+		%init(gesturesAndModernShit);
 	}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

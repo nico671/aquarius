@@ -2,12 +2,14 @@
 #import "GcUniversal/GcImagePickerUtils.h"
 #import "GcUniversal/GcColorPickerUtils.h"
 #import <UIKit/UIKit.h>
+#import <PeterDev/libpddokdo.h>
 #import <dlfcn.h>
+#import "LocationFetcher.h"
+#import <CoreLocation/CoreLocation.h>
 #import <Cephei/HBPreferences.h>
-#import "JBBulletinManager.h"
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
-// #import "NCUtils/NCColorPickerUtilities.h"
+#import "NCUtils/NCColorPickerUtilities.h"
 #import "NCUtils/MarqueeLabel.h"
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
@@ -16,6 +18,39 @@
 #import "AQRManager.h"
 #import "sharedheaders.h"
 #import "NCUtils+UIColor.h"
+
+
+@interface CSQuickActionsView : UIView
+- (UIEdgeInsets)_buttonOutsets;
+@property (nonatomic, retain) UIControl *flashlightButton;
+@property (nonatomic, retain) UIControl *cameraButton;
+@end
+
+@interface WFTemperature : NSObject 
+@property (assign,nonatomic) double fahrenheit; 
+@end
+
+@interface WACurrentForecast : NSObject
+@property(assign, nonatomic)long long conditionCode;
+- (void)setConditionCode:(long long)arg1;
+@property (nonatomic,retain) WFTemperature * temperature;
+@end
+
+@interface WAForecastModel : NSObject
+@property(nonatomic,retain) WACurrentForecast* currentConditions;
+@end
+
+@interface UIStatusBarBreadcrumbItemView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+
+@interface WALockscreenWidgetViewController : UIViewController
+- (WAForecastModel *)currentForecastModel;
+@end
+
+@interface PDDokdo (Private)
+@property(nonatomic, retain, readonly)WALockscreenWidgetViewController* weatherWidget;
+@end
 
 
 
@@ -49,12 +84,24 @@
 @property (nonatomic, retain) AQRGRPView *aqrView;
 @end
 
+@interface SBUIController : NSObject
+- (BOOL)isOnAC;
+- (int)batteryCapacityAsPercentage;
+@end
+
+
 
 @interface SBDashBoardNotificationAdjunctListViewController : UIViewController
 @property (nonatomic, retain) AQRGRPView *grpView;
 @end
 
+@interface SBFloatingDockPlatterView : UIView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
 
+@interface SBDockView : UIView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
 
 @interface CSNotificationAdjunctListViewController : UIViewController
 @property (nonatomic, retain) AQRGRPView *grpView;
@@ -92,21 +139,20 @@
 
 @class _UILegibilitySettings;
 @interface SBFLockScreenDateView : UIView
-@property UILabel *dateLabel;
-@property UILabel *timeLabel;
-@property (nonatomic,retain) UIColor * textColor;                              
-@property (assign,nonatomic) double alignmentPercent;                                        
-@property (assign,nonatomic) double dateToTimeStretch;                                     
-@property (assign,nonatomic) double maximumSubtitleWidth;                                     
-@property (nonatomic,readonly) double timeBaselineOffsetFromOrigin; 
-@property (nonatomic,readonly) double subtitleBaselineOffsetFromOrigin;
-@property (nonatomic,retain) _UILegibilitySettings * legibilitySettings; 
+@property (nonatomic, retain) UILabel *dateLabel;
+@property (nonatomic, retain) UILabel *timeLabel;
+@property (nonatomic, retain) UILabel *weatherLabel;
+@property (nonatomic, retain) UIImageView *weatherImageView;
 @end
 
 @interface MPUMarqueeView
 @end
 
-@interface SBIconView
+@interface UIScreen (Private)
+@property (atomic, assign, readonly) NSUInteger screenSizeCategory;
+@end
+
+@interface SBIconView : UIView
 @property (nonatomic, assign, readwrite, getter=isLabelHidden) BOOL labelHidden;
 @end
 @interface SBIconListView
@@ -146,6 +192,8 @@
 
 @interface _UIBatteryView
 @property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@property (assign,nonatomic) BOOL showsPercentage;
+@property (assign,nonatomic) BOOL showsInlineChargingIndicator;
 @end
 
 @interface _UIStatusBarWifiSignalView
@@ -255,6 +303,10 @@
 @property (nonatomic,retain) MediaControlsTransportButton * languageOptionsButton;
 @end
 
+@interface WFLocation : NSObject
+@property (nonatomic,copy) CLLocation * geoLocation; 
+@end
+
 @interface MRUNowPlayingTransportControlsView : UIView // iOS 14
 @property (nonatomic,retain) MRUTransportButton * tvRemoteButton;
 @property (nonatomic,retain) MRUTransportButton * leftButton;
@@ -283,6 +335,9 @@
 @property (assign,nonatomic) BOOL forcesUppercaseText;
 @end
 
+@interface SBMainSwitcherViewController
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
 
 @interface MRUNowPlayingLabelView : UIView
 @property (nonatomic,retain) UILabel * titleLabel;
@@ -326,6 +381,11 @@
 @property (nonatomic, retain) MRUNowPlayingControlsView *controlsView;
 @end
 
+@interface WFWeatherConditions : NSObject 
+@property (nonatomic,retain) NSMutableDictionary * components; 
+@property (copy) WFLocation * location; 
+@end
+
 @interface MRUNowPlayingViewController : UIViewController
 @property (assign,nonatomic) id delegate;
 @property (nonatomic,readonly) int context;
@@ -361,15 +421,20 @@
 BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
-BOOL customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs;
-BOOL hideLabels;
+BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
+BOOL hideLabels, enableGestures, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs;
 id preferences, file, yes;
 NSInteger configurations, alignment;
-NSString *previousTitle = @"poggers";
-double musicPlayerAlpha, outlineSize, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius;
+NSString *previousTitle;
+NSString *dateFormat;
+NSString *timeFormat;
+double musicPlayerAlpha, outlineSize, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight;
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
+SBFLockScreenDateView* timeDateView = nil;
 UIButton* songImageForSmall;
+LocationFetcher *locationFetcher;
+int applicationDidFinishLaunching;
 UIButton* songBackground;
 UIButton* shuffleButton;
 UIButton *customImageBackground;
@@ -385,6 +450,8 @@ NSString *songLabel;
 NSString *subtitleLabel;
 UIColor *fuckingArtworkColor;
 UIColor *fuckingArtworkColor2;
+WFWeatherConditions *weatherConditions;
+WFLocation *wfLocation;
 MTMaterialView *yesmf;
 UIButton *pauseButton;
 UILabel *timeLabel;

@@ -16,9 +16,9 @@
 				<key>defaults</key>
 				<string>aquariusprefs</string>
 				<key>key</key>
-				<string>isSpringySectionEnabled</string>
+				<string>enableGestures</string>
 				<key>label</key>
-				<string>Enable SpringBoard Section?</string>
+				<string>Have Gestures?</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 				<key>default</key>
@@ -32,29 +32,13 @@
 				<key>cell</key>
 				<string>PSSwitchCell</string>
 				<key>default</key>
-				<true />
+				<false />
 				<key>defaults</key>
 				<string>aquariusprefs</string>
 				<key>key</key>
-				<string>downloadBarEnabled</string>
+				<string>notchedDeviceButtonCombo</string>
 				<key>label</key>
-				<string>Enable Download Bar For Icons?</string>
-				<key>default</key>
-				<false />
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSSwitchCell</string>
-				<key>default</key>
-				<true />
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>key</key>
-				<string>hideDock</string>
-				<key>label</key>
-				<string>Hide The Dock?</string>
-				<key>default</key>
-				<false />
+				<string>Enable Notched Device Button Combo?</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -64,9 +48,9 @@
 				<key>defaults</key>
 				<string>aquariusprefs</string>
 				<key>key</key>
-				<string>hideLabels</string>
+				<string>haveQuickActions</string>
 				<key>label</key>
-				<string>Hide Labels?</string>
+				<string>Enable Quick Actions?</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -76,14 +60,40 @@
 				<key>defaults</key>
 				<string>aquariusprefs</string>
 				<key>key</key>
-				<string>hidePageDots</string>
+				<string>showsPercentage</string>
 				<key>label</key>
-				<string>Hide Page Dots?</string>
+				<string>Show Percentage In Battery?</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideHomeBar</string>
+				<key>label</key>
+				<string>Hide Home Bar?</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideBreadcrumbs</string>
+				<key>label</key>
+				<string>Hide Breadcrumbs?</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 			</dict>
 		</array>
 		<key>title</key>
-		<string>SpringBoard</string>
+		<string>Modernization</string>
 	</dict>
 </plist>

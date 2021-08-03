@@ -10,10 +10,11 @@ aquarius:
     dir: tweak
     files:
         - Tweak.xm
+        - NCUtils+UIColor.m
     libs:
         - NCUtils
         - gcuniversal
-        - bulletin
+        - pddokdo
     frameworks:
         - MediaRemote
         - CoreGraphics

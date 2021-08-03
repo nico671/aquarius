@@ -3,8 +3,165 @@
 <plist version="1.0">
 	<dict>
 		<key>items</key>
-		<array></array>
+		<array>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>isLockscreenSectionEnabled</string>
+				<key>label</key>
+				<string>Enable Lockscreen Section?</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false />
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSegmentCell</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>alignment</string>
+				<key>label</key>
+				<string>Configuration</string>
+				<key>default</key>
+				<integer>0</integer>
+				<key>validTitles</key>
+				<array>
+					<string>Left</string>
+					<string>Centered</string>
+					<string>Right</string>
+				</array>
+				<key>validValues</key>
+				<array>
+					<integer>0</integer>
+					<integer>1</integer>
+					<integer>2</integer>
+				</array>
+				<key>id</key>
+				<string>ModeCell</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>time label settings</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSEditTextCell</string>
+				<key>default</key>
+				<string>h:mm</string>
+				<key>placeholder</key>
+				<string>h:mm</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>label</key>
+				<string>Time Format:</string>
+				<key>key</key>
+				<string>timeFormat</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>72</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>timeLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>date label settings</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSEditTextCell</string>
+				<key>default</key>
+				<string>EEEE, MMMM dd</string>
+				<key>placeholder</key>
+				<string>EEEE, MMMM dd</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>label</key>
+				<string>Date Format:</string>
+				<key>key</key>
+				<string>dateFormat</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>24</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>dateLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>misc settings</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideNoOlderNotifs</string>
+				<key>label</key>
+				<string>Hide the no older notifications label?</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false />
+			</dict>
+		</array>
 		<key>title</key>
-		<string>Aquarius</string>
+		<string>Lockscreen</string>
 	</dict>
 </plist>

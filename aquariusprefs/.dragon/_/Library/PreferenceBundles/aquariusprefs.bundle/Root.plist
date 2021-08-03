@@ -80,6 +80,22 @@
                 <string>SpringBoard Settings</string>
             </dict>
             <dict>
+                <key>AquariusSub</key>
+                <string>Lockscreen</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>LKSRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>lock</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Lockscreen Settings</string>
+            </dict>
+            <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
             </dict>

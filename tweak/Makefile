@@ -8,10 +8,10 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = aquarius
 
-aquarius_FILES = Tweak.xm NCUtils+UIColor.m #AQRGRPView.m AQRGRPCell.m AQRManager.m
-aquarius_FRAMEWORKS = CoreGraphics QuartzCore UIKit Foundation
-aquarius_PRIVATE_FRAMEWORKS = MediaRemote
-aquarius_LIBRARIES = gcuniversal bulletin NCUtils
+aquarius_FILES = Tweak.xm NCUtils+UIColor.m LocationFetcher.m #AQRGRPView.m AQRGRPCell.m AQRManager.m
+aquarius_FRAMEWORKS = CoreGraphics QuartzCore UIKit Foundation Weather CoreLocation
+aquarius_PRIVATE_FRAMEWORKS = MediaRemote WeatherFoundation
+aquarius_LIBRARIES = gcuniversal NCUtils pddokdo
 aquarius_CFLAGS = -fobjc-arc
 aquarius_EXTRA_FRAMEWORKS += Cephei
 include $(THEOS_MAKE_PATH)/tweak.mk

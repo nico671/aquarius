@@ -14,10 +14,13 @@
     [preferences removeAllObjects];
     [self respring];
 }
+
 - (void)sourceCode {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/nico671/aquarius"] options:@{} completionHandler:nil];
 }
-
+- (void)venmo {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://paypal.me/nico671dev"] options:@{} completionHandler:nil];
+}
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
@@ -162,12 +165,12 @@ return self;
     [versionLabel setFont:[UIFont systemFontOfSize:22 weight: UIFontWeightMedium] ];
     versionLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
      [versionLabel setTextAlignment:NSTextAlignmentCenter];
-    versionLabel.text = @"v1.7.4.1-1";
+    versionLabel.text = @"v2.0";
 
     [self addSubview:packageNameLabel];
     [self addSubview:developerLabel];
     [self addSubview:versionLabel];
-    self.backgroundColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
+    self.backgroundColor = [UIColor colorWithRed:0.25 green:0.447 blue:0.58 alpha:1.0];
 
     }
     	return self;
