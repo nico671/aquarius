@@ -46,6 +46,20 @@
 				<key>cell</key>
 				<string>PSSwitchCell</string>
 				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideDock</string>
+				<key>label</key>
+				<string>Hide The Dock?</string>
+				<key>default</key>
+				<false />
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
 				<false />
 				<key>defaults</key>
 				<string>aquariusprefs</string>

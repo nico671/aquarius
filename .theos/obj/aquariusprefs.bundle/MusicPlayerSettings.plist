@@ -10,26 +10,6 @@
 				<key>label</key>
 				<string>misc settings</string>
 			</dict>
-
-			<dict>
-				<key>cell</key>
-				<string>PSSwitchCell</string>
-				<key>default</key>
-				<true />
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-				<key>key</key>
-				<string>notifications?</string>
-				<key>label</key>
-				<string>notifications for a new song?</string>
-				<key>default</key>
-				<false />
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-			</dict>
-
 			<dict>
 				<key>cell</key>
 				<string>PSSwitchCell</string>
@@ -49,10 +29,8 @@
 			<dict>
 				<key>cell</key>
 				<string>PSSwitchCell</string>
-				<key>cellClass</key>
-				<string>MarqueeLabelCell</string>
 				<key>default</key>
-				<false />
+				<false/>
 				<key>defaults</key>
 				<string>aquariusprefs</string>
 				<key>PostNotification</key>
@@ -60,9 +38,7 @@
 				<key>key</key>
 				<string>isArtworkBackground</string>
 				<key>label</key>
-				<string>Use Artwork as Background? (Must have colored background off)</string>
-
-
+				<string>Use Artwork as Background?</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -168,14 +144,14 @@
 					<string>Default</string>
 					<string>ProgressBar</string>
 					<string>VolumeBar</string>
-					<string>SKINNY AF</string>
+			
 				</array>
 				<key>validValues</key>
 				<array>
-					<integer>0</integer>
+					<integer>3</integer>
 					<integer>1</integer>
 					<integer>2</integer>
-					<integer>3</integer>
+					
 
 				</array>
 				<key>id</key>
@@ -216,7 +192,7 @@
 				<key>key</key>
 				<string>customImageBackground?</string>
 				<key>label</key>
-				<string>have a custom image for the player background?</string>
+				<string>Custom Image Background?</string>
 				<key>default</key>
 				<false />
 			</dict>

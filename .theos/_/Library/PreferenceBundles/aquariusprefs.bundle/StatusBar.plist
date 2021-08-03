@@ -16,29 +16,11 @@
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>
-                <string>isStausBarSectionEnabled</string>
+                <string>isStatusBarSectionEnabled</string>
                 <key>label</key>
                 <string>Enable Status Bar Section?</string>
                 <key>default</key>
                 <false />
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSGroupCell</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSSwitchCell</string>
-                <key>default</key>
-                <false />
-
-                <key>defaults</key>
-                <string>aquariusprefs</string>
-                <key>key</key>
-                <string>modernStatusBar</string>
-                <key>label</key>
-                <string>Use Modern Status Bar? (only works on homescreen)</string>
-
             </dict>
             <dict>
                 <key>cell</key>
@@ -87,7 +69,7 @@
                 <key>key</key>
                 <string>isBatteryHidden</string>
                 <key>label</key>
-                <string>Hide Battery</string>
+                <string>Hide Battery?</string>
                 <key>id</key>
                 <string>batteryHidden</string>
                 <key>PostNotification</key>
