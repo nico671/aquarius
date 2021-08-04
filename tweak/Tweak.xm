@@ -90,7 +90,7 @@
 	%orig;
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
 	if (musicPlayerColorsEnabled && controller.context == 2) {
-		UIColor *leftColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
+  		UIColor *leftColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLeftButtonColor"];
 		[self.leftButton setStylingProvider:nil];
 		self.leftButton.imageView.layer.filters = nil;
 		[self.leftButton.imageView setTintColor:leftColor];
@@ -103,7 +103,7 @@
 		UIColor *rightColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customRightButtonColor"];
 		[self.rightButton setStylingProvider:nil];
 		self.rightButton.imageView.layer.filters = nil;
-		[self.rightButton.imageView setTintColor:rightColor];
+		[self.rightButton.imageView setTintColor:rightColor]; 
 	}
 }
 
@@ -317,7 +317,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 
 %group notifications
 %hook NCNotificationListCell
--(void)layoutSubviews{
+-(void)setNeedsLayout{
 	%orig;
 	if (isNotificationSectionEnabled){
 	self.backgroundColor = [UIColor clearColor];
@@ -350,7 +350,6 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 -(void)setNeedsLayout {
 	%orig;
 	if (colorNotifs){
-	//NSArray * tempNotificationsColorArray = [iconImage ];
 	self.backgroundColor = [NCImageUtils averageColor:iconImage];
 	self.layer.cornerRadius = notifCornerRadius;
 	yesmf = [self.subviews objectAtIndex:0];
@@ -454,7 +453,13 @@ else {
 -(void)setNeedsLayout {
 	%orig;
 	UIImage* tempWallpaperImage = (UIImage *)MSHookIvar<UIView *>(self, "_displayedImage");
-	wallpaperAverageColor = [NCImageUtils averageColor:tempWallpaperImage];
+	NSArray *colorArray = [tempWallpaperImage dominantColors];
+	if ([colorArray count] > 0){
+		wallpaperAverageColor = colorArray[0];
+	}
+	else {
+		wallpaperAverageColor = [tempWallpaperImage averageColor];
+	}
 	NSString *tempHexString = [UIColor hexStringFromColor:wallpaperAverageColor];
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:tempHexString forKey:@"hexString"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"NotificationMessageEvent" object:nil userInfo:userInfo];
@@ -513,19 +518,6 @@ else {
 }
 -(void)setNeedsLayout{
 	%orig;
-	locationFetcher = [[LocationFetcher alloc]init];
-	[locationFetcher start];
-	// locationManager = [[CLLocationManager alloc] init];
-	// locationManagerDelegate = [[SubVC alloc]init];
-	// locationManager.delegate = locationManagerDelegate;
-    // locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-	// [locationManager startUpdatingLocation];
-	// wfLocation = [[WFLocation alloc]init];
-	// wfLocation.geoLocation = locationManager.location;
-	// NSLog(@"[aquarius] locationManager.location %@",locationManager.location);
-	// weatherConditions = [[WFWeatherConditions alloc]init];
-	// weatherConditions.location = wfLocation;
-	// NSLog(@"[aquarius] weatherConditions.components %@",weatherConditions.components);
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
 }
 -(void)_updateLabels{
@@ -598,7 +590,7 @@ else {
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 	NSString *temperature = [weatherData objectForKey:@"temperature"];
 	NSString *conditions = [weatherData objectForKey:@"conditions"];
-	NSString *combined = [NSString stringWithFormat:@"%@°, %@", temperature,conditions];
+	NSString *combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
 	self.weatherLabel.text = combined;
 	[self addSubview:self.weatherLabel];
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
@@ -747,6 +739,14 @@ else {
 	else return %orig;
 }
 %end
+%hook _UIStatusBarVisualProvider_iOS
++(Class) class{
+	if (newStatusBar == NO){
+		return NSClassFromString(@"_UIStatusBarVisualProvider_LegacyPhone");
+	}
+	else return %orig;
+}
+%end
 %hook _UIStatusBarVisualProvider_Split54
 +(CGSize)notchSize {
     CGSize const orig = %orig;
@@ -825,6 +825,7 @@ void reloadPrefs() {
 	haveQuickActions = [file boolForKey:@"haveQuickActions"];
 	showsPercentage = [file boolForKey:@"showsPercentage"];
 	hideBreadcrumbs = [file boolForKey:@"hideBreadcrumbs"];
+	newStatusBar = [file boolForKey:@"newStatusBar"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 
@@ -875,6 +876,7 @@ void reloadPrefs() {
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
 	[file registerBool:&hidePageDots default:NO forKey:@"hidePageDots"];
+	[file registerBool:&newStatusBar default:NO forKey:@"newStatusBar"];
 	[file registerBool:&showsPercentage default:NO forKey:@"showsPercentage"];
 	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];

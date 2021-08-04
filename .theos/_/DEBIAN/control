@@ -5,6 +5,6 @@ Description: Beautify the lockscreen player
 Maintainer: nico671 <nico671dev@gmail.com>
 Author: nico671 <nico671dev0@gmail.com>
 Section: Tweaks
-Depends: com.mrgcgamer.libgcuniversal, ws.hbang.common (>= 1.16), com.peterdev.libpddokdo
-Version: 2.0-73
+Depends: com.mrgcgamer.libgcuniversal, ws.hbang.common (>= 1.16), com.peterdev.libpddokdo, com.twickd.nico-carbone.ncutils
+Version: 2.0-110
 Installed-Size: 512

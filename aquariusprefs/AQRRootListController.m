@@ -9,6 +9,10 @@
 #include <UIKit/UIKit.h>
 @implementation AQRRootListController
 
+-(void)twitter {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/nico_carbone1"] options:@{} completionHandler:nil];
+}
+
 -(void)resetPreferences {
     HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"aquariusprefs"];
     [preferences removeAllObjects];

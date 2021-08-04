@@ -73,7 +73,7 @@
 				<key>key</key>
 				<string>haveOutlineSecondaryColorMusicPlayer</string>
 				<key>label</key>
-				<string>Use secondary album color as the outline color</string>
+				<string>Use secondary color for outline?</string>
 			</dict>
 		</array>
 		<key>title</key>

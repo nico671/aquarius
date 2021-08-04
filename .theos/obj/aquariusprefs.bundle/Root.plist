@@ -120,6 +120,8 @@
                 <string>PSButtonCell</string>
                 <key>label</key>
                 <string>Reset Preferences</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
                 <key>action</key>
                 <string>resetPreferences</string>
             </dict>
@@ -128,32 +130,33 @@
                 <string>PSButtonCell</string>
                 <key>label</key>
                 <string>Source Code</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
                 <key>action</key>
                 <string>sourceCode</string>
             </dict>
             <dict>
                 <key>cell</key>
                 <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
                 <key>label</key>
                 <string>Buy Me A Coffee ☕️</string>
                 <key>action</key>
                 <string>venmo</string>
             </dict>
             <dict>
-                <key>big</key>
-                <true />
+                <key>cell</key>
+                <string>PSButtonCell</string>
                 <key>cellClass</key>
                 <string>HBTwitterCell</string>
-                <key>height</key>
-                <integer>56</integer>
                 <key>label</key>
                 <string>My Twitter</string>
                 <key>user</key>
                 <string>nico_carbone1</string>
                 <key>action</key>
-                <string>myTwitter</string>
+                <string>twitter</string>
             </dict>
-
         </array>
         <key>title</key>
         <string>Aquarius</string>

@@ -129,7 +129,7 @@
                 <key>key</key>
                 <string>isBackgroundColorEnabled</string>
                 <key>label</key>
-                <string>Use Artwork Color as Background?</string>
+                <string>Artwork Color as Background?</string>
             </dict>
 
         </array>

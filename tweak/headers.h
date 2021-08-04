@@ -2,6 +2,7 @@
 #import "GcUniversal/GcImagePickerUtils.h"
 #import "GcUniversal/GcColorPickerUtils.h"
 #import <UIKit/UIKit.h>
+#import "GcUniversal/GcImageUtils.h"
 #import <PeterDev/libpddokdo.h>
 #import <dlfcn.h>
 #import "LocationFetcher.h"
@@ -422,7 +423,7 @@ BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled,
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels, enableGestures, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs;
+BOOL hideLabels, enableGestures, newStatusBar, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs;
 id preferences, file, yes;
 NSInteger configurations, alignment;
 NSString *previousTitle;

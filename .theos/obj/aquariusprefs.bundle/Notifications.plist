@@ -53,7 +53,7 @@
                 <key>key</key>
                 <string>colorNotifs</string>
                 <key>label</key>
-                <string>Color Notifications</string>
+                <string>Color Notifications?</string>
                 <key>default</key>
                 <false />
             </dict>
