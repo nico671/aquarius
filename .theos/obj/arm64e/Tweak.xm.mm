@@ -20,7 +20,7 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBClickGestureRecognizer; @class SBFLockScreenDateView; @class _UIStatusBarSignalView; @class SBLockHardwareButton; @class _UIStatusBarWifiSignalView; @class _UIStatusBarVisualProvider_Split54; @class SBDockView; @class MRUNowPlayingHeaderView; @class SBFStaticWallpaperView; @class CSCoverSheetViewController; @class SBPressGestureRecognizer; @class SBLockHardwareButtonActions; @class SBHomeHardwareButton; @class SBFloatingDockPlatterView; @class NCNotificationListCell; @class _UIStatusBarVisualProvider_iOS; @class SBMediaController; @class NCNotificationListSectionRevealHintView; @class BSPlatform; @class MRUNowPlayingControlsView; @class SpringBoard; @class MRUNowPlayingLabelView; @class MTLumaDodgePillSettings; @class SBBacklightController; @class SBMainSwitcherViewController; @class SBHomeHardwareButtonActions; @class MRUNowPlayingTransportControlsView; @class SBIconListPageControl; @class PLPlatterHeaderContentView; @class SBIconView; @class NCNotificationShortLookView; @class SBUIController; @class CSAdjunctItemView; @class _UIBatteryView; @class _UIStatusBarStringView; @class NCNotificationContentView; @class SBHDefaultIconListLayoutProvider; @class SBIconProgressView; @class SBVolumeHardwareButton; @class _UIStatusBarData; @class CSQuickActionsView; @class _UIStatusBarCellularSignalView; 
+@class SBUIController; @class CSAdjunctItemView; @class SBIconListPageControl; @class SBClickGestureRecognizer; @class SBLockHardwareButtonActions; @class SBLockHardwareButton; @class SpringBoard; @class MRUNowPlayingHeaderView; @class CSQuickActionsView; @class SBFLockScreenDateView; @class NCNotificationContentView; @class CSCoverSheetViewController; @class SBPressGestureRecognizer; @class SBIconProgressView; @class MRUNowPlayingControlsView; @class MTLumaDodgePillSettings; @class SBIconView; @class NCNotificationShortLookView; @class _UIBatteryView; @class _UIStatusBarSignalView; @class NCNotificationListCell; @class SBDockView; @class SBHomeHardwareButton; @class _UIStatusBarData; @class _UIStatusBarStringView; @class _UIStatusBarWifiSignalView; @class SBFStaticWallpaperView; @class PLPlatterHeaderContentView; @class BSPlatform; @class MRUNowPlayingTransportControlsView; @class SBBacklightController; @class MRUNowPlayingLabelView; @class _UIStatusBarCellularSignalView; @class _UIStatusBarVisualProvider_iOS; @class SBFloatingDockPlatterView; @class NCNotificationListSectionRevealHintView; @class _UIStatusBarVisualProvider_Split54; @class SBHomeHardwareButtonActions; @class SBMainSwitcherViewController; @class SBMediaController; @class SBHDefaultIconListLayoutProvider; @class SBVolumeHardwareButton; 
 
 
 #line 1 "Tweak.xm"
@@ -835,7 +835,7 @@ void reloadPrefs() {
 	haveOutline = [file boolForKey:@"haveOutline?"];
 	outlineSize = [file doubleForKey:@"sizeOfOutline"];
 	musicPlayerCornerRadius = [file doubleForKey:@"musicPlayerCornerRadius"];
-	notifCornerRadius = [file doubleForKey:@"notifCornerRadius"];
+	notifCornerRadius = [file doubleForKey:@"notifsCornerRadius"];
 	dateLabelHeight = [file doubleForKey:@"dateLabelHeight"];
 	timeLabelHeight = [file doubleForKey:@"timeLabelHeight"];
 	haveOutlineSecondaryColorMusicPlayer = [file boolForKey:@"haveOutlineSecondaryColorMusicPlayer"];

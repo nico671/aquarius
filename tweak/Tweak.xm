@@ -805,7 +805,7 @@ void reloadPrefs() {
 	haveOutline = [file boolForKey:@"haveOutline?"];
 	outlineSize = [file doubleForKey:@"sizeOfOutline"];
 	musicPlayerCornerRadius = [file doubleForKey:@"musicPlayerCornerRadius"];
-	notifCornerRadius = [file doubleForKey:@"notifCornerRadius"];
+	notifCornerRadius = [file doubleForKey:@"notifsCornerRadius"];
 	dateLabelHeight = [file doubleForKey:@"dateLabelHeight"];
 	timeLabelHeight = [file doubleForKey:@"timeLabelHeight"];
 	haveOutlineSecondaryColorMusicPlayer = [file boolForKey:@"haveOutlineSecondaryColorMusicPlayer"];
