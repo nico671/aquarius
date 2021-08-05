@@ -238,12 +238,6 @@
 			}
 		}
   	});
-	// if (haveNotifs) {
-	// 		if ([songLabel isEqualToString:previousTitle]){
-	// 		[[objc_getClass("JBBulletinManager") sharedInstance] showBulletinWithTitle:subtitleLabel message:songLabel bundleID:[[[%c(SBMediaController) sharedInstance] nowPlayingApplication] bundleIdentifier]];
-	// 		}
-	// 		previousTitle = songLabel; //notifications
-	// }
 }
 %end
 %end
@@ -349,9 +343,9 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 
 -(void)setNeedsLayout {
 	%orig;
+	self.layer.cornerRadius = notifCornerRadius;
 	if (colorNotifs){
 	self.backgroundColor = [NCImageUtils averageColor:iconImage];
-	self.layer.cornerRadius = notifCornerRadius;
 	yesmf = [self.subviews objectAtIndex:0];
 	yesmf.hidden = YES;
 	}
@@ -780,6 +774,7 @@ else {
 %end
 %end
 void reloadPrefs() {
+	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
 	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
@@ -833,6 +828,7 @@ void reloadPrefs() {
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
+	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
 	[file registerBool:&hideHomeBar default:NO forKey:@"hideHomeBar"];
 	[file registerBool:&haveQuickActions default:NO forKey:@"haveQuickActions"];
 	[file registerBool:&enableGestures default:NO forKey:@"enableGestures"];
@@ -880,24 +876,25 @@ void reloadPrefs() {
 	[file registerBool:&showsPercentage default:NO forKey:@"showsPercentage"];
 	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
-
- 	if (isNotificationSectionEnabled) {
-		%init(notifications)
- 	}
-	if (musicPlayerEnabled) {
-        %init(musicplayer);
-	}
-	if (isSpringySectionEnabled){
-		%init(springy);
-	}
-	if (statusBarSectionEnabled){
-		%init(statusbar);
-	}
-	if (isLockscreenSectionEnabled){
-		%init(Lockscreen);
-	}
-	if (enableGestures){
-		%init(gesturesAndModernShit);
+	if (isTweakEnabled){
+ 		if (isNotificationSectionEnabled) {
+			%init(notifications)
+ 		}
+		if (musicPlayerEnabled) {
+    	    %init(musicplayer);
+		}
+		if (isSpringySectionEnabled){
+			%init(springy);
+		}
+		if (statusBarSectionEnabled){
+			%init(statusbar);
+		}
+		if (isLockscreenSectionEnabled){
+			%init(Lockscreen);
+		}
+		if (enableGestures){
+			%init(gesturesAndModernShit);
+		}
 	}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 }

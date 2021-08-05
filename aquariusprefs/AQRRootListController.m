@@ -8,6 +8,53 @@
 #include <spawn.h>
 #include <UIKit/UIKit.h>
 @implementation AQRRootListController
+-(void) setupNavigationTitleView {
+    self.navigationItem.titleView = [UIView new];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
+    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.titleLabel.text = @"2.0";
+    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleLabel.alpha = 0;
+    [self.navigationItem.titleView addSubview:self.titleLabel];
+
+    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,10,10)];
+    self.iconView.contentMode = UIViewContentModeScaleAspectFit;
+    self.iconView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/aquariusprefs.bundle/icon.png"];
+    self.iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.navigationItem.titleView addSubview:self.iconView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [self.titleLabel.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
+        [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
+        [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
+        [self.titleLabel.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
+        [self.iconView.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
+        [self.iconView.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
+        [self.iconView.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
+        [self.iconView.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
+    ]];
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offsetY = scrollView.contentOffset.y;
+
+    if (offsetY > 70) {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.iconView.alpha = 0.0;
+            self.titleLabel.alpha = 1.0;
+        }];
+    } else {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.iconView.alpha = 1.0;
+            self.titleLabel.alpha = 0.0;
+        }];
+    }
+    
+    if (offsetY > -40/2) offsetY = -40/2; //have incidence on "padding bottom" under image while scrolling down
+    self.headerImageView.frame = CGRectMake(10, offsetY + 64 + 40, self.headerView.frame.size.width - 10*2, 200 - offsetY - 64 - 40*2);
+}
+
 
 -(void)twitter {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/nico_carbone1"] options:@{} completionHandler:nil];
@@ -26,7 +73,19 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://paypal.me/nico671dev"] options:@{} completionHandler:nil];
 }
 - (void)viewDidLoad {
-	[super viewDidLoad];
+    [super viewDidLoad];
+    [self setupNavigationTitleView];
+    self.preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+
+    self.enableSwitch = [UISwitch new];
+    [self.enableSwitch setOnTintColor:[UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0]];
+    [self.enableSwitch addTarget:self action:@selector(setEnabled) forControlEvents:UIControlEventTouchUpInside];
+
+
+    self.item = [[UIBarButtonItem alloc] initWithCustomView:self.enableSwitch];
+    self.navigationItem.rightBarButtonItem = self.item;
+    [self.navigationItem setRightBarButtonItem:self.item];
+	
 
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"]];	
@@ -39,7 +98,16 @@
     
   
 }
+- (void)setEnabled {
+        
+    if ([[self.preferences objectForKey:@"isTweakEnabled"] isEqual:@(YES)])
+        [self.preferences setBool:NO forKey:@"isTweakEnabled"];
+    else
+        [self.preferences setBool:YES forKey:@"isTweakEnabled"];
 
+    [self respring];
+
+}
 - (void)dismissWelcomeController {
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"]];
@@ -82,44 +150,59 @@
 	return _specifiers;
 }
 - (void)respring {
-    UIBlurEffect* blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
-    UIVisualEffectView* blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
-    [blurView setFrame:self.view.bounds];
-    [blurView setAlpha:0.0];
-    [[self view] addSubview:blurView];
 
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [blurView setAlpha:1.0];
+    [[self blurView] setFrame:[[self view] bounds]];
+    [[self blurView] setAlpha:0];
+    [[self view] addSubview:[self blurView]];
+
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [[self blurView] setAlpha:1];
     } completion:^(BOOL finished) {
-        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=aquariusprefs"];
-        SBSRelaunchAction *restartAction;
-        restartAction = [NSClassFromString(@"SBSRelaunchAction") actionWithReason:@"RestartRenderServer" options:SBSRelaunchActionOptionsFadeToBlackTransition targetURL:returnURL];
-        [[NSClassFromString(@"FBSSystemService") sharedService] sendActions:[NSSet setWithObject:restartAction] withResult:nil];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/shuffle.dylib"])
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Aquarius"]];
+        else
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Tweaks&path=Aquarius"]];
     }];
-}
 
+}
+- (double)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+- (void)setEnabledState {
+
+    if ([[self.preferences objectForKey:@"isTweakEnabled"] isEqual:@(YES)])
+        [self.enableSwitch setOn:YES animated:YES];
+    else
+        [self.enableSwitch setOn:NO animated:YES];
+
+}
+- (void)viewDidAppear:(BOOL)animated {
+
+    [super viewDidAppear:animated];
+
+    [self setEnabledState];
+    CGRect frame = self.table.bounds;
+    frame.origin.y = -frame.size.height;
+
+}
 - (instancetype)init {
     self = [super init];
-
-
+    
+    if (self) {
+        [self setEnabledState];
         HBAppearanceSettings *appearanceSettings = [[HBAppearanceSettings alloc] init];
         appearanceSettings.tintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
+        appearanceSettings.navigationBarBackgroundColor = [UIColor colorWithRed:0.25 green:0.447 blue:0.58 alpha:1.0];
         appearanceSettings.tableViewCellSeparatorColor = [UIColor clearColor];
+        appearanceSettings.showsNavigationBarShadow = NO;
+        appearanceSettings.navigationBarTitleColor = [UIColor whiteColor];
+        appearanceSettings.translucentNavigationBar = YES;
+        appearanceSettings.navigationBarTintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
         appearanceSettings.tableViewCellSelectionColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
         self.hb_appearanceSettings = appearanceSettings;
+    }
 
-
-
-    if (self) {
-
-		self.respringButton = [[UIBarButtonItem alloc] initWithTitle:@"respring"
-                                    style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(respring)];
-
-			self.navigationItem.rightBarButtonItem = self.respringButton;
-}
-return self;
+    return self;
 }
 
 @end
@@ -128,73 +211,3 @@ return self;
 - (id)initWithSpecifier:(id)arg1;
 @end
 
-
-@interface AquariusTitleCell : PSTableCell <PreferencesTableCustomView> {
-    UIView *bgView;
-    UILabel *packageNameLabel;
-    UILabel *developerLabel;
-    UILabel *versionLabel;
-}
-@end
-
-@implementation AquariusTitleCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
-	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
-
-	if (self) {
-		int width = self.contentView.bounds.size.width;
-        int height = self.contentView.bounds.size.width;
-        CGRect rect = CGRectMake(0,0,width,height);
-
-
-    CGRect nameFrame = CGRectMake(CGRectGetMinX(rect), 90, width, 50);
-    CGRect developerFrame = CGRectMake(CGRectGetMinX(rect), 50, width, 50);
-    CGRect versionFrame = CGRectMake(CGRectGetMinX(rect), 130, width, 50);
-
-
-    packageNameLabel = [[UILabel alloc] initWithFrame:nameFrame];
-    [packageNameLabel setTextAlignment:NSTextAlignmentCenter];
-    packageNameLabel.text = @"Aquarius";
-
-
-    developerLabel = [[UILabel alloc] initWithFrame:developerFrame];
-    [developerLabel setFont:[UIFont systemFontOfSize:25 weight: UIFontWeightMedium] ];
-    developerLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.85];
-     [developerLabel setTextAlignment:NSTextAlignmentCenter];
-    developerLabel.text = @"Nico671";
-
-
-    versionLabel = [[UILabel alloc] initWithFrame:versionFrame];
-    [versionLabel setFont:[UIFont systemFontOfSize:22 weight: UIFontWeightMedium] ];
-    versionLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
-     [versionLabel setTextAlignment:NSTextAlignmentCenter];
-    versionLabel.text = @"v2.0";
-
-    [self addSubview:packageNameLabel];
-    [self addSubview:developerLabel];
-    [self addSubview:versionLabel];
-    self.backgroundColor = [UIColor colorWithRed:0.25 green:0.447 blue:0.58 alpha:1.0];
-
-    }
-    	return self;
-}
-
-- (instancetype)initWithSpecifier:(PSSpecifier *)specifier {
-	return [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"WotsitBetaTitleCell" specifier:specifier];
-}
-
-- (void)setFrame:(CGRect)frame {
-	frame.origin.x = 0;
-	[super setFrame:frame];
-}
-
-- (CGFloat)preferredHeightForWidth:(CGFloat)arg1 {
-    return 215.0f;
-}
-- (CGFloat)preferredHeightForWidth:(CGFloat)width inTableView:(id)tableView {
-	return [self preferredHeightForWidth:width];
-}
-
-
-@end

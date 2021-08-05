@@ -18,7 +18,7 @@
 				<key>key</key>
 				<string>enableGestures</string>
 				<key>label</key>
-				<string>Enable Modernization Settings?</string>
+				<string>Enable Modernization Settings</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 				<key>default</key>
@@ -38,7 +38,7 @@
 				<key>key</key>
 				<string>notchedDeviceButtonCombo</string>
 				<key>label</key>
-				<string>Notched Device Button Combo?</string>
+				<string>Notched Device Button Combo</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -50,7 +50,7 @@
 				<key>key</key>
 				<string>newStatusBar</string>
 				<key>label</key>
-				<string>Notched Device Status Bar?</string>
+				<string>Notched Device Status Bar</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -62,7 +62,7 @@
 				<key>key</key>
 				<string>haveQuickActions</string>
 				<key>label</key>
-				<string>Enable Quick Actions?</string>
+				<string>Enable Quick Actions</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -74,7 +74,7 @@
 				<key>key</key>
 				<string>showsPercentage</string>
 				<key>label</key>
-				<string>Show Percentage In Battery?</string>
+				<string>Show Percentage In Battery</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -86,7 +86,7 @@
 				<key>key</key>
 				<string>hideHomeBar</string>
 				<key>label</key>
-				<string>Hide Home Bar?</string>
+				<string>Hide Home Bar</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 			</dict>
@@ -100,7 +100,7 @@
 				<key>key</key>
 				<string>hideBreadcrumbs</string>
 				<key>label</key>
-				<string>Hide Breadcrumbs?</string>
+				<string>Hide Breadcrumbs</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 			</dict>

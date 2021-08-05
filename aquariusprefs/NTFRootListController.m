@@ -1,5 +1,6 @@
 
 #import <spawn.h>
+#import <Cephei/HBRespringController.h>
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSTableCell.h>
@@ -15,6 +16,8 @@
 
 @interface NTFRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
+@property(nonatomic, retain)UIBlurEffect* blur;
+@property(nonatomic, retain)UIVisualEffectView* blurView;
 @end
 
 @implementation NTFRootListController
@@ -37,22 +40,21 @@ return false;
 }
 
 - (void)respring {
-    UIBlurEffect* blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
-    UIVisualEffectView* blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
-    [blurView setFrame:self.view.bounds];
-    [blurView setAlpha:0.0];
-    [[self view] addSubview:blurView];
 
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [blurView setAlpha:1.0];
+    [[self blurView] setFrame:[[self view] bounds]];
+    [[self blurView] setAlpha:0];
+    [[self view] addSubview:[self blurView]];
+
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [[self blurView] setAlpha:1];
     } completion:^(BOOL finished) {
-        NSURL *returnURL = [NSURL URLWithString:@"prefs:root=orionprefs"];
-        SBSRelaunchAction *restartAction;
-        restartAction = [NSClassFromString(@"SBSRelaunchAction") actionWithReason:@"RestartRenderServer" options:SBSRelaunchActionOptionsFadeToBlackTransition targetURL:returnURL];
-        [[NSClassFromString(@"FBSSystemService") sharedService] sendActions:[NSSet setWithObject:restartAction] withResult:nil];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/shuffle.dylib"])
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Aquarius"]];
+        else
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Tweaks&path=Aquarius"]];
     }];
-}
 
+}
 - (instancetype)init {
     self = [super init];
 

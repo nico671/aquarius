@@ -19,7 +19,7 @@
                 <key>key</key>
                 <string>isNotificationSectionEnabled</string>
                 <key>label</key>
-                <string>Enable Notification Section?</string>
+                <string>Enable Notification Section</string>
                 <key>default</key>
                 <false />
             </dict>
@@ -39,7 +39,7 @@
                 <key>key</key>
                 <string>hideSnapImage</string>
                 <key>label</key>
-                <string>Hide snap bitmoji?</string>
+                <string>Hide snap bitmoji</string>
                 <key>default</key>
                 <false />
             </dict>
@@ -53,7 +53,7 @@
                 <key>key</key>
                 <string>colorNotifs</string>
                 <key>label</key>
-                <string>Color Notifications?</string>
+                <string>Adaptive Notification Coloring</string>
                 <key>default</key>
                 <false />
             </dict>
@@ -67,7 +67,7 @@
                 <key>key</key>
                 <string>leafCornerNotifs</string>
                 <key>label</key>
-                <string>Enable Leaf Style Notifs?</string>
+                <string>Enable Leaf Style Notifs</string>
                 <key>PostNotification</key>
                 <string>com.nico671.preferenceschanged</string>
             </dict>

@@ -18,7 +18,7 @@
                 <key>key</key>
                 <string>isStatusBarSectionEnabled</string>
                 <key>label</key>
-                <string>Enable Status Bar Section?</string>
+                <string>Enable Status Bar Section</string>
                 <key>default</key>
                 <false />
             </dict>
@@ -36,7 +36,7 @@
                 <key>key</key>
                 <string>isTimeHidden</string>
                 <key>label</key>
-                <string>Hide Time?</string>
+                <string>Hide Time</string>
                 <key>id</key>
                 <string>timeHidden</string>
             </dict>
@@ -69,7 +69,7 @@
                 <key>key</key>
                 <string>isBatteryHidden</string>
                 <key>label</key>
-                <string>Hide Battery?</string>
+                <string>Hide Battery</string>
                 <key>id</key>
                 <string>batteryHidden</string>
                 <key>PostNotification</key>
@@ -108,7 +108,7 @@
                 <key>key</key>
                 <string>isWifiHidden</string>
                 <key>label</key>
-                <string>Hide Wifi Signal?</string>
+                <string>Hide Wifi Signal</string>
                 <key>id</key>
                 <string>wifiHidden</string>
             </dict>
@@ -123,7 +123,7 @@
                 <key>key</key>
                 <string>isCellularHidden</string>
                 <key>label</key>
-                <string>Hide Cellular Signal?</string>
+                <string>Hide Cellular Signal</string>
                 <key>id</key>
                 <string>cellularHidden</string>
                 <key>PostNotification</key>

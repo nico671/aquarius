@@ -14,9 +14,6 @@
 #import "NCUtils/MarqueeLabel.h"
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AQRGRPCell.h"
-#import "AQRGRPView.h"
-#import "AQRManager.h"
 #import "sharedheaders.h"
 #import "NCUtils+UIColor.h"
 
@@ -81,10 +78,6 @@
 @property (nonatomic,retain) NSMutableArray * notificationSections;
 @end
 
-@interface CSCombinedListViewController : UIViewController
-@property (nonatomic, retain) AQRGRPView *aqrView;
-@end
-
 @interface SBUIController : NSObject
 - (BOOL)isOnAC;
 - (int)batteryCapacityAsPercentage;
@@ -93,7 +86,6 @@
 
 
 @interface SBDashBoardNotificationAdjunctListViewController : UIViewController
-@property (nonatomic, retain) AQRGRPView *grpView;
 @end
 
 @interface SBFloatingDockPlatterView : UIView
@@ -105,7 +97,6 @@
 @end
 
 @interface CSNotificationAdjunctListViewController : UIViewController
-@property (nonatomic, retain) AQRGRPView *grpView;
 @property (getter=isPresentingContent,nonatomic,readonly) BOOL presentingContent;
 @property (nonatomic,strong,readwrite) UIStackView *stackView;
 -(void)adjunctListModel:(id)arg1 didAddItem:(id)arg2 ;
@@ -419,7 +410,7 @@
 - (id)initWithControlCenter:(BOOL)controlCenter defaultStyle:(long long)style;
 @end
 
-BOOL musicPlayerEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
+BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;

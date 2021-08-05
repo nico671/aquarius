@@ -22,7 +22,7 @@
 				<key>key</key>
 				<string>isRoutingButtonHidden</string>
 				<key>label</key>
-				<string>Hide Routing Button?</string>
+				<string>Hide Routing Button</string>
 				<key>default</key>
 				<false />
 			</dict>
@@ -38,7 +38,7 @@
 				<key>key</key>
 				<string>isArtworkBackground</string>
 				<key>label</key>
-				<string>Use Artwork as Background?</string>
+				<string>Use Artwork as Background</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -171,7 +171,7 @@
 				<key>key</key>
 				<string>musicPlayerLeafLook</string>
 				<key>label</key>
-				<string>Leaf Look Corner Radius?</string>
+				<string>Leaf Look Corner Radius</string>
 			</dict>
 
 			<dict>
@@ -192,7 +192,7 @@
 				<key>key</key>
 				<string>customImageBackground?</string>
 				<key>label</key>
-				<string>Custom Image Background?</string>
+				<string>Custom Image Background</string>
 				<key>default</key>
 				<false />
 			</dict>

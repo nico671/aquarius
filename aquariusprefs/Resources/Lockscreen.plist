@@ -18,7 +18,7 @@
 				<key>key</key>
 				<string>isLockscreenSectionEnabled</string>
 				<key>label</key>
-				<string>Enable Lockscreen Section?</string>
+				<string>Enable Lockscreen Section</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 				<key>default</key>
@@ -214,7 +214,7 @@
 				<key>key</key>
 				<string>hideNoOlderNotifs</string>
 				<key>label</key>
-				<string>Hide the no older notifications label?</string>
+				<string>Hide the no older notifications label</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 				<key>default</key>

@@ -16,7 +16,7 @@
                 <key>key</key>
                 <string>isColorsEnabled</string>
                 <key>label</key>
-                <string>Enable Colors?</string>
+                <string>Enable Colors</string>
             </dict>
 
             <dict>
@@ -129,7 +129,7 @@
                 <key>key</key>
                 <string>isBackgroundColorEnabled</string>
                 <key>label</key>
-                <string>Artwork Color as Background?</string>
+                <string>Artwork Color as Background</string>
             </dict>
 
         </array>

@@ -1,5 +1,4 @@
 #import <objc/runtime.h>
-#import "protocols.h"
 @interface UIImage (UIApplicationIconPrivate)
 + (UIImage *)_applicationIconImageForBundleIdentifier:(NSString *)bundleIdentifier format:(int)format;
 @end
@@ -56,7 +55,7 @@
 
 @end
 
-@interface NCNotificationCombinedListViewController : UIViewController <clvc>
+@interface NCNotificationCombinedListViewController : UIViewController
 
 @property (nonatomic, assign) BOOL aqrAllowChanges;
 -(id)allNotificationRequests;

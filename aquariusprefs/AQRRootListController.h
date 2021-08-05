@@ -5,10 +5,18 @@
 #import <Foundation/Foundation.h>
 #import <CepheiPrefs/HBRootListController.h>
 #import <UIKit/UIKit.h>
+#import <Cephei/HBRespringController.h>
 
-@interface AQRRootListController : PSListController
-@property (nonatomic, retain) UISwitch *switchy;
-@property (nonatomic, retain) UIBarButtonItem *respringButton;
+@interface AQRRootListController : HBRootListController
+@property(nonatomic, retain)UIBlurEffect* blur;
+@property(nonatomic, retain)UIVisualEffectView* blurView;
+@property(nonatomic, retain)HBPreferences* preferences;
+@property(nonatomic, retain)UISwitch* enableSwitch;
+@property(nonatomic, retain)UIBarButtonItem* item;
+@property (nonatomic, retain) UILabel *titleLabel;
+@property (nonatomic, retain) UIImageView *iconView;
+@property (nonatomic, retain) UIView *headerView;
+@property (nonatomic, retain) UIImageView *headerImageView;
 @end
 
 

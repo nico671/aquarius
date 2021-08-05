@@ -18,7 +18,7 @@
                 <key>key</key>
                 <string>isMusicSectionEnabled</string>
                 <key>label</key>
-                <string>Enable Music Player Section?</string>
+                <string>Enable Music Player Section</string>
                 <key>default</key>
                 <false />
             </dict>
