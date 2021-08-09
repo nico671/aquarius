@@ -14,7 +14,7 @@
                 <key>cellClass</key>
                 <string>SFSymbolsCell</string>
                 <key>icon</key>
-                <string>candybarphone</string>
+                <string>pianokeys</string>
                 <key>isController</key>
                 <true />
                 <key>label</key>
@@ -68,7 +68,7 @@
                 <key>label</key>
                 <string>SpringBoard Settings</string>
             </dict>
-            <dict>
+           <dict>
                 <key>AquariusSub</key>
                 <string>Lockscreen</string>
                 <key>cell</key>
@@ -80,7 +80,7 @@
                 <key>icon</key>
                 <string>lock</string>
                 <key>isController</key>
-                <true/>
+                <true />
                 <key>label</key>
                 <string>Lockscreen Settings</string>
             </dict>
@@ -100,6 +100,7 @@
                 <key>label</key>
                 <string>Modernization Settings</string>
             </dict>
+            
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
@@ -138,6 +139,16 @@
                 <key>cell</key>
                 <string>PSButtonCell</string>
                 <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Beta Testing/Support!</string>
+                <key>action</key>
+                <string>discord</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
                 <string>HBTwitterCell</string>
                 <key>label</key>
                 <string>My Twitter</string>
@@ -146,6 +157,7 @@
                 <key>action</key>
                 <string>twitter</string>
             </dict>
+
         </array>
         <key>title</key>
         <string>Aquarius</string>

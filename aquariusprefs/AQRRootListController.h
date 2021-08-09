@@ -17,6 +17,7 @@
 @property (nonatomic, retain) UIImageView *iconView;
 @property (nonatomic, retain) UIView *headerView;
 @property (nonatomic, retain) UIImageView *headerImageView;
+@property (nonatomic,retain) NSMutableDictionary *savedSpecifiers;
 @end
 
 

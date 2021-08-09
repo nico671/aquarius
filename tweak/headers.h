@@ -160,17 +160,28 @@
 +(double)cornerRadius;
 @property NSArray *subviews;
 @end
-
+@interface NCNotificationShortLookViewController
+@property (nonatomic, assign, readonly) UIView *viewForPreview;
+@end
 @interface NCNotificationListCell : UIView
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @end
-
+@interface NCNotificationContentView : UIView
+@property (getter=_secondaryLabel,nonatomic,readonly) UILabel * secondaryLabel;   
+@property (setter=_setPrimaryLabel:,getter=_primaryLabel,nonatomic,retain) UILabel * primaryLabel; 
+@end
 @interface NCNotificationShortLookView : UIView {
 	BOOL _banner;
 }
+@property (nonatomic,retain) UIView *topOldieNotifView;
+- (UIColor *)lighterColorForColor:(UIColor *)c ;
+-(void)setUpRetroLook;
+-(void)setFrameAndShit:(NSNotification *)notification;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @property NSArray *subviews;
+@property (nonatomic,copy) NSArray * icons; 
 @property (assign,setter=_setBanner:,getter=_isBanner,nonatomic) BOOL banner;
+@property (getter=_notificationContentView,nonatomic,readonly) NCNotificationContentView * notificationContentView; 
 @end
 
 @interface UIView (Private)
@@ -203,9 +214,10 @@
 
 @interface _UIStatusBarStringView
 @property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
-
 @end
-
+@interface UITabBar (Private)
+@property (assign,setter=_setTabBarSizing:,nonatomic) long long _tabBarSizing; 
+@end
 @interface _UIStatusBar : UIView
 @property UIView *isTweakOnIndicator;
 @property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
@@ -399,8 +411,9 @@
 @property (nonatomic,retain) MTMaterialView * backgroundView;
 @end
 
-@interface PLPlatterHeaderContentView
+@interface PLPlatterHeaderContentView : UIView
 @property (nonatomic,copy,readwrite) NSArray *icons;
+
 @end
 
 @interface CSCoverSheetViewController : UIViewController
@@ -414,13 +427,13 @@ BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificatio
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels, enableGestures, newStatusBar, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs;
+BOOL hideLabels, enableGestures, newStatusBar, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
-NSInteger configurations, alignment;
+NSInteger configurations, alignment, topOldieColor, notifStyle, retroNotifBackgroundColor;
 NSString *previousTitle;
 NSString *dateFormat;
 NSString *timeFormat;
-double musicPlayerAlpha, outlineSize, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight;
+double musicPlayerAlpha, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight;
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
@@ -444,42 +457,11 @@ UIColor *fuckingArtworkColor;
 UIColor *fuckingArtworkColor2;
 WFWeatherConditions *weatherConditions;
 WFLocation *wfLocation;
-MTMaterialView *yesmf;
+MTMaterialView *notifBackgroundView;
 UIButton *pauseButton;
 UILabel *timeLabel;
 UILabel *dateLabel;
-// static void mostlySetUpTheAlbumArtwork() {
-  	
-// }
-
-// static void mostlySetUpTopLabel() {
-// 	topLabel = [MarqueeLabel new];
-// 	[topLabel setFont:[UIFont systemFontOfSize:15]];
-// 	[topLabel setTextAlignment:NSTextAlignmentLeft];
-// 	[topLabel setAlpha:1];
-// 	if (musicPlayerColorsEnabled) {
-// 		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
-// 		[bottomLabel setTextColor:customColor];
-// 	}
-// 	[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-// 	[topLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-//     [topLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-// }
-
-// static void mostlySetUpBottomLabel() {
-// 	bottomLabel = [MarqueeLabel new];
-// 	[bottomLabel setFont:[UIFont systemFontOfSize:15]];
-// 	[bottomLabel setTextAlignment:NSTextAlignmentLeft];
-// 	[bottomLabel setAlpha:1];
-// 	if (musicPlayerColorsEnabled) {
-// 		UIColor *customColor = [NCColorPickerUtilities colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleColor"];
-// 		[bottomLabel setTextColor:customColor];
-// 	}
-// 	[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-// 	[bottomLabel.widthAnchor constraintEqualToConstant:230].active = YES;
-// 	[bottomLabel.heightAnchor constraintEqualToConstant:21.0].active = YES;
-// }
-
+UIView *topOldieNotifView;
 static void setUpTheArtworkBackground() {
 	songBackground = [UIButton new];
 [songBackground setContentMode:UIViewContentModeScaleAspectFill];
@@ -500,14 +482,4 @@ static void setUpCustomBackground() {
 [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
-// static void	setUpShuffleButton() {
-// shuffleButton = [UIButton new];
-// [shuffleButton setContentMode:UIViewContentModeScaleAspectFill];
-// [shuffleButton setClipsToBounds:YES];
-// [shuffleButton setAdjustsImageWhenHighlighted:NO];
-// [shuffleButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-// [shuffleButton setTintColor: [UIColor blueColor]];
-// [shuffleButton setBackgroundColor:[UIColor redColor]];
-// shuffleButton.hidden = NO;
-// [shuffleButton setAlpha:1];
-// }
+

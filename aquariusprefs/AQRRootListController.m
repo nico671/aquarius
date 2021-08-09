@@ -8,6 +8,32 @@
 #include <spawn.h>
 #include <UIKit/UIKit.h>
 @implementation AQRRootListController
+-(void)updateSpecifierVisibility:(BOOL)animated {
+	//Get value of switch specifier
+	PSSpecifier *switchSpecifier = [self specifierForID:@"SWITCH_ID"];
+	BOOL switchValue = [[self readPreferenceValue:switchSpecifier] boolValue];
+
+	//Check if our switch is set to NO, then remove the specifier
+	if(!switchValue) {
+		[self removeSpecifier:self.savedSpecifiers[@"CELL_ID"] animated:animated];
+
+	//If the switch is set to YES, we check if the specifier exists then insert it after the switch using the SWITCH_ID
+	} else if(![self containsSpecifier:self.savedSpecifiers[@"CELL_ID"]]) {
+		[self insertSpecifier:self.savedSpecifiers[@"CELL_ID"] afterSpecifierID:@"SWITCH_ID" animated:animated];
+	}
+}
+-(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
+	[super setPreferenceValue:value specifier:specifier];
+
+	[self updateSpecifierVisibility:YES];
+}
+- (NSArray *)specifiers {
+	if (!_specifiers) {
+		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+	}
+
+	return _specifiers;
+}
 -(void) setupNavigationTitleView {
     self.navigationItem.titleView = [UIView new];
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
@@ -59,6 +85,9 @@
 -(void)twitter {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/nico_carbone1"] options:@{} completionHandler:nil];
 }
+-(void)discord {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://discord.gg/7Uz2cPRH"] options:@{} completionHandler:nil];
+}
 
 -(void)resetPreferences {
     HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"aquariusprefs"];
@@ -95,7 +124,7 @@
     if ([didShowOBWelcomeController isEqual:@0]) {
 		[self setupWelcomeController];
     }
-    
+
   
 }
 - (void)setEnabled {
@@ -137,18 +166,17 @@
     welcomeController.view.tintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
     [self presentViewController:welcomeController animated:YES completion:nil];
 }
-// -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-// 	if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)]) {
-// 		//[(AQRAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
-// }
-// }
-- (NSArray *)specifiers {
-	if (!_specifiers) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-	}
+- (BOOL)hideShitOrNah {
+        
+    if ([[self.preferences objectForKey:@"isNotificationSectionEnabled"] isEqual:@(YES)])
+        return YES;
+    else
+        return NO;
 
-	return _specifiers;
 }
+
+
+
 - (void)respring {
 
     [[self blurView] setFrame:[[self view] bounds]];
@@ -179,7 +207,6 @@
 - (void)viewDidAppear:(BOOL)animated {
 
     [super viewDidAppear:animated];
-
     [self setEnabledState];
     CGRect frame = self.table.bounds;
     frame.origin.y = -frame.size.height;

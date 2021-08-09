@@ -172,7 +172,7 @@
                                     self.frame.size.width,
                                     self.frame.size.height)];
           }
-          if (isBackgroundColored && !isArtworkBackground) {
+          if (isBackgroundColored) {
             [platterView.backgroundView setAlpha:0];
           }
           [self.heightAnchor constraintEqualToConstant:100].active = true;
@@ -210,6 +210,8 @@
   }
   if (isBackgroundColored) {
     self.backgroundColor = fuckingArtworkColor;
+	 PLPlatterView *platterView = (PLPlatterView *)MSHookIvar<UIView *>(self, "_platterView");
+	 platterView.backgroundView.hidden = YES;
   }
 }
 %end
@@ -320,38 +322,88 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 }
 %end
 
-%hook NCNotificationContentView
--(void)setNeedsLayout{
-	%orig;
-	if (hideSnapImage){
-	UIImageView *replacementSnapImage = (UIImageView*)MSHookIvar<UIImageView*>(self, "_thumbnailImageView");
-	replacementSnapImage.hidden = YES;
-	}
-}
-%end
-
-%hook PLPlatterHeaderContentView
--(void)setNeedsLayout {
-	%orig;
-	if (colorNotifs){
-	iconImage = [self.icons objectAtIndex:0];
-	}
-}
-%end
-
 %hook NCNotificationShortLookView
-
--(void)setNeedsLayout {
+%property (nonatomic,retain) UIView *topOldieNotifView;
+- (void)didMoveToWindow {
 	%orig;
+	// iconImage = self.icons[0];
+	// notifBackgroundView = [self.subviews objectAtIndex:0];
+	// PLPlatterHeaderContentView *anchorView = self.subviews[1];
+	
 	self.layer.cornerRadius = notifCornerRadius;
-	if (colorNotifs){
-	self.backgroundColor = [NCImageUtils averageColor:iconImage];
-	yesmf = [self.subviews objectAtIndex:0];
-	yesmf.hidden = YES;
-	}
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
+	NSLog(@"[aquarius] %@",NSStringFromCGRect(self.notificationContentView.frame));
+
+}
+%new 
+-(void)setUpRetroLook {
+	// retro look
+	iconImage = self.icons[0];
+	notifBackgroundView = [self.subviews objectAtIndex:0];
+	PLPlatterHeaderContentView *anchorView = self.subviews[1];
+	if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && notifStyle == 1){
+	self.topOldieNotifView = [[UIView alloc]init];
+	[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+	if (topOldieColor == 0){
+		self.topOldieNotifView.backgroundColor = [UIColor grayColor];
+	}
+	if (topOldieColor == 1){
+		UIColor *tempColor = [iconImage averageColor];
+		self.topOldieNotifView.backgroundColor = tempColor;
+	}
+	if (topOldieColor == 2){
+		UIColor *tempColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
+		self.topOldieNotifView.backgroundColor = tempColor;
+	}
+	if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
+		notifBackgroundView.hidden = YES;
+		UIColor *tempColor = [iconImage averageColor];
+		self.backgroundColor = [self lighterColorForColor:tempColor];
+	}
+	else if (retroNotifBackgroundColor == 1){
+		notifBackgroundView.hidden = YES;
+		UIColor *tempColor = [iconImage averageColor];
+		self.backgroundColor = tempColor;
+	}
+	else if (retroNotifBackgroundColor == 2){
+		notifBackgroundView.hidden = YES;
+		UIColor *tempColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
+		self.topOldieNotifView.backgroundColor = tempColor;
+	}
+	self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
+	
+	[self.topOldieNotifView setTranslatesAutoresizingMaskIntoConstraints:NO];
+	if (!self.banner){
+	[self insertSubview:self.topOldieNotifView atIndex:1];
+	}
+	else {
+		[self addSubview:self.topOldieNotifView];
+		[self bringSubviewToFront:self.topOldieNotifView];
+	}
+	[self.topOldieNotifView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+	[self.topOldieNotifView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
+	[self.topOldieNotifView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+	[self.topOldieNotifView.bottomAnchor constraintEqualToAnchor:anchorView.bottomAnchor constant:-5].active = YES;
+	self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
+	if (oldieNotifHaveShadow){
+	self.topOldieNotifView.layer.shadowColor = [UIColor blackColor].CGColor;
+	self.topOldieNotifView.layer.shadowOffset = CGSizeMake(0, 4);
+	self.topOldieNotifView.layer.shadowRadius = 10;
+	self.topOldieNotifView.layer.shadowOpacity = notifShadowOpacity;
+	}
+	}
+}
+%new 
+- (UIColor *)lighterColorForColor:(UIColor *)c {
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MIN(r + 0.2, 1.0)
+                               green:MIN(g + 0.2, 1.0)
+                                blue:MIN(b + 0.2, 1.0)
+                               alpha:a];
+    return nil;
 }
 %end
 %end
@@ -652,6 +704,13 @@ else {
 	else %orig;
 }
 %end
+%hook UIWindow
+- (UIEdgeInsets)safeAreaInsets {
+    UIEdgeInsets orig = %orig;
+    orig.bottom = 0;
+    return orig;
+}
+%end
 
 %hook SBClickGestureRecognizer
 - (void)addShortcutWithPressTypes:(id)arg1 {
@@ -720,6 +779,20 @@ else {
 	}
 }
 %end
+%hook UIKeyboardImpl
++(UIEdgeInsets)deviceSpecificPaddingForInterfaceOrientation:(NSInteger)orientation inputMode:(id)mode {
+	if (newKeyboard == NO){
+	UIEdgeInsets orig = %orig;
+	orig.left =  0;
+	orig.right = 0;
+    orig.bottom = 0;
+	return orig;
+	}
+	else {
+		return %orig;
+	}
+}
+%end
 %hook SBHDefaultIconListLayoutProvider
 -(NSUInteger)screenType {
     return UIScreen.mainScreen.screenSizeCategory - 1;
@@ -749,7 +822,6 @@ else {
 +(double)height {
 	return 20;
 }
-
 %end
 
 %hook _UIBatteryView 
@@ -767,10 +839,14 @@ else {
 	else return %orig;
 }
 %end
-%hook SBMainSwitcherViewController
+%hook UITabBar
+
 -(void)setNeedsLayout{
-	self.hidden = YES;
+	%orig;
+	NSLog(@"[aquarius] is this method called");
+	self._tabBarSizing = 20;
 }
+
 %end
 %end
 void reloadPrefs() {
@@ -787,6 +863,8 @@ void reloadPrefs() {
 	modernStatusBar = [file boolForKey:@"modernStatusBar"];
 	isRoutingButtonHidden = [file boolForKey:@"isRoutingButtonHidden"];
 	configurations = [file integerForKey:@"configuration"];
+	notifStyle = [file integerForKey:@"notifStyle"];
+	topOldieColor = [file integerForKey:@"topOldieColor"];
 	alignment = [file integerForKey:@"alignment"];
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
 	weatherLabelHeight = [file doubleForKey:@"weatherLabelHeight"];
@@ -803,10 +881,10 @@ void reloadPrefs() {
 	notifCornerRadius = [file doubleForKey:@"notifsCornerRadius"];
 	dateLabelHeight = [file doubleForKey:@"dateLabelHeight"];
 	timeLabelHeight = [file doubleForKey:@"timeLabelHeight"];
+	notifShadowOpacity = [file doubleForKey:@"oldieNotifShadowOpacity"];
 	haveOutlineSecondaryColorMusicPlayer = [file boolForKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	isSpringySectionEnabled = [file boolForKey:@"isSpringySectionEnabled"];
 	downloadBarEnabled = [file boolForKey:@"downloadBarEnabled"];
-	colorNotifs = [file boolForKey:@"colorNotifs"];
 	musicPlayerLeafLook = [file boolForKey:@"musicPlayerLeafLook"];
 	hideLabels = [file boolForKey:@"hideLabels"];
 	hidePageDots = [file boolForKey:@"hidePageDots"];
@@ -815,12 +893,17 @@ void reloadPrefs() {
 	hideNoOlderNotifs = [file boolForKey:@"hideNoOlderNotifs"];
 	weatherLabelEnabled = [file boolForKey:@"weatherLabelEnabled"];
 	hideHomeBar = [file boolForKey:@"hideHomeBar"];
+	retroNotifBackgroundColor = [file integerForKey:@"retroNotifBackgroundColor"];
+	
 	hideDock = [file boolForKey:@"hideDock"];
 	enableGestures = [file boolForKey:@"enableGestures"];
 	haveQuickActions = [file boolForKey:@"haveQuickActions"];
 	showsPercentage = [file boolForKey:@"showsPercentage"];
 	hideBreadcrumbs = [file boolForKey:@"hideBreadcrumbs"];
 	newStatusBar = [file boolForKey:@"newStatusBar"];
+	retroNotifVibe = [file boolForKey:@"retroNotif"];
+	oldieNotifHaveShadow = [file boolForKey:@"oldieNotifHaveShadow"];
+	newKeyboard = [file boolForKey:@"newKeyboard"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 
@@ -843,14 +926,19 @@ void reloadPrefs() {
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
 	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
+	[file registerBool:&newKeyboard default:NO forKey:@"newKeyboard"];
 	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStatusBarSectionEnabled"];
 	[file registerBool:&isRoutingButtonHidden default:NO forKey:@"isRoutingButtonHidden"];
+	[file registerBool:&oldieNotifHaveShadow default:1 forKey:@"oldieNotifHaveShadow"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
+	[file registerDouble:&notifShadowOpacity default:.25 forKey:@"oldieNotifShadowOpacity"];
 	[file registerDouble:&timeLabelHeight default:72 forKey:@"timeLabelHeight"];
 	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
 	[file registerDouble:&weatherLabelHeight default:24 forKey:@"weatherLabelHeight"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
+	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
+	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];
 	[file registerBool:&musicPlayerColorsEnabled default:NO forKey:@"isColorsEnabled"];
 	[file registerBool:&haveNotifs default:NO forKey:@"notifications?"];
@@ -867,7 +955,6 @@ void reloadPrefs() {
 	[file registerBool:&isSpringySectionEnabled default:NO forKey:@"isSpringySectionEnabled"];
 	[file registerBool:&isLockscreenSectionEnabled default:NO forKey:@"isLockscreenSectionEnabled"];
 	[file registerBool:&downloadBarEnabled default:NO forKey:@"downloadBarEnabled"];
-	[file registerBool:&colorNotifs default:NO forKey:@"colorNotifs"];
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
@@ -876,6 +963,9 @@ void reloadPrefs() {
 	[file registerBool:&showsPercentage default:NO forKey:@"showsPercentage"];
 	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
+	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
+	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
+	
 	if (isTweakEnabled){
  		if (isNotificationSectionEnabled) {
 			%init(notifications)

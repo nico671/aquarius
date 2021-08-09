@@ -1,6 +1,6 @@
 Package: com.nico671.bettermusicplayer
 Name: aquarius
-Version: 2.0
+Version: 1.7.6.1
 Architecture: iphoneos-arm
 Description: Beautify the lockscreen player
 Maintainer: nico671 <nico671dev@gmail.com>

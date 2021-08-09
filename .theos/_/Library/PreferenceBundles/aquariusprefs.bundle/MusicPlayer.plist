@@ -20,7 +20,7 @@
                 <key>label</key>
                 <string>Enable Music Player Section</string>
                 <key>default</key>
-                <false />
+                <false/>
             </dict>
             <dict>
                 <key>AquariusSub</key>
@@ -55,7 +55,6 @@
                 <key>label</key>
                 <string>Coloring</string>
             </dict>
-
             <dict>
                 <key>AquariusSub</key>
                 <string>MusicPlayerOutline</string>

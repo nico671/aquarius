@@ -1,23 +1,43 @@
 
 #import <Preferences/PSListController.h>
+#import <spawn.h>
+#import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSTableCell.h>
 #import <Preferences/PSSwitchTableCell.h>
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
+
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
+#import <Cephei/HBRespringController.h>
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
-#import <Cephei/HBRespringController.h>
 @interface MSPRootListController : PSListController
-@property (nonatomic, retain) UISwitch *switchy;
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @property(nonatomic, retain)UIBlurEffect* blur;
 @property(nonatomic, retain)UIVisualEffectView* blurView;
 @end
 @implementation MSPRootListController
+
+- (void)respring {
+
+    [[self blurView] setFrame:[[self view] bounds]];
+    [[self blurView] setAlpha:0];
+    [[self view] addSubview:[self blurView]];
+
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [[self blurView] setAlpha:1];
+    } completion:^(BOOL finished) {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/shuffle.dylib"])
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Aquarius"]];
+        else
+            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Tweaks&path=Aquarius"]];
+    }];
+
+}
+
 - (instancetype)init {
     self = [super init];
 
@@ -41,22 +61,6 @@
 }
 return self;
 }
-- (void)respring {
-
-    [[self blurView] setFrame:[[self view] bounds]];
-    [[self blurView] setAlpha:0];
-    [[self view] addSubview:[self blurView]];
-
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [[self blurView] setAlpha:1];
-    } completion:^(BOOL finished) {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/shuffle.dylib"])
-            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Aquarius"]];
-        else
-            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Tweaks&path=Aquarius"]];
-    }];
-
-}
 
 - (id)specifiers {
 return _specifiers;
@@ -78,3 +82,6 @@ return false;
 
 
 @end
+
+
+
