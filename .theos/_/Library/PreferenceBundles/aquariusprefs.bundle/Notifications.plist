@@ -153,6 +153,30 @@
                 <key>id</key>
                 <string>hidden3</string>
             </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Test Notification</string>
+                <key>action</key>
+                <string>lsNotif</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Test Banner</string>
+                <key>action</key>
+                <string>testBanner</string>
+            </dict>
         </array>
         <key>title</key>
         <string>Notifications</string>

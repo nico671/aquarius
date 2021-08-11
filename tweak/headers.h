@@ -14,9 +14,14 @@
 #import "NCUtils/MarqueeLabel.h"
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
-#import "sharedheaders.h"
 #import "NCUtils+UIColor.h"
 
+@interface MTMaterialView : UIView
+@end
+@interface SBApplication : NSObject
+-(NSString *)bundleIdentifier;
+@property (nonatomic,readonly) NSString * displayName; 
+@end
 
 @interface CSQuickActionsView : UIView
 - (UIEdgeInsets)_buttonOutsets;
@@ -61,7 +66,7 @@
 
 @interface SBUILegibilityLabel : UIView                       //@synthesize attributedText=_attributedText - In the implementation block
 @property (nonatomic,copy) NSString * string;   
-@property (nonatomic,retain) _UILegibilitySettings * legibilitySettings;                                      //@synthesize string=_string - In the implementation block
+                               //@synthesize string=_string - In the implementation block
 @property (nonatomic,copy) UIColor * textColor;
 @end
 
@@ -108,7 +113,28 @@
 -(BOOL)isPresentingContent;
 @end
 
+@interface SBLockScreenManager : NSObject
++(id)sharedInstance;
+-(void)lockUIFromSource:(int)arg1 withOptions:(id)arg2;
+@end
 
+@interface BBBulletin : NSObject
+@property (nonatomic, copy) NSString* sectionID;
+@property (nonatomic, copy) NSString* bulletinID;
+@property (nonatomic, copy) NSString* recordID;
+@property (nonatomic, copy) NSString* publisherBulletinID;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* message;
+@property (nonatomic, retain) NSDate* date;
+@property (assign, nonatomic) BOOL clearable;
+@property (nonatomic) BOOL showsMessagePreview;
+@end
+
+@interface BBServer : NSObject
+-(void)publishBulletin:(id)arg1 destinations:(unsigned long long)arg2;
+-(id)initWithQueue:(id)arg1;
+-(void)dealloc;
+@end
 
 @interface SPTMobileMediaKitAudioPlaybackManager
 - (void)enableShuffleWithMessage:(id)arg1;
@@ -168,6 +194,7 @@
 @end
 @interface NCNotificationContentView : UIView
 @property (getter=_secondaryLabel,nonatomic,readonly) UILabel * secondaryLabel;   
+@property (setter=_setPrimarySubtitleLabel:,getter=_primarySubtitleLabel,nonatomic,retain) UILabel * primarySubtitleLabel;
 @property (setter=_setPrimaryLabel:,getter=_primaryLabel,nonatomic,retain) UILabel * primaryLabel; 
 @end
 @interface NCNotificationShortLookView : UIView {
@@ -365,6 +392,7 @@
 
 @interface MRUNowPlayingHeaderView : UIView
 @property UIButton *songImageForSmall;
+-(void) moveRoutingButton:(NSNotification *) notification;
 @property (nonatomic,retain) MRUArtworkView * artworkView;
 @property (nonatomic,retain) MRUNowPlayingLabelView * labelView;
 @property (nonatomic,retain) MRUNowPlayingRoutingButton * routingButton;
@@ -412,6 +440,8 @@
 @end
 
 @interface PLPlatterHeaderContentView : UIView
+@property (getter=_titleLabel,nonatomic,readonly) UILabel * titleLabel; 
+@property (getter=_dateLabel,nonatomic,readonly) UILabel * dateLabel; 
 @property (nonatomic,copy,readwrite) NSArray *icons;
 
 @end
@@ -427,10 +457,12 @@ BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificatio
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels, enableGestures, newStatusBar, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
+BOOL hideLabels, enableGestures, newStatusBar, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
 NSInteger configurations, alignment, topOldieColor, notifStyle, retroNotifBackgroundColor;
 NSString *previousTitle;
+extern dispatch_queue_t __BBServerQueue;
+static BBServer* bbServer;
 NSString *dateFormat;
 NSString *timeFormat;
 double musicPlayerAlpha, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight;
@@ -442,6 +474,7 @@ LocationFetcher *locationFetcher;
 int applicationDidFinishLaunching;
 UIButton* songBackground;
 UIButton* shuffleButton;
+PLPlatterHeaderContentView *anchorView;
 UIButton *customImageBackground;
 UIImage *currentArtwork;
 UIImage *iconImage;
@@ -481,5 +514,3 @@ static void setUpCustomBackground() {
 [customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
 [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
-
-

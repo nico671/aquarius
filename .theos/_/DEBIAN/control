@@ -6,5 +6,5 @@ Maintainer: nico671 <nico671dev@gmail.com>
 Author: nico671 <nico671dev0@gmail.com>
 Section: Tweaks
 Depends: com.mrgcgamer.libgcuniversal, ws.hbang.common (>= 1.16), com.peterdev.libpddokdo, com.twickd.nico-carbone.ncutils
-Version: 1.7.6.1-50
-Installed-Size: 556
+Version: 2.0-114
+Installed-Size: 572

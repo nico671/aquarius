@@ -28,6 +28,14 @@
 @end
 
 @implementation NTFRootListController
+-(void)testBanner{
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"com.nico671.testBanner", nil, nil, true);
+}
+
+-(void)lsNotif{
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"com.nico671.testNotif", nil, nil, true);
+    NSLog(@"[aquarius] is this being called");
+}
 - (instancetype)init {
     self = [super init];
 

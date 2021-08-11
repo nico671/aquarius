@@ -10,7 +10,7 @@ TWEAK_NAME = aquarius
 
 aquarius_FILES = Tweak.xm NCUtils+UIColor.m LocationFetcher.m #AQRGRPView.m AQRGRPCell.m AQRManager.m
 aquarius_FRAMEWORKS = CoreGraphics QuartzCore UIKit Foundation Weather CoreLocation
-aquarius_PRIVATE_FRAMEWORKS = MediaRemote WeatherFoundation
+aquarius_PRIVATE_FRAMEWORKS = MediaRemote WeatherFoundation BulletinBoard
 aquarius_LIBRARIES = gcuniversal NCUtils pddokdo
 aquarius_CFLAGS = -fobjc-arc
 aquarius_EXTRA_FRAMEWORKS += Cephei
