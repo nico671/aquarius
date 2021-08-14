@@ -68,7 +68,7 @@
                 <key>label</key>
                 <string>SpringBoard Settings</string>
             </dict>
-           <dict>
+            <dict>
                 <key>AquariusSub</key>
                 <string>Lockscreen</string>
                 <key>cell</key>
@@ -100,10 +100,12 @@
                 <key>label</key>
                 <string>Modernization Settings</string>
             </dict>
-            
+
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>VERSION: 2.0-18</string>
             </dict>
             <dict>
                 <key>cell</key>

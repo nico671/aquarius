@@ -22,7 +22,7 @@
                 <key>default</key>
                 <false />
             </dict>
-            
+
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
@@ -70,35 +70,35 @@
                 <string>Notification Style</string>
             </dict>
             <dict>
-				<key>cell</key>
-				<string>PSSegmentCell</string>
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-				<key>key</key>
-				<string>notifStyle</string>
-				<key>label</key>
-				<string>Notif Style</string>
-				<key>default</key>
-				<integer>0</integer>
-				<key>validTitles</key>
-				<array>
-					<string>Original</string>
-					<string>Retro</string>
-					<string>Modern</string>
-				</array>
-				<key>validValues</key>
-				<array>
-					<integer>0</integer>
-					<integer>1</integer>
-					<integer>2</integer>
-				</array>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
+                <key>cell</key>
+                <string>PSSegmentCell</string>
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+                <key>key</key>
+                <string>notifStyle</string>
+                <key>label</key>
+                <string>Notif Style</string>
+                <key>default</key>
+                <integer>0</integer>
+                <key>validTitles</key>
+                <array>
+                    <string>Original</string>
+                    <string>Retro</string>
+                    <string>Modern</string>
+                </array>
+                <key>validValues</key>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                    <integer>2</integer>
+                </array>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
                 <key>id</key>
                 <string>SWITCH_ID</string>
-			</dict>
+            </dict>
             <dict>
                 <key>AquariusSub</key>
                 <string>NotifOriginal</string>

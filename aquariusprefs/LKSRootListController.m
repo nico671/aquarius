@@ -1,6 +1,9 @@
 
 #import <Preferences/PSListController.h>
 #import <spawn.h>
+#import "NCUtils+UIColor.h"
+#import <Foundation/Foundation.h>
+#import "DBColorNames.h"
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSTableCell.h>
@@ -8,33 +11,33 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
-
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
 #import <Cephei/HBRespringController.h>
 #import <CepheiPrefs/HBRootListController.h>
-#include <spawn.h>
+@interface NSTask : NSObject
+-(void)setLaunchPath:(id)arg1;
+-(void)setArguments:(id)arg1;
+-(void)launch;
+@end
 @interface LKSRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @property(nonatomic, retain)UIBlurEffect* blur;
 @property(nonatomic, retain)UIVisualEffectView* blurView;
+@property (nonatomic, retain) NSArray *actions;
+-(NSArray*)loadValues; 
+-(NSArray*)loadTitles; 
+@property (strong, nonatomic) DBColorNames *colorNames;
 @end
+
 @implementation LKSRootListController
 
 - (void)respring {
 
-    [[self blurView] setFrame:[[self view] bounds]];
-    [[self blurView] setAlpha:0];
-    [[self view] addSubview:[self blurView]];
-
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [[self blurView] setAlpha:1];
-    } completion:^(BOOL finished) {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/shuffle.dylib"])
-            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Aquarius"]];
-        else
-            [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Tweaks&path=Aquarius"]];
-    }];
+   NSTask *respring = [[NSTask alloc] init];
+[respring setLaunchPath:@"/usr/bin/killall"];
+[respring setArguments:[NSArray arrayWithObjects:@"-9", @"SpringBoard", nil]];
+[respring launch];
 
 }
 - (instancetype)init {
@@ -55,13 +58,48 @@ return self;
 }
 
 - (id)specifiers {
+    
 return _specifiers;
 }
 
 - (void)loadFromSpecifier:(PSSpecifier *)specifier {
-NSString *sub = [specifier propertyForKey:@"AquariusSub"];
+    NSString *colorName = @"";
+        NSString *sub = [specifier propertyForKey:@"AquariusSub"];
+         HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+        BOOL onOffValue = [preferences boolForKey:@"isLockscreenSectionEnabled"];
+ _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
+ NSLog(@"[aquarius] %i",onOffValue);
+  
 
-    _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
+           NSArray *colorsSavedArray = [preferences objectForKey:@"colorArray"];
+           PSSpecifier *switchSpecifier = [self specifierForID:@"colorPickerID"];
+	int switchValue = [[self readPreferenceValue:switchSpecifier] intValue];
+         if (switchValue > [colorsSavedArray count]-1){
+        [switchSpecifier performSetterWithValue:[NSNumber numberWithFloat:[colorsSavedArray count]-1]];
+    }
+     int x = 0;
+     int i = 0;
+    self.colorNames = [DBColorNames new];
+    NSMutableArray *colorsNamesArray = [[NSMutableArray alloc]init];
+    NSMutableArray *actualColorsArray = [[NSMutableArray alloc]init];
+    [actualColorsArray removeAllObjects];
+    [colorsNamesArray removeAllObjects];
+
+    for (NSString *key in colorsSavedArray){
+        UIColor *color = [UIColor colorFromHexString:key];
+        [actualColorsArray insertObject:color atIndex:x];
+        x++;
+    }
+    NSLog(@"[aquariusprefs] %@",actualColorsArray);
+        for (UIColor *color in actualColorsArray){
+            colorName = [self.colorNames nameForColor:color];
+            [colorsNamesArray insertObject:colorName atIndex:i];
+            i++;
+        }
+
+    NSLog(@"[aquariusprefs] %@",colorsSavedArray);
+     NSLog(@"[aquariusprefs] %@",colorsNamesArray);
+    self.actions = [[NSArray alloc]initWithArray:colorsNamesArray];
     
 }
 - (void)setSpecifier:(PSSpecifier *)specifier {
@@ -71,8 +109,17 @@ NSString *sub = [specifier propertyForKey:@"AquariusSub"];
 - (bool)shouldReloadSpecifiersOnResume {
 return false;
 }
-
-
+-(NSArray*)loadValues {
+    int i;
+     NSMutableArray *values = [[NSMutableArray alloc] init];
+        for (i = 0; i < [self.actions count]; i++)
+            [values addObject:[NSString stringWithFormat:@"%d", i]];
+        return values; 
+}
+-(NSArray*)loadTitles {
+    
+    return self.actions; 
+}
 @end
 
 

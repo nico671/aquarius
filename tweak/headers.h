@@ -4,6 +4,7 @@
 #import <UIKit/UIKit.h>
 #import "GcUniversal/GcImageUtils.h"
 #import <PeterDev/libpddokdo.h>
+#include <CoreFoundation/CoreFoundation.h>
 #import <dlfcn.h>
 #import "LocationFetcher.h"
 #import <CoreLocation/CoreLocation.h>
@@ -15,6 +16,12 @@
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NCUtils+UIColor.h"
+
+@interface NSObject ()
+- (UIViewController*)_viewControllerForAncestor;
+
+- (id)delegate;
+@end
 
 @interface MTMaterialView : UIView
 @end
@@ -161,6 +168,7 @@
 @property (nonatomic, retain) UILabel *timeLabel;
 @property (nonatomic, retain) UILabel *weatherLabel;
 @property (nonatomic, retain) UIImageView *weatherImageView;
+-(void) setTextColorToWallpaperColor:(NSNotification *) notification ;
 @end
 
 @interface MPUMarqueeView
@@ -186,8 +194,9 @@
 +(double)cornerRadius;
 @property NSArray *subviews;
 @end
-@interface NCNotificationShortLookViewController
+@interface NCNotificationShortLookViewController : UIViewController
 @property (nonatomic, assign, readonly) UIView *viewForPreview;
+@property (nonatomic, weak) id delegate;
 @end
 @interface NCNotificationListCell : UIView
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
@@ -276,6 +285,10 @@
 	UIView* _platterView;
 }
 -(void) setTheFuckUp;
+@end
+
+@interface UIViewController (Private)
+@property (assign,nonatomic) id delegate;
 @end
 
 @interface SBDashBoardMediaControlsViewController : UIViewController // iOS 12
@@ -446,6 +459,15 @@
 
 @end
 
+@interface PLPlatterCustomContentView
+@end
+
+@interface SBFWallpaperView : UIView                  
+@property (nonatomic,readonly) UIImage * wallpaperImage;
+@end
+@interface SBWallpaperViewController : UIViewController 
+@property (nonatomic,retain) SBFWallpaperView * lockscreenWallpaperView;
+@end
 @interface CSCoverSheetViewController : UIViewController
 @end
 
@@ -454,12 +476,12 @@
 @end
 
 BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
-BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isDarkImage, isArtworkBackground;
+BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isArtworkImageDark, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
 BOOL hideLabels, enableGestures, newStatusBar, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
-NSInteger configurations, alignment, topOldieColor, notifStyle, retroNotifBackgroundColor;
+NSInteger configurations, alignment, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
 extern dispatch_queue_t __BBServerQueue;
 static BBServer* bbServer;
@@ -471,10 +493,14 @@ MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
 UIButton* songImageForSmall;
 LocationFetcher *locationFetcher;
+UIColor *rightButtonColor;
+UIColor *middleButtonColor;
+UIColor *leftButtonColor;
 int applicationDidFinishLaunching;
 UIButton* songBackground;
+UIImageView *iconImageView;
 UIButton* shuffleButton;
-PLPlatterHeaderContentView *anchorView;
+PLPlatterHeaderContentView *iconContentView;
 UIButton *customImageBackground;
 UIImage *currentArtwork;
 UIImage *iconImage;
@@ -513,4 +539,36 @@ static void setUpCustomBackground() {
 [customImageBackground setAlpha:musicPlayerAlpha];
 [customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
 [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+}
+
+BOOL isDarkImage(UIImage* inputImage){
+    
+    BOOL isDark = FALSE;
+    
+    CFDataRef imageData = CGDataProviderCopyData(CGImageGetDataProvider(inputImage.CGImage));
+    const UInt8 *pixels = CFDataGetBytePtr(imageData);
+    
+    int darkPixels = 0;
+    
+    int length = CFDataGetLength(imageData);
+    int const darkPixelThreshold = (inputImage.size.width*inputImage.size.height)*.45;
+    
+    for(int i=0; i<length; i+=4)
+    {
+        int r = pixels[i];
+        int g = pixels[i+1];
+        int b = pixels[i+2];
+        
+        //luminance calculation gives more weight to r and b for human eyes
+        float luminance = (0.299*r + 0.587*g + 0.114*b);
+        if (luminance<150) darkPixels ++;
+    }
+    
+    if (darkPixels >= darkPixelThreshold)
+        isDark = YES;
+
+    CFRelease(imageData);
+    
+    return isDark;
+    
 }

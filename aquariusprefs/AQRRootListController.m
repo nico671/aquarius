@@ -103,6 +103,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+        [self setEnabledState];
     [self setupNavigationTitleView];
     self.preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 

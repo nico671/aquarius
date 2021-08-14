@@ -19,25 +19,7 @@
 	//artworksetup
 	self.artworkView.hidden = YES;
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moveRoutingButton:) name:@"musicplayerframe" object:nil];
 	
-}
--(void)setNeedsLayout{
-	%orig;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moveRoutingButton:) name:@"musicplayerframe" object:nil];
-}
-%new
--(void) moveRoutingButton:(NSNotification *) notification {
-    NSDictionary *dict = notification.userInfo;
-    NSString *message = [dict valueForKey:@"frameString"];
-    if (message != nil) {
-        CGRect musicPlayerFrame = CGRectFromString(message);
-
-		[self.routingButton setFrame:CGRectMake(CGRectGetMaxX(musicPlayerFrame),CGRectGetMinY(musicPlayerFrame),self.routingButton.frame.size.width,self.routingButton.frame.size.height)];
-		NSLog(@"[aquarius] %@",NSStringFromCGRect(musicPlayerFrame));
-	
-
-    }
 }
 
 %end
@@ -265,6 +247,8 @@
 %end
 %end
 
+
+
 %group statusbar
 %hook _UIBatteryView
 
@@ -336,30 +320,47 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %hook NCNotificationListCell
 -(void)setNeedsLayout{
 	%orig;
-	if (isNotificationSectionEnabled){
 	self.backgroundColor = [UIColor clearColor];
-	}
-
 }
 %end
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) UIView *topOldieNotifView;
-- (void)didMoveToWindow {
+// -(void) layoutSubviews {
+	
+// 	%orig;
+// 	if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) return;
+// 	[self didMoveToWindow];
+// }
+- (void) layoutSubviews{
 	%orig;
+	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
 	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
 	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
-	anchorView = [self.subviews objectAtIndex:1];
-	NSLog(@"[aquarius] %@",anchorView);
+	iconContentView = [self.subviews objectAtIndex:1];
 	}
-	
+	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
+	if (notifStyle == 0){
+		// original look
+			if (ogNotifBackgroundColor == 1){
+				notifBackgroundView.hidden = YES;
+				UIColor *tempNotifColor = [iconImage averageColor];
+				self.backgroundColor = tempNotifColor;
+			}
+			else if (ogNotifBackgroundColor == 2){
+				notifBackgroundView.hidden = YES;
+				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
+				self.topOldieNotifView.backgroundColor = tempNotifColor;
+			}
+	}
 	if (notifStyle == 1){
 		// retro look
-		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame)){
+		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
+			
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
 
@@ -400,20 +401,41 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 			if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
 			self.notificationContentView.secondaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
+			UIColor *tempLabelColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
+			iconContentView.titleLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
+			iconContentView.dateLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
 			}
-
+			
 			self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
 			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
-			self.topOldieNotifView.frame = anchorView.frame;
-			[self insertSubview:self.topOldieNotifView atIndex:1];
+			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
+			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
+			[self addSubview:self.topOldieNotifView];
+			[self bringSubviewToFront:iconContentView];
+			}
+			else {
+				[self insertSubview:self.topOldieNotifView atIndex:0];
+				[self bringSubviewToFront:self.topOldieNotifView];
+			}
+			if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
+				[self addSubview:iconContentView];
+				[self bringSubviewToFront:iconContentView];
+				// iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5,7.5,20,20)];
+				// iconImageView.image = iconImage;
+				// iconImageView.layer.cornerRadius = 13;
+				// [self addSubview:iconImageView];
+				// [self bringSubviewToFront:iconImageView];
+				// [iconImageView.topAnchor constraintEqualToAnchor:self.topOldieNotifView.topAnchor constant:-5].active = YES;
+				// [iconImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:5].active = YES;
+				// [iconImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+			}
 
-			[self.topOldieNotifView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-			[self.topOldieNotifView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
-			[self.topOldieNotifView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-			[self.topOldieNotifView.bottomAnchor constraintEqualToAnchor:anchorView.bottomAnchor].active = YES;
-			NSLog(@"[aquarius] %@",self.topOldieNotifView);
+			
+
 		}
 	}
+	// end of retro notifs
+	return %orig;
 }
 %new 
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -513,22 +535,7 @@ else {
 	if (hideNoOlderNotifs) self.hidden = YES;
 }
 %end
-%hook SBFStaticWallpaperView
--(void)setNeedsLayout {
-	%orig;
-	UIImage* tempWallpaperImage = (UIImage *)MSHookIvar<UIView *>(self, "_displayedImage");
-	NSArray *colorArray = [tempWallpaperImage dominantColors];
-	if ([colorArray count] != 0){
-		wallpaperAverageColor = colorArray[0];
-	}
-	else {
-		wallpaperAverageColor = [tempWallpaperImage averageColor];
-	}
-	NSString *tempWallpaperHexString = [UIColor hexStringFromColor:wallpaperAverageColor];
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:tempWallpaperHexString forKey:@"hexString"];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"NotificationMessageEvent" object:nil userInfo:userInfo];
-}
-%end
+
 %hook SBUIController
 
 - (void)ACPowerChanged { // heartlines
@@ -536,11 +543,11 @@ else {
 	%orig;
 
 	if ([self isOnAC]) {
-        [UIView transitionWithView:timeDateView.dateLabel duration:0.1 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        [UIView transitionWithView:timeDateView.dateLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
 			[timeDateView.dateLabel setText:[NSString stringWithFormat:@"%d%% Charged", [self batteryCapacityAsPercentage]]];
 		} completion:^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [UIView transitionWithView:timeDateView.dateLabel duration:0.1 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                [UIView transitionWithView:timeDateView.dateLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
                     NSDateFormatter* timeFormat = [NSDateFormatter new];
                     [timeFormat setDateFormat:dateFormat];
                     [timeDateView.dateLabel setText:[timeFormat stringFromDate:[NSDate date]]];
@@ -556,21 +563,10 @@ else {
 %property (nonatomic, retain) UILabel *timeLabel;
 %property (nonatomic, retain) UILabel *dateLabel;
 %property (nonatomic, retain) UILabel *weatherLabel;
-- (id)initWithFrame:(CGRect)frame { // add notification observer
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
-    id orig = %orig;
-    timeDateView = self;
-
-    return orig;
-
-}
--(void)setNeedsLayout{
-	%orig;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
-}
 -(void)_updateLabels{
 	%orig;
 	// hiding original stuff
+
 	SBUILegibilityLabel* timeLabelToBeReplaced = (SBUILegibilityLabel *)MSHookIvar<UIView *>(self, "_timeLabel");
 	SBFLockScreenDateSubtitleDateView* dateLabelToBeHidden = (SBFLockScreenDateSubtitleDateView *)MSHookIvar<UIView *>(self, "_dateSubtitleView");
 	dateLabelToBeHidden.hidden = YES;
@@ -620,7 +616,6 @@ else {
 	[dateFormatter setDateFormat:dateFormat];
 	NSString *newDateString = [dateFormatter stringFromDate:date];
 	self.dateLabel.text = newDateString;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTextColorToWallpaperColor:) name:@"NotificationMessageEvent" object:nil];
 	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ // i hate having to do this
 	self.weatherLabel = [UILabel new];
 	if (alignment == 0){
@@ -643,18 +638,40 @@ else {
 	[self addSubview:self.weatherLabel];
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
 	}
+	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
+ 	UIColor *wallpaperAverageColor2 = [UIColor colorFromHexString:tempColorArray[lockscreenClockColor]];
+	self.timeLabel.textColor = wallpaperAverageColor2;
+	self.weatherLabel.textColor = wallpaperAverageColor2;
+	self.dateLabel.textColor = wallpaperAverageColor2;
+	}
 }
-%new
--(void) setTextColorToWallpaperColor:(NSNotification *) notification {
-    NSDictionary *dict = notification.userInfo;
-    NSString *message = [dict valueForKey:@"hexString"];
-    if (message != nil) {
-        UIColor *tempWallpaperColor = [UIColor colorFromHexString:message];
-		tempWallpaperColor = [tempWallpaperColor colorWithAlphaComponent:1];
-		self.timeLabel.textColor = tempWallpaperColor;
-		self.weatherLabel.textColor = tempWallpaperColor;
-		self.dateLabel.textColor = tempWallpaperColor;
-    }
+%end
+%hook SBWallpaperViewController
+- (void)viewDidLoad {
+	%orig;
+	UIImage* tempWallpaperImage = self.lockscreenWallpaperView.wallpaperImage;
+	
+	NSArray *colorArray = [tempWallpaperImage dominantColors];
+	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
+	if ([colorArray count] > lockscreenClockColor+1){
+		wallpaperAverageColor = colorArray[lockscreenClockColor];
+		timeDateView.timeLabel.textColor = wallpaperAverageColor;
+		timeDateView.weatherLabel.textColor = wallpaperAverageColor;
+		timeDateView.dateLabel.textColor = wallpaperAverageColor;
+	}
+	else lockscreenClockColor = 0;
+	
+	
+	int i = 0;
+	for (UIColor *color in colorArray){
+		NSString *tempArrayColorString = [UIColor hexStringFromColor:color];
+		[mutableColorArray insertObject:tempArrayColorString atIndex:i];
+		i++;
+	}
+	
+	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+	[preferences setObject:mutableColorArray forKey:@"colorArray"];
 }
 %end
 %end
@@ -841,14 +858,6 @@ else {
 	else return %orig;
 }
 %end
-%hook UITabBar
-
--(void)setNeedsLayout{
-	%orig;
-	self._tabBarSizing = 20;
-}
-
-%end
 %end
 %group testnotif
 %hook BBServer
@@ -917,6 +926,7 @@ void reloadPrefs() {
 	modernStatusBar = [file boolForKey:@"modernStatusBar"];
 	isRoutingButtonHidden = [file boolForKey:@"isRoutingButtonHidden"];
 	configurations = [file integerForKey:@"configuration"];
+	lockscreenClockColor = [file integerForKey:@"lockscreenClockColor"];
 	notifStyle = [file integerForKey:@"notifStyle"];
 	topOldieColor = [file integerForKey:@"topOldieColor"];
 	alignment = [file integerForKey:@"alignment"];
@@ -948,7 +958,6 @@ void reloadPrefs() {
 	weatherLabelEnabled = [file boolForKey:@"weatherLabelEnabled"];
 	hideHomeBar = [file boolForKey:@"hideHomeBar"];
 	retroNotifBackgroundColor = [file integerForKey:@"retroNotifBackgroundColor"];
-	
 	hideDock = [file boolForKey:@"hideDock"];
 	enableGestures = [file boolForKey:@"enableGestures"];
 	haveQuickActions = [file boolForKey:@"haveQuickActions"];
@@ -961,7 +970,6 @@ void reloadPrefs() {
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	timeFormat = [file objectForKey:@"timeFormat"];
-
 }
 %ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
@@ -1009,7 +1017,7 @@ void reloadPrefs() {
 	[file registerDouble:&notifCornerRadius default:5 forKey:@"notifsCornerRadius"];
 	[file registerBool:&haveOutlineSecondaryColorMusicPlayer default:NO forKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	[file registerBool:&isSpringySectionEnabled default:NO forKey:@"isSpringySectionEnabled"];
-	[file registerBool:&isLockscreenSectionEnabled default:NO forKey:@"isLockscreenSectionEnabled"];
+	[file registerBool:&isLockscreenSectionEnabled default:YES forKey:@"isLockscreenSectionEnabled"];
 	[file registerBool:&downloadBarEnabled default:NO forKey:@"downloadBarEnabled"];
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
@@ -1021,6 +1029,8 @@ void reloadPrefs() {
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
+	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
+	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];
 	
 	if (isTweakEnabled){
  		if (isNotificationSectionEnabled) {
