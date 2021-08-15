@@ -20,9 +20,9 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBVolumeHardwareButton; @class _UIStatusBarStringView; @class SBPressGestureRecognizer; @class _UIBatteryView; @class _UIStatusBarCellularSignalView; @class CSAdjunctItemView; @class SBDockView; @class SBLockHardwareButton; @class UIKeyboardImpl; @class NCNotificationListSectionRevealHintView; @class BBServer; @class _UIStatusBarVisualProvider_iOS; @class SBHomeHardwareButtonActions; @class NCNotificationShortLookView; @class _UIStatusBarData; @class UIWindow; @class MRUNowPlayingLabelView; @class CSQuickActionsView; @class SBIconView; @class SBClickGestureRecognizer; @class MRUNowPlayingHeaderView; @class _UIStatusBarSignalView; @class SBLockHardwareButtonActions; @class BBBulletin; @class CSCoverSheetViewController; @class MTLumaDodgePillSettings; @class SBFLockScreenDateView; @class SBIconListPageControl; @class SBMediaController; @class MRUNowPlayingTransportControlsView; @class SBLockScreenManager; @class _UIStatusBarWifiSignalView; @class SBFloatingDockPlatterView; @class NCNotificationListCell; @class SBHDefaultIconListLayoutProvider; @class SBIconProgressView; @class SBHomeHardwareButton; @class MRUNowPlayingControlsView; @class SBNotificationBannerDestination; @class _UIStatusBarVisualProvider_Split54; @class BSPlatform; @class SBUIController; @class SpringBoard; @class SBWallpaperViewController; 
+@class BBBulletin; @class _UIStatusBarCellularSignalView; @class _UIStatusBarData; @class _UIStatusBarVisualProvider_Split54; @class MTLumaDodgePillSettings; @class SBLockScreenManager; @class SBLockHardwareButton; @class SBVolumeHardwareButton; @class SBHDefaultIconListLayoutProvider; @class CSCoverSheetViewController; @class BSPlatform; @class SBPressGestureRecognizer; @class SBIconListPageControl; @class SBLockHardwareButtonActions; @class SBWallpaperViewController; @class SBHomeHardwareButton; @class MRUNowPlayingHeaderView; @class BBServer; @class NCNotificationListCell; @class _UIStatusBarSignalView; @class SBFLockScreenDateView; @class SBHomeHardwareButtonActions; @class UIKeyboardImpl; @class SBNotificationBannerDestination; @class SBClickGestureRecognizer; @class SpringBoard; @class NCNotificationListSectionRevealHintView; @class _UIBatteryView; @class _UIStatusBarWifiSignalView; @class SBMediaController; @class _UIStatusBarVisualProvider_iOS; @class SBUIController; @class MRUNowPlayingControlsView; @class SBIconProgressView; @class CSAdjunctItemView; @class NCNotificationShortLookView; @class MRUNowPlayingTransportControlsView; @class CSQuickActionsView; @class SBIconView; @class UIWindow; @class _UIStatusBarStringView; @class SBFloatingDockPlatterView; @class MRUNowPlayingLabelView; @class SBDockView; 
 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }
 #line 1 "Tweak.xm"
 #import "headers.h"
 static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void (*_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic)(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$)(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); 
@@ -607,7 +607,12 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 	[self addSubview:self.timeLabel];
 	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
 	}
-	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
+	if (customFont) {
+		[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
+	}
+	else {
+		[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
+	}
 	NSDate * now = [NSDate date];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 	[timeFormatter setDateFormat:timeFormat];
@@ -626,7 +631,12 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 	else if (alignment == 2){
 		self.dateLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
+	if (customFont) {
+		[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
+	}
+	else {
+		[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
+	}
 	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
 	[self addSubview:self.dateLabel];
 	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
@@ -647,7 +657,12 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 	else if (alignment == 2){
 		self.weatherLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
+	if (customFont) {
+		[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
+	}
+	else {
+		[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
+	}
 	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
 	[[PDDokdo sharedInstance] refreshWeatherData];
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
@@ -988,9 +1003,10 @@ void reloadPrefs() {
 	newKeyboard = [file boolForKey:@"newKeyboard"];
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
+	customFont = [file boolForKey:@"customFont"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 }
-static __attribute__((constructor)) void _logosLocalCtor_2b3da526(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_accc6cad(int __unused argc, char __unused **argv, char __unused **envp) {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
@@ -1047,6 +1063,7 @@ static __attribute__((constructor)) void _logosLocalCtor_2b3da526(int __unused a
 	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
+	[file registerBool:&customFont default:NO forKey:@"customFont"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
 	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
 	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];

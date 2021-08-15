@@ -577,7 +577,12 @@ else {
 	[self addSubview:self.timeLabel];
 	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
 	}
-	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
+	if (customFont) {
+		[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
+	}
+	else {
+		[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
+	}
 	NSDate * now = [NSDate date];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 	[timeFormatter setDateFormat:timeFormat];
@@ -596,7 +601,12 @@ else {
 	else if (alignment == 2){
 		self.dateLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
+	if (customFont) {
+		[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
+	}
+	else {
+		[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
+	}
 	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
 	[self addSubview:self.dateLabel];
 	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
@@ -617,7 +627,12 @@ else {
 	else if (alignment == 2){
 		self.weatherLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
+	if (customFont) {
+		[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
+	}
+	else {
+		[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
+	}
 	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
 	[[PDDokdo sharedInstance] refreshWeatherData];
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
@@ -958,6 +973,7 @@ void reloadPrefs() {
 	newKeyboard = [file boolForKey:@"newKeyboard"];
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
+	customFont = [file boolForKey:@"customFont"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 }
 %ctor {
@@ -1017,6 +1033,7 @@ void reloadPrefs() {
 	[file registerBool:&weatherLabelEnabled default:NO forKey:@"weatherLabelEnabled"];
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
+	[file registerBool:&customFont default:NO forKey:@"customFont"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
 	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
 	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];

@@ -238,6 +238,22 @@
 				<key>default</key>
 				<false />
 			</dict>
+			<dict>
+                <key>AquariusSub</key>
+                <string>LockscreenFont</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>LKSRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>square.and.pencil</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Text and Font Settings</string>
+            </dict>
 		</array>
 		<key>title</key>
 		<string>Lockscreen</string>

@@ -94,12 +94,6 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>label</key>
-				<string>time label settings</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSGroupCell</string>
-				<key>label</key>
 				<string>time label height</string>
 			</dict>
 			<dict>
@@ -121,26 +115,6 @@
 				<string>timeLabelHeight</string>
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSGroupCell</string>
-				<key>label</key>
-				<string>date label settings</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSEditTextCell</string>
-				<key>default</key>
-				<string>EEEE, MMMM dd</string>
-				<key>placeholder</key>
-				<string>EEEE, MMMM dd</string>
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>label</key>
-				<string>Date Format:</string>
-				<key>key</key>
-				<string>dateFormat</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -238,6 +212,22 @@
 				<key>default</key>
 				<false />
 			</dict>
+			<dict>
+                <key>AquariusSub</key>
+                <string>LockscreenFont</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>LKSRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>square.and.pencil</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Text and Font Settings</string>
+            </dict>
 		</array>
 		<key>title</key>
 		<string>Lockscreen</string>
