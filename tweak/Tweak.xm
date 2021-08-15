@@ -325,20 +325,18 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 %end
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) UIView *topOldieNotifView;
-// -(void) layoutSubviews {
-	
-// 	%orig;
-// 	if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) return;
-// 	[self didMoveToWindow];
-// }
-- (void) layoutSubviews{
+-(id) init {
+	%orig;
+	[self didMoveToWindow];
+	return %orig;
+}
+- (void) didMoveToWindow{
 	%orig;
 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
 	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
 	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
 	iconContentView = [self.subviews objectAtIndex:1];
-	}
 	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
@@ -417,25 +415,15 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 				[self insertSubview:self.topOldieNotifView atIndex:0];
 				[self bringSubviewToFront:self.topOldieNotifView];
 			}
-			if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
+		
 				[self addSubview:iconContentView];
 				[self bringSubviewToFront:iconContentView];
-				// iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5,7.5,20,20)];
-				// iconImageView.image = iconImage;
-				// iconImageView.layer.cornerRadius = 13;
-				// [self addSubview:iconImageView];
-				// [self bringSubviewToFront:iconImageView];
-				// [iconImageView.topAnchor constraintEqualToAnchor:self.topOldieNotifView.topAnchor constant:-5].active = YES;
-				// [iconImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:5].active = YES;
-				// [iconImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-			}
-
 			
-
-		}
+		
 	}
 	// end of retro notifs
-	return %orig;
+}
+	}
 }
 %new 
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -565,6 +553,7 @@ else {
 %property (nonatomic, retain) UILabel *weatherLabel;
 -(void)_updateLabels{
 	%orig;
+	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	// hiding original stuff
 
 	SBUILegibilityLabel* timeLabelToBeReplaced = (SBUILegibilityLabel *)MSHookIvar<UIView *>(self, "_timeLabel");
@@ -572,6 +561,7 @@ else {
 	dateLabelToBeHidden.hidden = YES;
 	timeLabelToBeReplaced.hidden = YES;
 	// the time label setup
+
 	if (!self.timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
 	self.timeLabel = [UILabel new];
 	self.timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,timeLabelHeight);
@@ -584,10 +574,10 @@ else {
 	else if (alignment == 2){
 		self.timeLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
 	[self addSubview:self.timeLabel];
 	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
 	}
+	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
 	NSDate * now = [NSDate date];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 	[timeFormatter setDateFormat:timeFormat];
@@ -606,7 +596,7 @@ else {
 	else if (alignment == 2){
 		self.dateLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
+	[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
 	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
 	[self addSubview:self.dateLabel];
 	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
@@ -627,7 +617,7 @@ else {
 	else if (alignment == 2){
 		self.weatherLabel.textAlignment = NSTextAlignmentRight;
 	}
-	[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
+	[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
 	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
 	[[PDDokdo sharedInstance] refreshWeatherData];
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
@@ -644,7 +634,6 @@ else {
 	self.timeLabel.textColor = wallpaperAverageColor2;
 	self.weatherLabel.textColor = wallpaperAverageColor2;
 	self.dateLabel.textColor = wallpaperAverageColor2;
-	}
 }
 %end
 %hook SBWallpaperViewController
@@ -654,7 +643,7 @@ else {
 	
 	NSArray *colorArray = [tempWallpaperImage dominantColors];
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
-	if ([colorArray count] > lockscreenClockColor+1){
+	if ([colorArray count] > lockscreenClockColor-1){
 		wallpaperAverageColor = colorArray[lockscreenClockColor];
 		timeDateView.timeLabel.textColor = wallpaperAverageColor;
 		timeDateView.weatherLabel.textColor = wallpaperAverageColor;

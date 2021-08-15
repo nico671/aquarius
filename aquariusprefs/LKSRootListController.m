@@ -20,10 +20,12 @@
 -(void)setArguments:(id)arg1;
 -(void)launch;
 @end
-@interface LKSRootListController : PSListController
+@interface LKSRootListController : PSListController <UIFontPickerViewControllerDelegate>
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
-@property(nonatomic, retain)UIBlurEffect* blur;
-@property(nonatomic, retain)UIVisualEffectView* blurView;
+@property(nonatomic, retain) UIBlurEffect* blur;
+@property(nonatomic, retain) UIVisualEffectView* blurView;
+@property(nonatomic, retain) UIFontPickerViewController* fontPicker;
+@property HBPreferences *preferences;
 @property (nonatomic, retain) NSArray *actions;
 -(NSArray*)loadValues; 
 -(NSArray*)loadTitles; 
@@ -65,13 +67,13 @@ return _specifiers;
 - (void)loadFromSpecifier:(PSSpecifier *)specifier {
     NSString *colorName = @"";
         NSString *sub = [specifier propertyForKey:@"AquariusSub"];
-         HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
-        BOOL onOffValue = [preferences boolForKey:@"isLockscreenSectionEnabled"];
+        self.preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+        BOOL onOffValue = [self.preferences boolForKey:@"isLockscreenSectionEnabled"];
  _specifiers = [self loadSpecifiersFromPlistName:sub target:self] ;
  NSLog(@"[aquarius] %i",onOffValue);
   
 
-           NSArray *colorsSavedArray = [preferences objectForKey:@"colorArray"];
+           NSArray *colorsSavedArray = [self.preferences objectForKey:@"colorArray"];
            PSSpecifier *switchSpecifier = [self specifierForID:@"colorPickerID"];
 	int switchValue = [[self readPreferenceValue:switchSpecifier] intValue];
          if (switchValue > [colorsSavedArray count]-1){
@@ -119,6 +121,17 @@ return false;
 -(NSArray*)loadTitles {
     
     return self.actions; 
+}
+-(void)showFontPicker{
+    self.fontPicker = [[UIFontPickerViewController alloc]init];
+    self.fontPicker.delegate = self;
+    [self presentViewController:self.fontPicker animated:YES completion:nil];
+}
+- (void)fontPickerViewControllerDidPickFont:(UIFontPickerViewController *)viewController{
+    UIFontDescriptor* descriptor = [viewController selectedFontDescriptor];
+    UIFont* font = [UIFont fontWithDescriptor:descriptor size:17];
+
+    [self.preferences setObject:font.familyName forKey:@"lockscreenClockCustomFont"];
 }
 @end
 
