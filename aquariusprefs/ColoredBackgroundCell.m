@@ -19,6 +19,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
   if (self) {
+    // get preferences somehow doesnt have to me hb  but put your idenitfier here
       HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
     int x = 0;
         NSMutableArray *actualColorsArray = [[NSMutableArray alloc]init];
@@ -36,4 +37,6 @@
   }
   return self;
 }
+
+
 @end

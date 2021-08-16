@@ -248,74 +248,6 @@
 %end
 
 
-
-%group statusbar
-%hook _UIBatteryView
-
--(void)setFillColor:(UIColor *)color {
-  UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
-	%orig(customColor);
-	if(isBatteryHidden) self.hidden = YES;
-}
-
--(void)setBodyColor:(UIColor *)color {
-UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
-	%orig(customColor);
-}
-%end
-%hook _UIStatusBarVisualProvider_Split54
-+(double)height {
-    return 20;
-}
-%end
-
-%hook _UIStatusBarWifiSignalView
--(void)didMoveToWindow{
-	%orig;
-	if (isWifiThingyHidden){
-	self.hidden = YES;
-	}
-}
-%end
-%hook _UIStatusBarCellularSignalView
--(void)setNeedsLayout{
-	%orig;
-	if (isCellularThingyHidden){
-	self.hidden = YES;
-	}
-
-}
-%end
-%hook _UIStatusBarSignalView
-
--(void)setActiveColor:(UIColor *)color {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
-	%orig(customColor);
-}
-
--(void)setInactiveColor:(UIColor *)color {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
-	%orig(customColor);
-}
-
-%end
-
-%hook _UIStatusBarStringView
-
--(void)didMoveToWindow{
-	%orig;
-	if (isTimeHidden){
-	self.hidden = YES;
-	}
-}
--(void)setTextColor:(UIColor *)color {
-				UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
-	%orig(customColor);
-}
-
-%end
-%end
-
 %group notifications
 %hook NCNotificationListCell
 -(void)setNeedsLayout{
@@ -324,8 +256,9 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 }
 %end
 %hook NCNotificationShortLookView
+%property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
- - (void)layoutSubviews{
+ - (void)didMoveToWindow{
  	%orig;
  	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
  	iconImage = self.icons[0];
@@ -421,6 +354,17 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	}
 	// end of retro notifs
 }
+		if (notifStyle == 2){
+			//fuck me im scared
+			for (UIView *getOutOfHere in self.subviews){
+				[getOutOfHere removeFromSuperview];
+			}
+			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
+			_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
+			backdropView.frame = self.frame;
+			backdropView.alpha = 1;
+			[self addSubview:backdropView];
+		}
 	}
 }
 %new 

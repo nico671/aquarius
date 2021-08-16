@@ -29,6 +29,8 @@
 				<string>PSGroupCell</string>
 			</dict>
 			<dict>
+				<key>cellClass</key>
+				<string>MarqueeLabelCell</string>
 				<key>cell</key>
 				<string>PSSwitchCell</string>
 				<key>default</key>

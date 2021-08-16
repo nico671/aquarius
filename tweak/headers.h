@@ -23,6 +23,18 @@
 - (id)delegate;
 @end
 
+@interface _UIBackdropViewSettings : NSObject
++ (id)settingsForStyle:(long long)arg1;
+@end
+
+@interface _UIBackdropView : UIView
+@property (assign,nonatomic) BOOL blurRadiusSetOnce;
+@property (nonatomic,copy) NSString * _blurQuality;
+@property (assign,nonatomic) double _blurRadius;
+- (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
+- (id)initWithSettings:(id)arg1;
+@end
+
 @interface MTMaterialView : UIView
 @end
 @interface SBApplication : NSObject
@@ -215,6 +227,7 @@
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
 -(void)setUpOGNotif;
 -(void)setUpRetroNotif;
+@property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 - (UIColor *)darkerColorForColor:(UIColor *)c;
 -(void)setUpRetroLook;
 -(void)setFrameAndShit:(NSNotification *)notification;
