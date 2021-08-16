@@ -324,41 +324,24 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 }
 %end
 %hook NCNotificationShortLookView
+%property (nonatomic,retain) UIImage *iconImage;
+%property (nonatomic,retain) UIColor *tempNotifColor;
 %property (nonatomic,retain) UIView *topOldieNotifView;
--(id) init {
+-(void)layoutSubviews{
 	%orig;
-	[self didMoveToWindow];
-	return %orig;
-}
-- (void)layoutSubviews{
-	%orig;
-	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
-	iconImage = self.icons[0];
-	notifBackgroundView = [self.subviews objectAtIndex:0];
-	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
-	iconContentView = [self.subviews objectAtIndex:1];
-	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+	} 
+	if ( [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
+	notifBackgroundView = [self.subviews objectAtIndex:0];
+	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
+	iconContentView = [self.subviews objectAtIndex:1];
+	self.iconImage = iconContentView.icons[0];
+	NSLog(@"[aquarius] %@",self.iconImage);
 	}
-	if (notifStyle == 0){
-		// original look
-			if (ogNotifBackgroundColor == 1){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.backgroundColor = tempNotifColor;
-			}
-			else if (ogNotifBackgroundColor == 2){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
-			}
-	}
-	if (notifStyle == 1){
-		// retro look
-		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
-			
+		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && self.iconImage){
+			self.tempNotifColor = [self.iconImage averageColor];
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
 
@@ -373,8 +356,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 				self.topOldieNotifView.backgroundColor = [UIColor grayColor];
 			}
 			if (topOldieColor == 1){
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
+				self.topOldieNotifView.backgroundColor = self.tempNotifColor;
 			}
 			if (topOldieColor == 2){
 				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
@@ -382,12 +364,12 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 			}
 			if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
 				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [iconImage averageColor];
+				
 				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
-					self.backgroundColor = [self darkerColorForColor:tempNotifColor];
+					self.backgroundColor = [self darkerColorForColor:self.tempNotifColor];
         //is dark
 				}else{
-					self.backgroundColor = [self lighterColorForColor:tempNotifColor];
+					self.backgroundColor = [self lighterColorForColor:self.tempNotifColor];
     //is light
 
 				}
@@ -395,8 +377,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 			}
 			else if (retroNotifBackgroundColor == 1){
 				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.backgroundColor = tempNotifColor;
+				self.backgroundColor = self.tempNotifColor;
 			}
 			else if (retroNotifBackgroundColor == 2){
 				notifBackgroundView.hidden = YES;
@@ -407,31 +388,26 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 			if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
 			self.notificationContentView.secondaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
-			UIColor *tempLabelColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
-			iconContentView.titleLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
-			iconContentView.dateLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
 			}
 			
 			self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
 			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
 			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
 			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
-			[self addSubview:self.topOldieNotifView];
-			[self bringSubviewToFront:iconContentView];
+				[self addSubview:self.topOldieNotifView];
+				[self sendSubviewToBack:self.topOldieNotifView];
+				[self bringSubviewToFront:self.subviews[2]];
 			}
 			else {
-				[self insertSubview:self.topOldieNotifView atIndex:0];
+				[self addSubview:self.topOldieNotifView];
 				[self bringSubviewToFront:self.topOldieNotifView];
+				[self bringSubviewToFront:self.subviews[2]];
 			}
 		
-				[self addSubview:iconContentView];
-				[self bringSubviewToFront:iconContentView];
+
 			
-		
-	}
-	// end of retro notifs
-}
-	}
+		}
+	}	// end of retro notifs
 }
 %new 
 - (UIColor *)lighterColorForColor:(UIColor *)c {

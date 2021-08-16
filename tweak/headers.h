@@ -210,7 +210,11 @@
 	BOOL _banner;
 }
 @property (nonatomic,retain) UIView *topOldieNotifView;
+@property (nonatomic,retain) UIImage *iconImage;
+@property (nonatomic,retain) UIColor *tempNotifColor;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
+-(void)setUpOGNotif;
+-(void)setUpRetroNotif;
 - (UIColor *)darkerColorForColor:(UIColor *)c;
 -(void)setUpRetroLook;
 -(void)setFrameAndShit:(NSNotification *)notification;
