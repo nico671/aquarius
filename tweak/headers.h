@@ -211,7 +211,7 @@
 }
 @property (nonatomic,retain) UIView *topOldieNotifView;
 @property (nonatomic,retain) UIImage *iconImage;
-@property (nonatomic,retain) UIColor *tempNotifColor;
+@property UIColor *tempNotifColor;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
 -(void)setUpOGNotif;
 -(void)setUpRetroNotif;
