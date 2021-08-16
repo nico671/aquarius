@@ -330,7 +330,7 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 	[self didMoveToWindow];
 	return %orig;
 }
-- (void) didMoveToWindow{
+- (void)layoutSubviews{
 	%orig;
 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
 	iconImage = self.icons[0];
@@ -383,7 +383,15 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
 			if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
 				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [iconImage averageColor];
-				self.backgroundColor = [self lighterColorForColor:tempNotifColor];
+				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+					self.backgroundColor = [self darkerColorForColor:tempNotifColor];
+        //is dark
+				}else{
+					self.backgroundColor = [self lighterColorForColor:tempNotifColor];
+    //is light
+
+				}
+				
 			}
 			else if (retroNotifBackgroundColor == 1){
 				notifBackgroundView.hidden = YES;
@@ -432,6 +440,16 @@ UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" wi
         return [UIColor colorWithRed:MIN(r + 0.2, 1.0)
                                green:MIN(g + 0.2, 1.0)
                                 blue:MIN(b + 0.2, 1.0)
+                               alpha:a];
+    return nil;
+}
+%new
+- (UIColor *)darkerColorForColor:(UIColor *)c{
+    CGFloat h, s, b, a;
+    if ([c getHue:&h saturation:&s brightness:&b alpha:&a])
+        return [UIColor colorWithHue:h
+                          saturation:s
+                          brightness:b * 0.75
                                alpha:a];
     return nil;
 }

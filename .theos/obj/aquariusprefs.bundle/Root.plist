@@ -105,7 +105,7 @@
                 <key>cell</key>
                 <string>PSGroupCell</string>
                 <key>footerText</key>
-                <string>VERSION: 2.0-18</string>
+                <string>VERSION: 2.0-46</string>
             </dict>
             <dict>
                 <key>cell</key>

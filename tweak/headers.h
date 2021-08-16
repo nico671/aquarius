@@ -211,6 +211,7 @@
 }
 @property (nonatomic,retain) UIView *topOldieNotifView;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
+- (UIColor *)darkerColorForColor:(UIColor *)c;
 -(void)setUpRetroLook;
 -(void)setFrameAndShit:(NSNotification *)notification;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
