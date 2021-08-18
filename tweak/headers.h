@@ -12,30 +12,47 @@
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
 #import "NCUtils/NCColorPickerUtilities.h"
+#import "GcUniversal/GcImageUtils.h"
 #import "NCUtils/MarqueeLabel.h"
 #import "NCUtils/NCImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NCUtils+UIColor.h"
 
-@interface NSObject ()
-- (UIViewController*)_viewControllerForAncestor;
+@interface NCNotificationStructuredListViewController : UIViewController
 
-- (id)delegate;
 @end
 
-@interface _UIBackdropViewSettings : NSObject
-+ (id)settingsForStyle:(long long)arg1;
+@interface UIImage (UIApplicationIconPrivate)
++ (UIImage *)_applicationIconImageForBundleIdentifier:(NSString *)bundleIdentifier format:(int)format;
 @end
 
-@interface _UIBackdropView : UIView
-@property (assign,nonatomic) BOOL blurRadiusSetOnce;
-@property (nonatomic,copy) NSString * _blurQuality;
-@property (assign,nonatomic) double _blurRadius;
-- (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
-- (id)initWithSettings:(id)arg1;
+@protocol NCNotificationListCellDelegate <NSObject>
+
+@optional
+-(void)notificationListCell:(id)arg1 didMoveToNewXPosition:(double)arg2;
+-(BOOL)notificationListCellShouldPerformClipping:(id)arg1;
+@required
+-(void)willTearDownNotificationListCell:(id)arg1;
+-(void)notificationListCellDidHideCellActions:(id)arg1 resetCellScrollPosition:(BOOL)arg2 animated:(BOOL)arg3;
+-(void)notificationListCellRequestsPresentingLongLook:(id)arg1 completion:(/*^block*/id)arg2;
+-(void)notificationListCellRequestsPresentingManagementView:(id)arg1 withPresentingView:(id)arg2 completion:(/*^block*/id)arg3;
+-(void)notificationListCellRequestsDismissAction:(id)arg1 completion:(/*^block*/id)arg2;
+-(void)notificationListCellRequestsDefaultAction:(id)arg1 completion:(/*^block*/id)arg2;
+-(void)notificationListCellDidRevealCellActions:(id)arg1;
+-(BOOL)notificationListCellShouldPanHorizontally:(id)arg1;
+-(void)notificationListCellDidSignificantUserInteraction:(id)arg1;
+-(id)notificationListCellRequestsSectionSettings:(id)arg1 sectionIdentifier:(id)arg2;
 @end
 
 @interface MTMaterialView : UIView
++(id)materialViewWithRecipe:(long long)arg1 configuration:(long long)arg2;
++(id)materialViewWithRecipe:(long long)arg1 configuration:(long long)arg2 initialWeighting:(double)arg3;
++(id)materialViewWithRecipeNamed:(id)arg1 inBundle:(id)arg2 configuration:(long long)arg2 initialWeighting:(double)arg3 scaleAdjustment:(/* ^block */id)arg4;
+-(void)setBlurEnabled:(BOOL)arg1;
+-(BOOL)isBlurEnabled;
+-(NSString *)recipeName;
+-(void)setRecipeName:(NSString *)name;
+-(void)setWeighting:(CGFloat)weight;
 @end
 @interface SBApplication : NSObject
 -(NSString *)bundleIdentifier;
@@ -200,7 +217,9 @@
 @property (nonatomic,assign,readwrite) BOOL displayingPaused;
 @end
 
-
+@interface NCNotificationRequest : NSObject
+@property (nonatomic,readonly) BBBulletin * bulletin; 
+@end
 
 @interface SBInCallBannerPresentableViewController
 +(double)cornerRadius;
@@ -209,20 +228,24 @@
 @interface NCNotificationShortLookViewController : UIViewController
 @property (nonatomic, assign, readonly) UIView *viewForPreview;
 @property (nonatomic, weak) id delegate;
+@property NSString * bundleID;
 @end
 @interface NCNotificationListCell : UIView
+-(id<NCNotificationListCellDelegate>)delegate;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @end
 @interface NCNotificationContentView : UIView
 @property (getter=_secondaryLabel,nonatomic,readonly) UILabel * secondaryLabel;   
 @property (setter=_setPrimarySubtitleLabel:,getter=_primarySubtitleLabel,nonatomic,retain) UILabel * primarySubtitleLabel;
 @property (setter=_setPrimaryLabel:,getter=_primaryLabel,nonatomic,retain) UILabel * primaryLabel; 
+@property (nonatomic,copy,readwrite) NSString *primaryText;
+@property (nonatomic,copy,readwrite) NSString *secondaryText;
 @end
 @interface NCNotificationShortLookView : UIView {
 	BOOL _banner;
 }
 @property (nonatomic,retain) UIView *topOldieNotifView;
-@property (nonatomic,retain) UIImage *iconImage;
+@property (nonatomic,retain) UIImageView *modernStyleIconImageView;
 @property UIColor *tempNotifColor;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
 -(void)setUpOGNotif;
@@ -409,6 +432,8 @@
 @property (nonatomic,retain) MPRouteLabel * routeLabel;
 @end
 
+
+
 @interface MRUArtworkView : UIView
 @property (nonatomic, retain) UIImage *iconImage;
 @property (nonatomic, retain) UIImage *plceholderImage;
@@ -477,7 +502,7 @@
 
 @end
 
-@interface PLPlatterCustomContentView
+@interface PLPlatterCustomContentView : UIView
 @end
 
 @interface SBFWallpaperView : UIView                  
@@ -499,13 +524,13 @@ BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, download
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
 BOOL hideLabels, enableGestures, newStatusBar, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
-NSInteger configurations, alignment, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
+NSInteger configurations, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
 extern dispatch_queue_t __BBServerQueue;
 static BBServer* bbServer;
 NSString *dateFormat;
 NSString *timeFormat;
-double musicPlayerAlpha, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight;
+double musicPlayerAlpha, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight, modernNotifHeight;
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
@@ -518,6 +543,7 @@ int applicationDidFinishLaunching;
 UIButton* songBackground;
 UIImageView *iconImageView;
 UIButton* shuffleButton;
+PLPlatterCustomContentView *gottaDoWhatYouGottaDo;
 PLPlatterHeaderContentView *iconContentView;
 UIButton *customImageBackground;
 UIImage *currentArtwork;

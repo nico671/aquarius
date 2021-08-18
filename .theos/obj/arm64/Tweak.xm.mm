@@ -20,9 +20,9 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBLockHardwareButton; @class SBClickGestureRecognizer; @class BSPlatform; @class UIWindow; @class _UIStatusBarCellularSignalView; @class SBVolumeHardwareButton; @class SBUIController; @class SBIconProgressView; @class MRUNowPlayingLabelView; @class _UIStatusBarStringView; @class SBNotificationBannerDestination; @class SBHDefaultIconListLayoutProvider; @class _UIStatusBarData; @class CSCoverSheetViewController; @class MRUNowPlayingControlsView; @class BBServer; @class SBLockScreenManager; @class SBPressGestureRecognizer; @class SBWallpaperViewController; @class CSQuickActionsView; @class _UIStatusBarSignalView; @class SBFLockScreenDateView; @class SBIconListPageControl; @class UIKeyboardImpl; @class BBBulletin; @class SBHomeHardwareButtonActions; @class SBIconView; @class SBLockHardwareButtonActions; @class NCNotificationShortLookView; @class _UIStatusBarVisualProvider_Split54; @class MRUNowPlayingTransportControlsView; @class MTLumaDodgePillSettings; @class CSAdjunctItemView; @class SpringBoard; @class _UIStatusBarWifiSignalView; @class MRUNowPlayingHeaderView; @class SBHomeHardwareButton; @class NCNotificationListCell; @class SBFloatingDockPlatterView; @class _UIBatteryView; @class SBDockView; @class _UIStatusBarVisualProvider_iOS; @class NCNotificationListSectionRevealHintView; @class SBMediaController; 
+@class _UIStatusBarVisualProvider_Split54; @class SBClickGestureRecognizer; @class SBIconListPageControl; @class NCNotificationShortLookViewController; @class NCNotificationShortLookView; @class SBFLockScreenDateView; @class SBHomeHardwareButton; @class _UIBatteryView; @class MRUNowPlayingLabelView; @class SBVolumeHardwareButton; @class SBFloatingDockPlatterView; @class SBHomeHardwareButtonActions; @class NCNotificationListCell; @class SBMediaController; @class SBIconProgressView; @class UIKeyboardImpl; @class SBDockView; @class BBBulletin; @class SBLockScreenManager; @class MRUNowPlayingHeaderView; @class SpringBoard; @class BSPlatform; @class CSQuickActionsView; @class UIWindow; @class SBPressGestureRecognizer; @class SBUIController; @class SBHDefaultIconListLayoutProvider; @class SBWallpaperViewController; @class CSCoverSheetViewController; @class SBLockHardwareButtonActions; @class NCNotificationListSectionRevealHintView; @class _UIStatusBarVisualProvider_iOS; @class CSAdjunctItemView; @class SBIconView; @class MTLumaDodgePillSettings; @class _UIStatusBarData; @class MRUNowPlayingTransportControlsView; @class BBServer; @class MRUNowPlayingControlsView; @class SBLockHardwareButton; 
 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }
 #line 1 "Tweak.xm"
 #import "headers.h"
 static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void (*_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic)(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$)(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); 
@@ -274,97 +274,51 @@ static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGO
 
 
 
+static void (*_logos_orig$notifications$NCNotificationListCell$didMoveToWindow)(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST, SEL); static void _logos_method$notifications$NCNotificationListCell$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow)(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL); static void _logos_method$notifications$NCNotificationShortLookView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL); static UIColor * _logos_method$notifications$NCNotificationShortLookView$lighterColorForColor$(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL, UIColor *); static UIColor * _logos_method$notifications$NCNotificationShortLookView$darkerColorForColor$(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL, UIColor *); 
 
-static void (*_logos_orig$statusbar$_UIBatteryView$setFillColor$)(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST, SEL, UIColor *); static void _logos_method$statusbar$_UIBatteryView$setFillColor$(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST, SEL, UIColor *); static void (*_logos_orig$statusbar$_UIBatteryView$setBodyColor$)(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST, SEL, UIColor *); static void _logos_method$statusbar$_UIBatteryView$setBodyColor$(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST, SEL, UIColor *); static double (*_logos_meta_orig$statusbar$_UIStatusBarVisualProvider_Split54$height)(_LOGOS_SELF_TYPE_NORMAL Class _LOGOS_SELF_CONST, SEL); static double _logos_meta_method$statusbar$_UIStatusBarVisualProvider_Split54$height(_LOGOS_SELF_TYPE_NORMAL Class _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarWifiSignalView* _LOGOS_SELF_CONST, SEL); static void _logos_method$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarWifiSignalView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarCellularSignalView* _LOGOS_SELF_CONST, SEL); static void _logos_method$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarCellularSignalView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$statusbar$_UIStatusBarSignalView$setActiveColor$)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST, SEL, UIColor *); static void _logos_method$statusbar$_UIStatusBarSignalView$setActiveColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST, SEL, UIColor *); static void (*_logos_orig$statusbar$_UIStatusBarSignalView$setInactiveColor$)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST, SEL, UIColor *); static void _logos_method$statusbar$_UIStatusBarSignalView$setInactiveColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST, SEL, UIColor *); static void (*_logos_orig$statusbar$_UIStatusBarStringView$didMoveToWindow)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST, SEL); static void _logos_method$statusbar$_UIStatusBarStringView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$statusbar$_UIStatusBarStringView$setTextColor$)(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST, SEL, UIColor *); static void _logos_method$statusbar$_UIStatusBarStringView$setTextColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST, SEL, UIColor *); 
-
-
-static void _logos_method$statusbar$_UIBatteryView$setFillColor$(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * color) {
-  UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
-	_logos_orig$statusbar$_UIBatteryView$setFillColor$(self, _cmd, customColor);
-	if(isBatteryHidden) self.hidden = YES;
-}
-
-static void _logos_method$statusbar$_UIBatteryView$setBodyColor$(_LOGOS_SELF_TYPE_NORMAL _UIBatteryView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * color) {
-UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"batteryFillColor"];
-	_logos_orig$statusbar$_UIBatteryView$setBodyColor$(self, _cmd, customColor);
-}
-
-
-static double _logos_meta_method$statusbar$_UIStatusBarVisualProvider_Split54$height(_LOGOS_SELF_TYPE_NORMAL Class _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
-    return 20;
-}
-
-
-
-static void _logos_method$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarWifiSignalView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-	_logos_orig$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow(self, _cmd);
-	if (isWifiThingyHidden){
-	self.hidden = YES;
-	}
-}
-
-
-static void _logos_method$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarCellularSignalView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-	_logos_orig$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout(self, _cmd);
-	if (isCellularThingyHidden){
-	self.hidden = YES;
-	}
-
-}
-
-
-
-static void _logos_method$statusbar$_UIStatusBarSignalView$setActiveColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * color) {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
-	_logos_orig$statusbar$_UIStatusBarSignalView$setActiveColor$(self, _cmd, customColor);
-}
-
-static void _logos_method$statusbar$_UIStatusBarSignalView$setInactiveColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarSignalView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * color) {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"cellularColor"];
-	_logos_orig$statusbar$_UIStatusBarSignalView$setInactiveColor$(self, _cmd, customColor);
-}
-
-
-
-
-
-static void _logos_method$statusbar$_UIStatusBarStringView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-	_logos_orig$statusbar$_UIStatusBarStringView$didMoveToWindow(self, _cmd);
-	if (isTimeHidden){
-	self.hidden = YES;
-	}
-}
-static void _logos_method$statusbar$_UIStatusBarStringView$setTextColor$(_LOGOS_SELF_TYPE_NORMAL _UIStatusBarStringView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * color) {
-	UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"timeColor"];
-	_logos_orig$statusbar$_UIStatusBarStringView$setTextColor$(self, _cmd, customColor);
-}
-
-
-
-
-static void (*_logos_orig$notifications$NCNotificationListCell$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST, SEL); static void _logos_method$notifications$NCNotificationListCell$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow)(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL); static void _logos_method$notifications$NCNotificationShortLookView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL); static UIColor * _logos_method$notifications$NCNotificationShortLookView$lighterColorForColor$(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL, UIColor *); static UIColor * _logos_method$notifications$NCNotificationShortLookView$darkerColorForColor$(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST, SEL, UIColor *); 
-
-static void _logos_method$notifications$NCNotificationListCell$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
-	_logos_orig$notifications$NCNotificationListCell$setNeedsLayout(self, _cmd);
+static void _logos_method$notifications$NCNotificationListCell$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationListCell* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
+	_logos_orig$notifications$NCNotificationListCell$didMoveToWindow(self, _cmd);
 	self.backgroundColor = [UIColor clearColor];
+	
+	
+
+	
+
+
+	
+	
+	
+	 
 }
+
+
+__attribute__((used)) static NSString * _logos_property$notifications$NCNotificationShortLookViewController$bundleID(NCNotificationShortLookViewController * __unused self, SEL __unused _cmd) { NSValue * value = objc_getAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookViewController$bundleID); NSString * rawValue; [value getValue:&rawValue]; return rawValue; };
+__attribute__((used)) static void _logos_property$notifications$NCNotificationShortLookViewController$setBundleID(NCNotificationShortLookViewController * __unused self, SEL __unused _cmd, NSString * rawValue) { NSValue * value = [NSValue valueWithBytes:&rawValue objCType:@encode(NSString *)]; objc_setAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookViewController$bundleID, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
 
 
 __attribute__((used)) static MTMaterialView * _logos_property$notifications$NCNotificationShortLookView$modernNotifBackground(NCNotificationShortLookView * __unused self, SEL __unused _cmd) { return (MTMaterialView *)objc_getAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$modernNotifBackground); };
 __attribute__((used)) static void _logos_property$notifications$NCNotificationShortLookView$setModernNotifBackground(NCNotificationShortLookView * __unused self, SEL __unused _cmd, MTMaterialView * rawValue) { objc_setAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$modernNotifBackground, rawValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
 __attribute__((used)) static UIView * _logos_property$notifications$NCNotificationShortLookView$topOldieNotifView(NCNotificationShortLookView * __unused self, SEL __unused _cmd) { return (UIView *)objc_getAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$topOldieNotifView); };
 __attribute__((used)) static void _logos_property$notifications$NCNotificationShortLookView$setTopOldieNotifView(NCNotificationShortLookView * __unused self, SEL __unused _cmd, UIView * rawValue) { objc_setAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$topOldieNotifView, rawValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
- static void _logos_method$notifications$NCNotificationShortLookView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
- 	_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow(self, _cmd);
- 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
- 	iconImage = self.icons[0];
+__attribute__((used)) static UIImageView * _logos_property$notifications$NCNotificationShortLookView$modernStyleIconImageView(NCNotificationShortLookView * __unused self, SEL __unused _cmd) { return (UIImageView *)objc_getAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$modernStyleIconImageView); };
+__attribute__((used)) static void _logos_property$notifications$NCNotificationShortLookView$setModernStyleIconImageView(NCNotificationShortLookView * __unused self, SEL __unused _cmd, UIImageView * rawValue) { objc_setAssociatedObject(self, (void *)_logos_property$notifications$NCNotificationShortLookView$modernStyleIconImageView, rawValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC); }
+static void _logos_method$notifications$NCNotificationShortLookView$didMoveToWindow(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd){
+	_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow(self, _cmd);
+ 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
+	UIImage *tempIconImage = iconContentView.icons[0];
+ 	iconImage = [UIImage imageWithCGImage:tempIconImage.CGImage];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
+	if (notifStyle == 2){
+		notifBackgroundView.hidden = YES;
+	}
 	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
 	iconContentView = [self.subviews objectAtIndex:1];
+	}
 	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+	self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
 	if (notifStyle == 0){
 		
@@ -379,10 +333,8 @@ __attribute__((used)) static void _logos_property$notifications$NCNotificationSh
 				self.topOldieNotifView.backgroundColor = tempNotifColor;
 			}
 	}
-	if (notifStyle == 1){
-		
-		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
-			
+	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
+		NSLog(@"[aquarius] this should be called 1 time");
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
 			if (oldieNotifHaveShadow){
@@ -437,31 +389,53 @@ __attribute__((used)) static void _logos_property$notifications$NCNotificationSh
 			self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
 			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
 			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
-			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:_logos_static_class_lookup$SBNotificationBannerDestination()]){
-				[self addSubview:self.topOldieNotifView];
-				[self sendSubviewToBack:self.topOldieNotifView];
-				[self bringSubviewToFront:self.subviews[2]];
-			}
-			else {
-				[self addSubview:self.topOldieNotifView];
-				[self bringSubviewToFront:self.topOldieNotifView];
-				[self bringSubviewToFront:self.subviews[2]];
-			}
-	}
+		
+			[self addSubview:self.topOldieNotifView];
+			[self bringSubviewToFront:self.topOldieNotifView];
+			[self addSubview:iconContentView];
+			[self bringSubviewToFront:iconContentView];	
 	
-}
-		if (notifStyle == 2){
-			
-			for (UIView *getOutOfHere in self.subviews){
-				[getOutOfHere removeFromSuperview];
+	
 			}
-			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
-			_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
-			backdropView.frame = self.frame;
-			backdropView.alpha = 1;
-			[self addSubview:backdropView];
-		}
-	}
+		if (notifStyle == 2){
+			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
+				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
+				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+				self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
+				self.modernNotifBackground.translatesAutoresizingMaskIntoConstraints = YES;
+				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+					[self.modernNotifBackground setRecipeName:@"plattersDark"];
+			
+				}else{
+					[self.modernNotifBackground setRecipeName:@"platters"];
+				}
+				[self addSubview:self.modernNotifBackground];
+				[self bringSubviewToFront:self.modernNotifBackground];
+			}
+			if (!self.modernStyleIconImageView && self.modernNotifBackground){
+			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
+			UIViewController *vc = [self _viewControllerForAncestor];
+			NSLog(@"[aquarius] %@",vc);
+			NCNotificationShortLookViewController *actualVC = (NCNotificationShortLookViewController *)vc;
+			self.modernStyleIconImageView.image = [UIImage _applicationIconImageForBundleIdentifier:actualVC.bundleID format:11];
+			[self.modernStyleIconImageView.heightAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
+			[self.modernStyleIconImageView.widthAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
+			[self addSubview:self.modernStyleIconImageView];
+			[self bringSubviewToFront:self.modernStyleIconImageView];
+			[self.modernStyleIconImageView.leftAnchor constraintEqualToAnchor:self.modernNotifBackground.leftAnchor constant:5].active = YES;
+			[self.modernStyleIconImageView.centerYAnchor constraintEqualToAnchor:self.modernNotifBackground.centerYAnchor].active = YES;
+			}
+
+			if (modernNotifBackgroundColor == 1){
+				self.modernNotifBackground.backgroundColor = [iconImage averageColor];
+			}
+			if (modernNotifBackgroundColor == 2){
+				self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+			}
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-20,self.notificationContentView.frame.size.width-self.modernStyleIconImageView.frame.size.width,self.notificationContentView.frame.size.height);
+			[self addSubview:self.notificationContentView];
+			[self bringSubviewToFront:self.notificationContentView];
+		} 
 }
  
 static UIColor * _logos_method$notifications$NCNotificationShortLookView$lighterColorForColor$(_LOGOS_SELF_TYPE_NORMAL NCNotificationShortLookView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UIColor * c) {
@@ -483,11 +457,10 @@ static UIColor * _logos_method$notifications$NCNotificationShortLookView$darkerC
                                alpha:a];
     return nil;
 }
+ 
 
 
-
-
-static void (*_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$)(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void _logos_method$springy$SBIconProgressView$_drawPieWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void (*_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$)(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void _logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void (*_logos_orig$springy$SBIconView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBIconView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBIconView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBIconView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBIconListPageControl$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBIconListPageControl* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBIconListPageControl$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBIconListPageControl* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBDockView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBDockView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBDockView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBDockView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBFloatingDockPlatterView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBFloatingDockPlatterView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBFloatingDockPlatterView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBFloatingDockPlatterView* _LOGOS_SELF_CONST, SEL); 
+static void _logos_method$springy$SBIconProgressView$_drawPieWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void (*_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$)(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void _logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST, SEL, CGPoint); static void (*_logos_orig$springy$SBIconView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBIconView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBIconView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBIconView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBIconListPageControl$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBIconListPageControl* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBIconListPageControl$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBIconListPageControl* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBDockView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBDockView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBDockView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBDockView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$springy$SBFloatingDockPlatterView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL SBFloatingDockPlatterView* _LOGOS_SELF_CONST, SEL); static void _logos_method$springy$SBFloatingDockPlatterView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL SBFloatingDockPlatterView* _LOGOS_SELF_CONST, SEL); 
  
 
 static void _logos_method$springy$SBIconProgressView$_drawPieWithCenter$(_LOGOS_SELF_TYPE_NORMAL SBIconProgressView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGPoint arg1){
@@ -967,8 +940,10 @@ static void localLSNotif(){
         }
     });
 }
-void reloadPrefs() {
+
+static __attribute__((constructor)) void _logosLocalCtor_5cb740a6(int __unused argc, char __unused **argv, char __unused **envp) {
 	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
+	modernNotifBackgroundColor = [file integerForKey:@"modernNotifBackgroundColor"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
 	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
@@ -1026,8 +1001,6 @@ void reloadPrefs() {
 	dateFormat = [file objectForKey:@"dateFormat"];
 	customFont = [file boolForKey:@"customFont"];
 	timeFormat = [file objectForKey:@"timeFormat"];
-}
-static __attribute__((constructor)) void _logosLocalCtor_77d0dfc6(int __unused argc, char __unused **argv, char __unused **envp) {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
@@ -1055,6 +1028,7 @@ static __attribute__((constructor)) void _logosLocalCtor_77d0dfc6(int __unused a
 	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
 	[file registerDouble:&weatherLabelHeight default:24 forKey:@"weatherLabelHeight"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
+	[file registerInteger:&modernNotifBackgroundColor default:0 forKey:@"modernNotifBackgroundColor"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
 	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
@@ -1093,14 +1067,11 @@ static __attribute__((constructor)) void _logosLocalCtor_77d0dfc6(int __unused a
  		if (isNotificationSectionEnabled) {
 
 
-			{Class _logos_class$notifications$NCNotificationListCell = objc_getClass("NCNotificationListCell"); { MSHookMessageEx(_logos_class$notifications$NCNotificationListCell, @selector(setNeedsLayout), (IMP)&_logos_method$notifications$NCNotificationListCell$setNeedsLayout, (IMP*)&_logos_orig$notifications$NCNotificationListCell$setNeedsLayout);}Class _logos_class$notifications$NCNotificationShortLookView = objc_getClass("NCNotificationShortLookView"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"MTMaterialView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$notifications$NCNotificationShortLookView, "modernNotifBackground", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(MTMaterialView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(modernNotifBackground), (IMP)&_logos_property$notifications$NCNotificationShortLookView$modernNotifBackground, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(MTMaterialView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(setModernNotifBackground:), (IMP)&_logos_property$notifications$NCNotificationShortLookView$setModernNotifBackground, _typeEncoding); } { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UIView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$notifications$NCNotificationShortLookView, "topOldieNotifView", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UIView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(topOldieNotifView), (IMP)&_logos_property$notifications$NCNotificationShortLookView$topOldieNotifView, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UIView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(setTopOldieNotifView:), (IMP)&_logos_property$notifications$NCNotificationShortLookView$setTopOldieNotifView, _typeEncoding); } { MSHookMessageEx(_logos_class$notifications$NCNotificationShortLookView, @selector(didMoveToWindow), (IMP)&_logos_method$notifications$NCNotificationShortLookView$didMoveToWindow, (IMP*)&_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow);}{ char _typeEncoding[1024]; unsigned int i = 0; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(lighterColorForColor:), (IMP)&_logos_method$notifications$NCNotificationShortLookView$lighterColorForColor$, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(darkerColorForColor:), (IMP)&_logos_method$notifications$NCNotificationShortLookView$darkerColorForColor$, _typeEncoding); }} } if (musicPlayerEnabled) {
+			{Class _logos_class$notifications$NCNotificationListCell = objc_getClass("NCNotificationListCell"); { MSHookMessageEx(_logos_class$notifications$NCNotificationListCell, @selector(didMoveToWindow), (IMP)&_logos_method$notifications$NCNotificationListCell$didMoveToWindow, (IMP*)&_logos_orig$notifications$NCNotificationListCell$didMoveToWindow);}Class _logos_class$notifications$NCNotificationShortLookViewController = objc_getClass("NCNotificationShortLookViewController"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", @encode(NSString *) }; class_addProperty(_logos_class$notifications$NCNotificationShortLookViewController, "bundleID", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(NSString *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookViewController, @selector(bundleID), (IMP)&_logos_property$notifications$NCNotificationShortLookViewController$bundleID, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(NSString *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookViewController, @selector(setBundleID:), (IMP)&_logos_property$notifications$NCNotificationShortLookViewController$setBundleID, _typeEncoding); } Class _logos_class$notifications$NCNotificationShortLookView = objc_getClass("NCNotificationShortLookView"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"MTMaterialView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$notifications$NCNotificationShortLookView, "modernNotifBackground", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(MTMaterialView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(modernNotifBackground), (IMP)&_logos_property$notifications$NCNotificationShortLookView$modernNotifBackground, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(MTMaterialView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(setModernNotifBackground:), (IMP)&_logos_property$notifications$NCNotificationShortLookView$setModernNotifBackground, _typeEncoding); } { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UIView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$notifications$NCNotificationShortLookView, "topOldieNotifView", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UIView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(topOldieNotifView), (IMP)&_logos_property$notifications$NCNotificationShortLookView$topOldieNotifView, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UIView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(setTopOldieNotifView:), (IMP)&_logos_property$notifications$NCNotificationShortLookView$setTopOldieNotifView, _typeEncoding); } { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UIImageView\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$notifications$NCNotificationShortLookView, "modernStyleIconImageView", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UIImageView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(modernStyleIconImageView), (IMP)&_logos_property$notifications$NCNotificationShortLookView$modernStyleIconImageView, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UIImageView *)); class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(setModernStyleIconImageView:), (IMP)&_logos_property$notifications$NCNotificationShortLookView$setModernStyleIconImageView, _typeEncoding); } { MSHookMessageEx(_logos_class$notifications$NCNotificationShortLookView, @selector(didMoveToWindow), (IMP)&_logos_method$notifications$NCNotificationShortLookView$didMoveToWindow, (IMP*)&_logos_orig$notifications$NCNotificationShortLookView$didMoveToWindow);}{ char _typeEncoding[1024]; unsigned int i = 0; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(lighterColorForColor:), (IMP)&_logos_method$notifications$NCNotificationShortLookView$lighterColorForColor$, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UIColor *), strlen(@encode(UIColor *))); i += strlen(@encode(UIColor *)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$notifications$NCNotificationShortLookView, @selector(darkerColorForColor:), (IMP)&_logos_method$notifications$NCNotificationShortLookView$darkerColorForColor$, _typeEncoding); }} } if (musicPlayerEnabled) {
     	    {Class _logos_class$musicplayer$MRUNowPlayingHeaderView = objc_getClass("MRUNowPlayingHeaderView"); { MSHookMessageEx(_logos_class$musicplayer$MRUNowPlayingHeaderView, @selector(setShowRoutingButton:), (IMP)&_logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$, (IMP*)&_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$);}{ MSHookMessageEx(_logos_class$musicplayer$MRUNowPlayingHeaderView, @selector(setFrame:), (IMP)&_logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$, (IMP*)&_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$);}Class _logos_class$musicplayer$MRUNowPlayingControlsView = objc_getClass("MRUNowPlayingControlsView"); { MSHookMessageEx(_logos_class$musicplayer$MRUNowPlayingControlsView, @selector(setNeedsLayout), (IMP)&_logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout, (IMP*)&_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout);}Class _logos_class$musicplayer$MRUNowPlayingLabelView = objc_getClass("MRUNowPlayingLabelView"); { MSHookMessageEx(_logos_class$musicplayer$MRUNowPlayingLabelView, @selector(setNeedsLayout), (IMP)&_logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout, (IMP*)&_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout);}Class _logos_class$musicplayer$MRUNowPlayingTransportControlsView = objc_getClass("MRUNowPlayingTransportControlsView"); { MSHookMessageEx(_logos_class$musicplayer$MRUNowPlayingTransportControlsView, @selector(layoutSubviews), (IMP)&_logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews, (IMP*)&_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews);}Class _logos_class$musicplayer$CSAdjunctItemView = objc_getClass("CSAdjunctItemView"); { MSHookMessageEx(_logos_class$musicplayer$CSAdjunctItemView, @selector(_updateSizeToMimic), (IMP)&_logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic, (IMP*)&_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic);}{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$musicplayer$CSAdjunctItemView, @selector(setTheFuckUp), (IMP)&_logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp, _typeEncoding); }Class _logos_class$musicplayer$SBMediaController = objc_getClass("SBMediaController"); { MSHookMessageEx(_logos_class$musicplayer$SBMediaController, @selector(setNowPlayingInfo:), (IMP)&_logos_method$musicplayer$SBMediaController$setNowPlayingInfo$, (IMP*)&_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$);}}
 		}
 		if (isSpringySectionEnabled){
-			{Class _logos_class$springy$SBIconProgressView = objc_getClass("SBIconProgressView"); { MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPieWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPieWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPieWithCenter$);}{ MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPauseUIWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$);}Class _logos_class$springy$SBIconView = objc_getClass("SBIconView"); { MSHookMessageEx(_logos_class$springy$SBIconView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconView$setNeedsLayout);}Class _logos_class$springy$SBIconListPageControl = objc_getClass("SBIconListPageControl"); { MSHookMessageEx(_logos_class$springy$SBIconListPageControl, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconListPageControl$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconListPageControl$setNeedsLayout);}Class _logos_class$springy$SBDockView = objc_getClass("SBDockView"); { MSHookMessageEx(_logos_class$springy$SBDockView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBDockView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBDockView$setNeedsLayout);}Class _logos_class$springy$SBFloatingDockPlatterView = objc_getClass("SBFloatingDockPlatterView"); { MSHookMessageEx(_logos_class$springy$SBFloatingDockPlatterView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBFloatingDockPlatterView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBFloatingDockPlatterView$setNeedsLayout);}}
-		}
-		if (statusBarSectionEnabled){
-			{Class _logos_class$statusbar$_UIBatteryView = objc_getClass("_UIBatteryView"); { MSHookMessageEx(_logos_class$statusbar$_UIBatteryView, @selector(setFillColor:), (IMP)&_logos_method$statusbar$_UIBatteryView$setFillColor$, (IMP*)&_logos_orig$statusbar$_UIBatteryView$setFillColor$);}{ MSHookMessageEx(_logos_class$statusbar$_UIBatteryView, @selector(setBodyColor:), (IMP)&_logos_method$statusbar$_UIBatteryView$setBodyColor$, (IMP*)&_logos_orig$statusbar$_UIBatteryView$setBodyColor$);}Class _logos_class$statusbar$_UIStatusBarVisualProvider_Split54 = objc_getClass("_UIStatusBarVisualProvider_Split54"); Class _logos_metaclass$statusbar$_UIStatusBarVisualProvider_Split54 = object_getClass(_logos_class$statusbar$_UIStatusBarVisualProvider_Split54); { MSHookMessageEx(_logos_metaclass$statusbar$_UIStatusBarVisualProvider_Split54, @selector(height), (IMP)&_logos_meta_method$statusbar$_UIStatusBarVisualProvider_Split54$height, (IMP*)&_logos_meta_orig$statusbar$_UIStatusBarVisualProvider_Split54$height);}Class _logos_class$statusbar$_UIStatusBarWifiSignalView = objc_getClass("_UIStatusBarWifiSignalView"); { MSHookMessageEx(_logos_class$statusbar$_UIStatusBarWifiSignalView, @selector(didMoveToWindow), (IMP)&_logos_method$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow, (IMP*)&_logos_orig$statusbar$_UIStatusBarWifiSignalView$didMoveToWindow);}Class _logos_class$statusbar$_UIStatusBarCellularSignalView = objc_getClass("_UIStatusBarCellularSignalView"); { MSHookMessageEx(_logos_class$statusbar$_UIStatusBarCellularSignalView, @selector(setNeedsLayout), (IMP)&_logos_method$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout, (IMP*)&_logos_orig$statusbar$_UIStatusBarCellularSignalView$setNeedsLayout);}Class _logos_class$statusbar$_UIStatusBarSignalView = objc_getClass("_UIStatusBarSignalView"); { MSHookMessageEx(_logos_class$statusbar$_UIStatusBarSignalView, @selector(setActiveColor:), (IMP)&_logos_method$statusbar$_UIStatusBarSignalView$setActiveColor$, (IMP*)&_logos_orig$statusbar$_UIStatusBarSignalView$setActiveColor$);}{ MSHookMessageEx(_logos_class$statusbar$_UIStatusBarSignalView, @selector(setInactiveColor:), (IMP)&_logos_method$statusbar$_UIStatusBarSignalView$setInactiveColor$, (IMP*)&_logos_orig$statusbar$_UIStatusBarSignalView$setInactiveColor$);}Class _logos_class$statusbar$_UIStatusBarStringView = objc_getClass("_UIStatusBarStringView"); { MSHookMessageEx(_logos_class$statusbar$_UIStatusBarStringView, @selector(didMoveToWindow), (IMP)&_logos_method$statusbar$_UIStatusBarStringView$didMoveToWindow, (IMP*)&_logos_orig$statusbar$_UIStatusBarStringView$didMoveToWindow);}{ MSHookMessageEx(_logos_class$statusbar$_UIStatusBarStringView, @selector(setTextColor:), (IMP)&_logos_method$statusbar$_UIStatusBarStringView$setTextColor$, (IMP*)&_logos_orig$statusbar$_UIStatusBarStringView$setTextColor$);}}
+			{Class _logos_class$springy$SBIconProgressView = objc_getClass("SBIconProgressView"); { char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(CGPoint), strlen(@encode(CGPoint))); i += strlen(@encode(CGPoint)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$springy$SBIconProgressView, @selector(_drawPieWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPieWithCenter$, _typeEncoding); }{ MSHookMessageEx(_logos_class$springy$SBIconProgressView, @selector(_drawPauseUIWithCenter:), (IMP)&_logos_method$springy$SBIconProgressView$_drawPauseUIWithCenter$, (IMP*)&_logos_orig$springy$SBIconProgressView$_drawPauseUIWithCenter$);}Class _logos_class$springy$SBIconView = objc_getClass("SBIconView"); { MSHookMessageEx(_logos_class$springy$SBIconView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconView$setNeedsLayout);}Class _logos_class$springy$SBIconListPageControl = objc_getClass("SBIconListPageControl"); { MSHookMessageEx(_logos_class$springy$SBIconListPageControl, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBIconListPageControl$setNeedsLayout, (IMP*)&_logos_orig$springy$SBIconListPageControl$setNeedsLayout);}Class _logos_class$springy$SBDockView = objc_getClass("SBDockView"); { MSHookMessageEx(_logos_class$springy$SBDockView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBDockView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBDockView$setNeedsLayout);}Class _logos_class$springy$SBFloatingDockPlatterView = objc_getClass("SBFloatingDockPlatterView"); { MSHookMessageEx(_logos_class$springy$SBFloatingDockPlatterView, @selector(setNeedsLayout), (IMP)&_logos_method$springy$SBFloatingDockPlatterView$setNeedsLayout, (IMP*)&_logos_orig$springy$SBFloatingDockPlatterView$setNeedsLayout);}}
 		}
 		if (isLockscreenSectionEnabled){
 			{Class _logos_class$Lockscreen$CSCoverSheetViewController = objc_getClass("CSCoverSheetViewController"); { MSHookMessageEx(_logos_class$Lockscreen$CSCoverSheetViewController, @selector(_transitionChargingViewToVisible:showBattery:animated:), (IMP)&_logos_method$Lockscreen$CSCoverSheetViewController$_transitionChargingViewToVisible$showBattery$animated$, (IMP*)&_logos_orig$Lockscreen$CSCoverSheetViewController$_transitionChargingViewToVisible$showBattery$animated$);}Class _logos_class$Lockscreen$NCNotificationListSectionRevealHintView = objc_getClass("NCNotificationListSectionRevealHintView"); { MSHookMessageEx(_logos_class$Lockscreen$NCNotificationListSectionRevealHintView, @selector(setNeedsLayout), (IMP)&_logos_method$Lockscreen$NCNotificationListSectionRevealHintView$setNeedsLayout, (IMP*)&_logos_orig$Lockscreen$NCNotificationListSectionRevealHintView$setNeedsLayout);}Class _logos_class$Lockscreen$SBUIController = objc_getClass("SBUIController"); { MSHookMessageEx(_logos_class$Lockscreen$SBUIController, @selector(ACPowerChanged), (IMP)&_logos_method$Lockscreen$SBUIController$ACPowerChanged, (IMP*)&_logos_orig$Lockscreen$SBUIController$ACPowerChanged);}Class _logos_class$Lockscreen$SBFLockScreenDateView = objc_getClass("SBFLockScreenDateView"); { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UILabel\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$Lockscreen$SBFLockScreenDateView, "timeLabel", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(timeLabel), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$timeLabel, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(setTimeLabel:), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$setTimeLabel, _typeEncoding); } { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UILabel\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$Lockscreen$SBFLockScreenDateView, "dateLabel", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(dateLabel), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$dateLabel, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(setDateLabel:), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$setDateLabel, _typeEncoding); } { objc_property_attribute_t _attributes[16]; unsigned int attrc = 0; _attributes[attrc++] = (objc_property_attribute_t) { "T", "@\"UILabel\"" }; _attributes[attrc++] = (objc_property_attribute_t) { "&", "" }; _attributes[attrc++] = (objc_property_attribute_t) { "N", "" }; class_addProperty(_logos_class$Lockscreen$SBFLockScreenDateView, "weatherLabel", _attributes, attrc); char _typeEncoding[1024]; sprintf(_typeEncoding, "%s@:", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(weatherLabel), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$weatherLabel, _typeEncoding); sprintf(_typeEncoding, "v@:%s", @encode(UILabel *)); class_addMethod(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(setWeatherLabel:), (IMP)&_logos_property$Lockscreen$SBFLockScreenDateView$setWeatherLabel, _typeEncoding); } { MSHookMessageEx(_logos_class$Lockscreen$SBFLockScreenDateView, @selector(_updateLabels), (IMP)&_logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels, (IMP*)&_logos_orig$Lockscreen$SBFLockScreenDateView$_updateLabels);}Class _logos_class$Lockscreen$SBWallpaperViewController = objc_getClass("SBWallpaperViewController"); { MSHookMessageEx(_logos_class$Lockscreen$SBWallpaperViewController, @selector(viewDidLoad), (IMP)&_logos_method$Lockscreen$SBWallpaperViewController$viewDidLoad, (IMP*)&_logos_orig$Lockscreen$SBWallpaperViewController$viewDidLoad);}}
@@ -1112,5 +1083,5 @@ static __attribute__((constructor)) void _logosLocalCtor_77d0dfc6(int __unused a
 
 		{Class _logos_class$testnotif$BBServer = objc_getClass("BBServer"); { MSHookMessageEx(_logos_class$testnotif$BBServer, @selector(initWithQueue:), (IMP)&_logos_method$testnotif$BBServer$initWithQueue$, (IMP*)&_logos_orig$testnotif$BBServer$initWithQueue$);}{ MSHookMessageEx(_logos_class$testnotif$BBServer, sel_registerName("dealloc"), (IMP)&_logos_method$testnotif$BBServer$dealloc, (IMP*)&_logos_orig$testnotif$BBServer$dealloc);}} } CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localLSNotif, CFSTR("com.nico671.testNotif"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localSBNotif, CFSTR("com.nico671.testBanner"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	
 }

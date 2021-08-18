@@ -250,25 +250,45 @@
 
 %group notifications
 %hook NCNotificationListCell
--(void)setNeedsLayout{
+-(void)didMoveToWindow{
 	%orig;
 	self.backgroundColor = [UIColor clearColor];
+	// NCNotificationGroupList *groupList = [self delegate];
+	// NCNotificationRequest *req = groupList.orderedRequests[0];
+
+	//NSString *bundleID = req.bulletin.sectionID;
+//	NSString *titleID = req.bulletin.title;
+
+	// NSLog(@"[aquarius] %@",[self _viewControllerForAncestor]);
+	// UIViewController *tempVC = [self _viewControllerForAncestor];
+	// NCNotificationStructuredListViewController *structruedVC = (NCNotificationStructuredListViewController *)tempVC;
+	 //self.contentViewController.bundleID = bundleID;
 }
+%end
+%hook NCNotificationShortLookViewController
+%property NSString * bundleID;
 %end
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
- - (void)didMoveToWindow{
- 	%orig;
- 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1]) {
- 	iconImage = self.icons[0];
+%property (nonatomic,retain) UIImageView *modernStyleIconImageView;
+-(void)didMoveToWindow{
+	%orig;
+ 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
+	UIImage *tempIconImage = iconContentView.icons[0];
+ 	iconImage = [UIImage imageWithCGImage:tempIconImage.CGImage];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
+	if (notifStyle == 2){
+		notifBackgroundView.hidden = YES;
+	}
 	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
 	iconContentView = [self.subviews objectAtIndex:1];
+	}
 	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+	self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
 	if (notifStyle == 0){
 		// original look
@@ -283,10 +303,8 @@
 				self.topOldieNotifView.backgroundColor = tempNotifColor;
 			}
 	}
-	if (notifStyle == 1){
-		// retro look
-		if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
-			
+	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
+		NSLog(@"[aquarius] this should be called 1 time");
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
 			if (oldieNotifHaveShadow){
@@ -341,31 +359,53 @@
 			self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
 			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
 			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
-			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
-				[self addSubview:self.topOldieNotifView];
-				[self sendSubviewToBack:self.topOldieNotifView];
-				[self bringSubviewToFront:self.subviews[2]];
-			}
-			else {
-				[self addSubview:self.topOldieNotifView];
-				[self bringSubviewToFront:self.topOldieNotifView];
-				[self bringSubviewToFront:self.subviews[2]];
-			}
-	}
+		
+			[self addSubview:self.topOldieNotifView];
+			[self bringSubviewToFront:self.topOldieNotifView];
+			[self addSubview:iconContentView];
+			[self bringSubviewToFront:iconContentView];	
+	
 	// end of retro notifs
-}
-		if (notifStyle == 2){
-			//fuck me im scared
-			for (UIView *getOutOfHere in self.subviews){
-				[getOutOfHere removeFromSuperview];
 			}
-			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
-			_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
-			backdropView.frame = self.frame;
-			backdropView.alpha = 1;
-			[self addSubview:backdropView];
-		}
-	}
+		if (notifStyle == 2){
+			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
+				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
+				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+				self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
+				self.modernNotifBackground.translatesAutoresizingMaskIntoConstraints = YES;
+				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+					[self.modernNotifBackground setRecipeName:@"plattersDark"];
+			//is dark
+				}else{
+					[self.modernNotifBackground setRecipeName:@"platters"];
+				}
+				[self addSubview:self.modernNotifBackground];
+				[self bringSubviewToFront:self.modernNotifBackground];
+			}
+			if (!self.modernStyleIconImageView && self.modernNotifBackground){
+			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
+			UIViewController *vc = [self _viewControllerForAncestor];
+			NSLog(@"[aquarius] %@",vc);
+			NCNotificationShortLookViewController *actualVC = (NCNotificationShortLookViewController *)vc;
+			self.modernStyleIconImageView.image = [UIImage _applicationIconImageForBundleIdentifier:actualVC.bundleID format:11];
+			[self.modernStyleIconImageView.heightAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
+			[self.modernStyleIconImageView.widthAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
+			[self addSubview:self.modernStyleIconImageView];
+			[self bringSubviewToFront:self.modernStyleIconImageView];
+			[self.modernStyleIconImageView.leftAnchor constraintEqualToAnchor:self.modernNotifBackground.leftAnchor constant:5].active = YES;
+			[self.modernStyleIconImageView.centerYAnchor constraintEqualToAnchor:self.modernNotifBackground.centerYAnchor].active = YES;
+			}
+
+			if (modernNotifBackgroundColor == 1){
+				self.modernNotifBackground.backgroundColor = [iconImage averageColor];
+			}
+			if (modernNotifBackgroundColor == 2){
+				self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+			}
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-20,self.notificationContentView.frame.size.width-self.modernStyleIconImageView.frame.size.width,self.notificationContentView.frame.size.height);
+			[self addSubview:self.notificationContentView];
+			[self bringSubviewToFront:self.notificationContentView];
+		} //end of modern notifs
 }
 %new 
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -387,10 +427,9 @@
                                alpha:a];
     return nil;
 }
+%new 
 %end
 %end
-
-
 %group springy
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
@@ -612,9 +651,9 @@ else {
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	if ([colorArray count] > lockscreenClockColor-1){
 		wallpaperAverageColor = colorArray[lockscreenClockColor];
-		timeDateView.timeLabel.textColor = wallpaperAverageColor;
-		timeDateView.weatherLabel.textColor = wallpaperAverageColor;
-		timeDateView.dateLabel.textColor = wallpaperAverageColor;
+		if (timeLabelColored)	timeDateView.timeLabel.textColor = wallpaperAverageColor;
+		if (dateLabelColored)	timeDateView.weatherLabel.textColor = wallpaperAverageColor;
+		if (weatherLabelColored)	timeDateView.dateLabel.textColor = wallpaperAverageColor;
 	}
 	else lockscreenClockColor = 0;
 	
@@ -868,8 +907,10 @@ static void localLSNotif(){
         }
     });
 }
-void reloadPrefs() {
+
+%ctor {
 	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
+	modernNotifBackgroundColor = [file integerForKey:@"modernNotifBackgroundColor"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
 	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
@@ -923,12 +964,13 @@ void reloadPrefs() {
 	retroNotifVibe = [file boolForKey:@"retroNotif"];
 	oldieNotifHaveShadow = [file boolForKey:@"oldieNotifHaveShadow"];
 	newKeyboard = [file boolForKey:@"newKeyboard"];
+	timeLabelColored = [file boolForKey:@"timeLabelColored"];
+	weatherLabelColored = [file boolForKey:@"weatherLabelColored"];
+	dateLabelColored = [file boolForKey:@"dateLabelColored"];
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	customFont = [file boolForKey:@"customFont"];
 	timeFormat = [file objectForKey:@"timeFormat"];
-}
-%ctor {
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
@@ -956,6 +998,7 @@ void reloadPrefs() {
 	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
 	[file registerDouble:&weatherLabelHeight default:24 forKey:@"weatherLabelHeight"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
+	[file registerInteger:&modernNotifBackgroundColor default:0 forKey:@"modernNotifBackgroundColor"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
 	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
@@ -986,6 +1029,9 @@ void reloadPrefs() {
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
 	[file registerBool:&customFont default:NO forKey:@"customFont"];
+	[file registerBool:&timeLabelColored default:NO forKey:@"timeLabelColored"];
+	[file registerBool:&dateLabelColored default:NO forKey:@"dateLabelColored"];
+	[file registerBool:&weatherLabelColored default:NO forKey:@"weatherLabelColored"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
 	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
 	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];
@@ -1000,9 +1046,6 @@ void reloadPrefs() {
 		if (isSpringySectionEnabled){
 			%init(springy);
 		}
-		if (statusBarSectionEnabled){
-			%init(statusbar);
-		}
 		if (isLockscreenSectionEnabled){
 			%init(Lockscreen);
 		}
@@ -1013,5 +1056,5 @@ void reloadPrefs() {
 	}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localLSNotif, CFSTR("com.nico671.testNotif"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localSBNotif, CFSTR("com.nico671.testBanner"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, CFSTR("com.nico671.preferenceschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	
 }

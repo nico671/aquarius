@@ -6,22 +6,6 @@
         <array>
             <dict>
                 <key>AquariusSub</key>
-                <string>StatusBar</string>
-                <key>cell</key>
-                <string>PSLinkCell</string>
-                <key>detail</key>
-                <string>STSRootListController</string>
-                <key>cellClass</key>
-                <string>SFSymbolsCell</string>
-                <key>icon</key>
-                <string>pianokeys</string>
-                <key>isController</key>
-                <true />
-                <key>label</key>
-                <string>Status Bar Settings</string>
-            </dict>
-            <dict>
-                <key>AquariusSub</key>
                 <string>MusicPlayer</string>
                 <key>cell</key>
                 <string>PSLinkCell</string>
