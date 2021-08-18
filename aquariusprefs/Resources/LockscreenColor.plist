@@ -34,6 +34,54 @@
             <key>id</key>
             <string>colorPickerID</string>
         </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <true />
+            <key>defaults</key>
+            <string>aquariusprefs</string>
+            <key>key</key>
+            <string>timeLabelColored</string>
+            <key>label</key>
+            <string>Color Time Label</string>
+            <key>PostNotification</key>
+            <string>com.nico671.preferenceschanged</string>
+            <key>default</key>
+            <true />
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <true />
+            <key>defaults</key>
+            <string>aquariusprefs</string>
+            <key>key</key>
+            <string>dateLabelColored</string>
+            <key>label</key>
+            <string>Color Date Label</string>
+            <key>PostNotification</key>
+            <string>com.nico671.preferenceschanged</string>
+            <key>default</key>
+            <true />
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <true />
+            <key>defaults</key>
+            <string>aquariusprefs</string>
+            <key>key</key>
+            <string>weatherLabelColored</string>
+            <key>label</key>
+            <string>Color Weather Label</string>
+            <key>PostNotification</key>
+            <string>com.nico671.preferenceschanged</string>
+            <key>default</key>
+            <true />
+        </dict>
         </array>
         <key>title</key>
         <string>Colors</string>

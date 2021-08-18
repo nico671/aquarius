@@ -20,9 +20,9 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBMediaController; @class BBServer; @class MTLumaDodgePillSettings; @class SBDockView; @class SBIconProgressView; @class MRUNowPlayingControlsView; @class SBUIController; @class SBWallpaperViewController; @class NCNotificationListSectionRevealHintView; @class BBBulletin; @class MRUNowPlayingTransportControlsView; @class SBLockHardwareButtonActions; @class MRUNowPlayingHeaderView; @class SBIconView; @class SBFloatingDockPlatterView; @class _UIStatusBarData; @class SBLockScreenManager; @class SpringBoard; @class _UIStatusBarVisualProvider_Split54; @class UIKeyboardImpl; @class _UIBatteryView; @class UIWindow; @class SBClickGestureRecognizer; @class SBIconListPageControl; @class SBPressGestureRecognizer; @class BSPlatform; @class SBHDefaultIconListLayoutProvider; @class CSAdjunctItemView; @class SBHomeHardwareButton; @class SBVolumeHardwareButton; @class SBHomeHardwareButtonActions; @class CSCoverSheetViewController; @class NCNotificationListCell; @class NCNotificationShortLookView; @class SBLockHardwareButton; @class _UIStatusBarVisualProvider_iOS; @class CSQuickActionsView; @class SBFLockScreenDateView; @class MRUNowPlayingLabelView; @class NCNotificationShortLookViewController; 
+@class NCNotificationShortLookViewController; @class SBVolumeHardwareButton; @class SBWallpaperViewController; @class SBLockHardwareButton; @class SBMediaController; @class SBFloatingDockPlatterView; @class UIKeyboardImpl; @class NCNotificationShortLookView; @class SBIconProgressView; @class SBHomeHardwareButton; @class SBFLockScreenDateView; @class MRUNowPlayingHeaderView; @class MTLumaDodgePillSettings; @class MRUNowPlayingTransportControlsView; @class NCNotificationListCell; @class SBHomeHardwareButtonActions; @class _UIStatusBarVisualProvider_iOS; @class SBDockView; @class BBBulletin; @class SpringBoard; @class _UIBatteryView; @class MRUNowPlayingControlsView; @class SBIconListPageControl; @class MRUNowPlayingLabelView; @class _UIStatusBarVisualProvider_Split54; @class SBHDefaultIconListLayoutProvider; @class _UIStatusBarData; @class SBLockHardwareButtonActions; @class SBLockScreenManager; @class CSQuickActionsView; @class NCNotificationListSectionRevealHintView; @class SBIconView; @class SBPressGestureRecognizer; @class CSCoverSheetViewController; @class SBUIController; @class UIWindow; @class BSPlatform; @class SBClickGestureRecognizer; @class BBServer; @class CSAdjunctItemView; 
 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }
 #line 1 "Tweak.xm"
 #import "headers.h"
 static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void (*_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic)(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$)(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); 
@@ -684,9 +684,9 @@ static void _logos_method$Lockscreen$SBWallpaperViewController$viewDidLoad(_LOGO
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	if ([colorArray count] > lockscreenClockColor-1){
 		wallpaperAverageColor = colorArray[lockscreenClockColor];
-		timeDateView.timeLabel.textColor = wallpaperAverageColor;
-		timeDateView.weatherLabel.textColor = wallpaperAverageColor;
-		timeDateView.dateLabel.textColor = wallpaperAverageColor;
+		if (timeLabelColored)	timeDateView.timeLabel.textColor = wallpaperAverageColor;
+		if (dateLabelColored)	timeDateView.weatherLabel.textColor = wallpaperAverageColor;
+		if (weatherLabelColored)	timeDateView.dateLabel.textColor = wallpaperAverageColor;
 	}
 	else lockscreenClockColor = 0;
 	
@@ -997,6 +997,9 @@ static __attribute__((constructor)) void _logosLocalCtor_5cb740a6(int __unused a
 	retroNotifVibe = [file boolForKey:@"retroNotif"];
 	oldieNotifHaveShadow = [file boolForKey:@"oldieNotifHaveShadow"];
 	newKeyboard = [file boolForKey:@"newKeyboard"];
+	timeLabelColored = [file boolForKey:@"timeLabelColored"];
+	weatherLabelColored = [file boolForKey:@"weatherLabelColored"];
+	dateLabelColored = [file boolForKey:@"dateLabelColored"];
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	customFont = [file boolForKey:@"customFont"];
@@ -1059,6 +1062,9 @@ static __attribute__((constructor)) void _logosLocalCtor_5cb740a6(int __unused a
 	[file registerBool:&hideBreadcrumbs default:NO forKey:@"hideBreadcrumbs"];
 	[file registerBool:&retroNotifVibe default:NO forKey:@"retroNotif"];
 	[file registerBool:&customFont default:NO forKey:@"customFont"];
+	[file registerBool:&timeLabelColored default:NO forKey:@"timeLabelColored"];
+	[file registerBool:&dateLabelColored default:NO forKey:@"dateLabelColored"];
+	[file registerBool:&weatherLabelColored default:NO forKey:@"weatherLabelColored"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
 	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
 	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];
