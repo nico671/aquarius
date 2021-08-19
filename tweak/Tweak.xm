@@ -265,9 +265,6 @@
 	 //self.contentViewController.bundleID = bundleID;
 }
 %end
-%hook NCNotificationShortLookViewController
-%property NSString * bundleID;
-%end
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
@@ -406,7 +403,7 @@
 			}
 		} //end of modern notifs
 }
-%new 
+%new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
     CGFloat r, g, b, a;
     if ([c getRed:&r green:&g blue:&b alpha:&a])
@@ -636,15 +633,22 @@ else {
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
  	UIColor *wallpaperAverageColor2 = [UIColor colorFromHexString:tempColorArray[lockscreenClockColor]];
-	if (timeLabelColored){
-			self.timeLabel.textColor = wallpaperAverageColor2;
-		}
-		if (dateLabelColored){
-			self.weatherLabel.textColor = wallpaperAverageColor2;
-		}
-		if (weatherLabelColored){
-			self.dateLabel.textColor = wallpaperAverageColor2;
-		}
+	if (!customLockscreenColor){
+			if (timeLabelColored){
+				self.timeLabel.textColor = wallpaperAverageColor2;
+			}
+			if (dateLabelColored){
+				self.weatherLabel.textColor = wallpaperAverageColor2;
+			}
+			if (weatherLabelColored){
+				self.dateLabel.textColor = wallpaperAverageColor2;
+			}
+	}
+	else {
+		self.timeLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+		self.dateLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+		self.weatherLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+	}	
 }
 %end
 %hook SBWallpaperViewController
@@ -981,6 +985,7 @@ static void localLSNotif(){
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
 	customFont = [file boolForKey:@"customFont"];
+	customLockscreenColor = [file boolForKey:@"customLockscreenColor"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
@@ -1015,6 +1020,7 @@ static void localLSNotif(){
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];
 	[file registerBool:&customRetroNotifTextColor default:NO forKey:@"customRetroNotifTextColor"];
+	[file registerBool:&customLockscreenColor default:NO forKey:@"customLockscreenColor"];
 	[file registerBool:&musicPlayerColorsEnabled default:NO forKey:@"isColorsEnabled"];
 	[file registerBool:&haveNotifs default:NO forKey:@"notifications?"];
 	[file registerBool:&isBackgroundColored default:NO forKey:@"isBackgroundColorEnabled"];
