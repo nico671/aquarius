@@ -270,7 +270,8 @@
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
 %property (nonatomic,retain) UIImageView *modernStyleIconImageView;
--(void)layoutSubviews{
+
+- (void) didMoveToWindow{
 	%orig;
  	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
