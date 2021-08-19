@@ -272,11 +272,10 @@
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
 %property (nonatomic,retain) UIImageView *modernStyleIconImageView;
--(void)didMoveToWindow{
+-(void)layoutSubviews{
 	%orig;
  	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
-	UIImage *tempIconImage = iconContentView.icons[0];
- 	iconImage = [UIImage imageWithCGImage:tempIconImage.CGImage];
+	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
 	if (notifStyle == 2){
 		notifBackgroundView.hidden = YES;
@@ -379,32 +378,32 @@
 				}else{
 					[self.modernNotifBackground setRecipeName:@"platters"];
 				}
+				if (modernNotifBackgroundColor == 1){
+				self.modernNotifBackground.backgroundColor = [iconImage averageColor];
+				}
+				if (modernNotifBackgroundColor == 2){
+				self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+				}
 				[self addSubview:self.modernNotifBackground];
 				[self bringSubviewToFront:self.modernNotifBackground];
 			}
 			if (!self.modernStyleIconImageView && self.modernNotifBackground){
+			UIImage *iconImage = iconContentView.icons[0];
 			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
-			UIViewController *vc = [self _viewControllerForAncestor];
-			NSLog(@"[aquarius] %@",vc);
-			NCNotificationShortLookViewController *actualVC = (NCNotificationShortLookViewController *)vc;
-			self.modernStyleIconImageView.image = [UIImage _applicationIconImageForBundleIdentifier:actualVC.bundleID format:11];
-			[self.modernStyleIconImageView.heightAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
-			[self.modernStyleIconImageView.widthAnchor constraintEqualToConstant:self.frame.size.height/2].active = YES;
+			self.modernStyleIconImageView.image = iconImage;
 			[self addSubview:self.modernStyleIconImageView];
 			[self bringSubviewToFront:self.modernStyleIconImageView];
-			[self.modernStyleIconImageView.leftAnchor constraintEqualToAnchor:self.modernNotifBackground.leftAnchor constant:5].active = YES;
-			[self.modernStyleIconImageView.centerYAnchor constraintEqualToAnchor:self.modernNotifBackground.centerYAnchor].active = YES;
 			}
 
-			if (modernNotifBackgroundColor == 1){
-				self.modernNotifBackground.backgroundColor = [iconImage averageColor];
+			if (leafCornerNotifs){
+				self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+				self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 			}
-			if (modernNotifBackgroundColor == 2){
-				self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
-			}
-			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-20,self.notificationContentView.frame.size.width-self.modernStyleIconImageView.frame.size.width,self.notificationContentView.frame.size.height);
+			if (self.modernStyleIconImageView){
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
+			}
 		} //end of modern notifs
 }
 %new 
@@ -637,9 +636,15 @@ else {
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
  	UIColor *wallpaperAverageColor2 = [UIColor colorFromHexString:tempColorArray[lockscreenClockColor]];
-	self.timeLabel.textColor = wallpaperAverageColor2;
-	self.weatherLabel.textColor = wallpaperAverageColor2;
-	self.dateLabel.textColor = wallpaperAverageColor2;
+	if (timeLabelColored){
+			self.timeLabel.textColor = wallpaperAverageColor2;
+		}
+		if (dateLabelColored){
+			self.weatherLabel.textColor = wallpaperAverageColor2;
+		}
+		if (weatherLabelColored){
+			self.dateLabel.textColor = wallpaperAverageColor2;
+		}
 }
 %end
 %hook SBWallpaperViewController
@@ -651,9 +656,15 @@ else {
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	if ([colorArray count] > lockscreenClockColor-1){
 		wallpaperAverageColor = colorArray[lockscreenClockColor];
-		if (timeLabelColored)	timeDateView.timeLabel.textColor = wallpaperAverageColor;
-		if (dateLabelColored)	timeDateView.weatherLabel.textColor = wallpaperAverageColor;
-		if (weatherLabelColored)	timeDateView.dateLabel.textColor = wallpaperAverageColor;
+		if (timeLabelColored){
+			timeDateView.timeLabel.textColor = wallpaperAverageColor;
+		}
+		if (dateLabelColored){
+			timeDateView.weatherLabel.textColor = wallpaperAverageColor;
+		}
+		if (weatherLabelColored){
+			timeDateView.dateLabel.textColor = wallpaperAverageColor;
+		}
 	}
 	else lockscreenClockColor = 0;
 	
