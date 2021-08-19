@@ -1,4 +1,5 @@
 #import "headers.h"
+// TODO: create weather label icon, allow for choosing between condition and location or maybe both
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
