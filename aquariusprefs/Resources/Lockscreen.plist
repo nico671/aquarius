@@ -99,53 +99,22 @@
                 <string>Text and Font Settings</string>
             </dict>
 			<dict>
-				<key>cell</key>
-				<string>PSGroupCell</string>
-				<key>label</key>
-				<string>weather label settings</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSSwitchCell</string>
-				<key>default</key>
-				<true/>
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>key</key>
-				<string>weatherLabelEnabled</string>
-				<key>label</key>
-				<string>Enable weather label?</string>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-				<key>default</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSGroupCell</string>
-				<key>label</key>
-				<string>weather label height</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSSliderCell</string>
-				<key>default</key>
-				<real>24</real>
-				<key>min</key>
-				<real>1</real>
-				<key>max</key>
-				<real>150</real>
-				<key>showValue</key>
-				<true/>
-				<key>defaults</key>
-				<string>aquariusprefs</string>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-				<key>key</key>
-				<string>weatherLabelHeight</string>
-				<key>PostNotification</key>
-				<string>com.nico671.preferenceschanged</string>
-			</dict>
+                <key>AquariusSub</key>
+                <string>LockscreenWeather</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>LKSRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>cloud.bolt</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Weather Label Settings</string>
+            </dict>
+			
 			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
