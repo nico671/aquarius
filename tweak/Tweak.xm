@@ -479,14 +479,6 @@ if (downloadBarEnabled){
 	}
 }
 }
--(void)_drawPauseUIWithCenter:(CGPoint)arg1{
-if (downloadBarEnabled){
-
-}
-else {
-	%orig;
-}
-}
 %end
 
 %hook SBFolderBackgroundView
