@@ -74,7 +74,7 @@
                 <key>cell</key>
                 <string>PSLinkCell</string>
                 <key>detail</key>
-                <string>STSRootListController</string>
+                <string>OTLRootListController</string>
                 <key>cellClass</key>
                 <string>SFSymbolsCell</string>
                 <key>icon</key>

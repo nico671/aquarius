@@ -193,6 +193,7 @@
 
 @class _UILegibilitySettings;
 @interface SBFLockScreenDateView : UIView
+@property (nonatomic, retain) UIImageView *weatherIconView;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (nonatomic, retain) UILabel *timeLabel;
 @property (nonatomic, retain) UILabel *weatherLabel;
@@ -246,13 +247,12 @@
 @property (nonatomic,retain) UIView *topOldieNotifView;
 @property (nonatomic,retain) UIImageView *modernStyleIconImageView;
 @property UIColor *tempNotifColor;
+-(void)setUpModernStyle;
+-(void)setUpOGView;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
--(void)setUpOGNotif;
--(void)setUpRetroNotif;
+-(void)setUpRetroLook;
 @property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 - (UIColor *)darkerColorForColor:(UIColor *)c;
--(void)setUpRetroLook;
--(void)setFrameAndShit:(NSNotification *)notification;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @property NSArray *subviews;
 @property (nonatomic,copy) NSArray * icons; 
@@ -513,6 +513,17 @@
 @interface CSCoverSheetViewController : UIViewController
 @end
 
+@interface SBFolderBackgroundView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+@interface SBUICallToActionLabel : UIView
+@end
+@interface SBFolderTitleTextField
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+@interface CSPageControl
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
 @interface NextUpViewController : UIViewController
 - (id)initWithControlCenter:(BOOL)controlCenter defaultStyle:(long long)style;
 @end
@@ -521,7 +532,7 @@ BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificatio
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isArtworkImageDark, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels, enableGestures, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
+BOOL hideLabels, enableGestures, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
 NSInteger configurations, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
@@ -613,5 +624,4 @@ BOOL isDarkImage(UIImage* inputImage){
     CFRelease(imageData);
     
     return isDark;
-    
 }

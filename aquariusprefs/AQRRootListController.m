@@ -189,6 +189,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 
     [super viewDidAppear:animated];
+    [self setEnabledState];
     CGRect frame = self.table.bounds;
     frame.origin.y = -frame.size.height;
 

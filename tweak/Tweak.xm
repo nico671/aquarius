@@ -1,5 +1,5 @@
 #import "headers.h"
-// TODO: create weather label icon, allow for choosing between condition and location or maybe both
+// TODO: allow for choosing between condition and location or maybe both, color mtmaterial views instead of the actual background
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
@@ -7,7 +7,7 @@
 	if(![controller respondsToSelector:@selector(context)]){
 		%orig;
 	}
-	else if ( controller.context == 2 && isRoutingButtonHidden) {
+	else if ( controller.context == 2) {
 		arg1 = NO;
 	}
 	%orig(arg1);
@@ -250,28 +250,11 @@
 
 
 %group notifications
-%hook NCNotificationListCell
--(void)didMoveToWindow{
-	%orig;
-	self.backgroundColor = [UIColor clearColor];
-	// NCNotificationGroupList *groupList = [self delegate];
-	// NCNotificationRequest *req = groupList.orderedRequests[0];
-
-	//NSString *bundleID = req.bulletin.sectionID;
-//	NSString *titleID = req.bulletin.title;
-
-	// NSLog(@"[aquarius] %@",[self _viewControllerForAncestor]);
-	// UIViewController *tempVC = [self _viewControllerForAncestor];
-	// NCNotificationStructuredListViewController *structruedVC = (NCNotificationStructuredListViewController *)tempVC;
-	 //self.contentViewController.bundleID = bundleID;
-}
-%end
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
-%property (nonatomic,retain) UIImageView *modernStyleIconImageView;
-
-- (void) didMoveToWindow{
+%property (nonatomic,retain) UIImageView *modernStyleIconImageView; 
+- (void) layoutSubviews {
 	%orig;
  	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
@@ -290,18 +273,31 @@
 	}
 	if (notifStyle == 0){
 		// original look
-			if (ogNotifBackgroundColor == 1){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.backgroundColor = tempNotifColor;
-			}
-			else if (ogNotifBackgroundColor == 2){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
-			}
+		[self setUpOGView];
 	}
-	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
+	if (notifStyle == 1){
+		[self setUpRetroLook];
+	}
+	if (notifStyle == 2){
+		[self setUpModernStyle];
+	} //end of modern notifs
+}
+%new
+-(void) setUpOGView{
+	if (ogNotifBackgroundColor == 1){
+		notifBackgroundView.hidden = YES;
+		UIColor *tempNotifColor = [iconImage averageColor];
+		self.backgroundColor = tempNotifColor;
+	}
+	else if (ogNotifBackgroundColor == 2){
+		notifBackgroundView.hidden = YES;
+		UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
+		self.topOldieNotifView.backgroundColor = tempNotifColor;
+	}
+}
+%new 
+-(void)setUpRetroLook {
+	if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
 		NSLog(@"[aquarius] this should be called 1 time");
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
@@ -365,8 +361,10 @@
 	
 	// end of retro notifs
 			}
-		if (notifStyle == 2){
-			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
+}
+%new 
+-(void)setUpModernStyle{
+	if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
 				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
 				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
 				self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
@@ -403,7 +401,6 @@
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
 			}
-		} //end of modern notifs
 }
 %new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -465,7 +462,22 @@ else {
 }
 %end
 
-
+%hook SBFolderBackgroundView
+-(void)setNeedsLayout{
+	if (hideFolderBackground){
+		self.hidden = YES;
+	}
+	else %orig;
+}
+%end
+%hook SBFolderTitleTextField
+-(void)setNeedsLayout{
+	if (hideFolderLabel){
+		self.hidden = YES;
+	}
+	else %orig;
+}
+%end
 %hook SBIconView
 
 -(void)setNeedsLayout{
@@ -498,12 +510,17 @@ else {
 %end
 %end
 %group Lockscreen
+%hook SBUICallToActionLabel
+-(void)setNeedsLayout{
+	if (hideSwipeToUnlock){
+		self.hidden = YES;
+	}
+	else %orig;
+}
+%end
 %hook CSCoverSheetViewController
-
 - (void)_transitionChargingViewToVisible:(BOOL)arg1 showBattery:(BOOL)arg2 animated:(BOOL)arg3 { // hide charging view
-
 	%orig(NO, NO, NO);
-
 }
 
 %end
@@ -515,7 +532,7 @@ else {
 
 %hook SBUIController
 
-- (void)ACPowerChanged { // heartlines
+- (void)ACPowerChanged { // heartlines s/o littttten
 
 	%orig;
 
@@ -540,6 +557,7 @@ else {
 %property (nonatomic, retain) UILabel *timeLabel;
 %property (nonatomic, retain) UILabel *dateLabel;
 %property (nonatomic, retain) UILabel *weatherLabel;
+%property (nonatomic, retain) UIImageView *weatherIconView;
 -(void)_updateLabels{
 	%orig;
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
@@ -632,6 +650,71 @@ else {
 	[self addSubview:self.weatherLabel];
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
 	}
+	if (!self.weatherIconView && haveWeatherIcon && self.weatherLabel){
+		[[PDDokdo sharedInstance] refreshWeatherData];
+		WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
+	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
+	WACurrentForecast* currentCond = [currentModel currentConditions];
+	NSInteger currentCode = [currentCond conditionCode];
+	int hour = [[NSCalendar currentCalendar] component:NSCalendarUnitHour fromDate:[NSDate date]];
+	UIImage *tempConditionImage;
+	
+		self.weatherIconView = [[UIImageView alloc]init];
+		[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
+		if (currentCode <= 2)
+			tempConditionImage = [UIImage systemImageNamed:@"tornado"];
+		else if (currentCode <= 4)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.bolt.rain"];
+		else if (currentCode <= 8)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode == 9)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode == 10)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode <= 12)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode <= 18)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode <= 22)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.fog.fill"];
+		else if (currentCode <= 24)
+			tempConditionImage = [UIImage systemImageNamed:@"wind"];
+		else if (currentCode == 25)
+			tempConditionImage = [UIImage systemImageNamed:@"snowflake"];
+		else if (currentCode == 26)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.fill"];
+		else if (currentCode <= 28)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.sun.fill"];
+		else if (currentCode <= 30)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.sun.fill"];
+		else if (currentCode <= 32 && (hour >= 18 || hour <= 6))
+			tempConditionImage = [UIImage systemImageNamed:@"moon.stars.fill"];
+		else if (currentCode <= 32)
+			tempConditionImage = [UIImage systemImageNamed:@"snowflake"];
+		else if (currentCode <= 34)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.sun.fill"];
+		else if (currentCode == 35)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.fog.fill"];
+		else if (currentCode == 36)
+			tempConditionImage = [UIImage systemImageNamed:@"flame.fill"];
+		else if (currentCode <= 38)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.bolt.fill"];
+		else if (currentCode == 39)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.sun.rain.fill"];
+		else if (currentCode == 40)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else if (currentCode <= 43)
+			tempConditionImage = [UIImage systemImageNamed:@"cloud.rain.fill"];
+		else
+			tempConditionImage = [UIImage systemImageNamed:@"questionmark.circle"];
+		self.weatherIconView.image = tempConditionImage;
+		[self.weatherIconView.widthAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
+		[self.weatherIconView.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
+		[self addSubview:self.weatherIconView];
+		[self.weatherIconView.centerYAnchor constraintEqualToAnchor:self.weatherLabel.centerYAnchor].active = YES;
+		[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:-15].active = YES;
+	
+	}
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
  	UIColor *wallpaperAverageColor2 = [UIColor colorFromHexString:tempColorArray[lockscreenClockColor]];
@@ -644,6 +727,12 @@ else {
 			}
 			if (weatherLabelColored){
 				self.dateLabel.textColor = wallpaperAverageColor2;
+			}
+			if (weatherIconColored){
+				self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:wallpaperAverageColor2 renderingMode:UIImageRenderingModeAlwaysOriginal];
+			}
+			else {
+				self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:[UIColor blackColor] renderingMode:UIImageRenderingModeAlwaysOriginal];
 			}
 	}
 	else {
@@ -684,6 +773,14 @@ else {
 	
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[preferences setObject:mutableColorArray forKey:@"colorArray"];
+}
+%end
+%hook CSPageControl 
+-(void)setNeedsLayout{
+	if (hideLockscreenDots){
+		self.hidden = YES;
+	}
+	else %orig;
 }
 %end
 %end
@@ -938,7 +1035,7 @@ static void localLSNotif(){
 	isCellularThingyHidden = [file boolForKey:@"isCellularHidden"];
 	isTimeHidden = [file boolForKey:@"isTimeHidden"];
 	modernStatusBar = [file boolForKey:@"modernStatusBar"];
-	isRoutingButtonHidden = [file boolForKey:@"isRoutingButtonHidden"];
+	hideSwipeToUnlock = [file boolForKey:@"hideSwipeToUnlock"];
 	configurations = [file integerForKey:@"configuration"];
 	lockscreenClockColor = [file integerForKey:@"lockscreenClockColor"];
 	notifStyle = [file integerForKey:@"notifStyle"];
@@ -947,13 +1044,14 @@ static void localLSNotif(){
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
 	weatherLabelHeight = [file doubleForKey:@"weatherLabelHeight"];
 	rightOffsetForText = [file doubleForKey:@"textOffset"];
-	musicPlayerColorsEnabled = [file boolForKey:@"isRoutingButtonHidden"];
+	musicPlayerColorsEnabled = [file boolForKey:@"isColorsEnabled"];
 	haveNotifs = [file boolForKey:@"notifications?"];
 	showPercentage = [file boolForKey:@"showPercentage"];
 	isBackgroundColored = [file boolForKey:@"isBackgroundColorEnabled"];
 	isArtworkBackground = [file boolForKey:@"isArtworkBackground"];
 	isNotificationSectionEnabled = [file boolForKey:@"isNotificationSectionEnabled"];
 	haveOutline = [file boolForKey:@"haveOutline?"];
+	hideFolderLabel = [file boolForKey:@"hideFolderLabel"];
 	outlineSize = [file doubleForKey:@"sizeOfOutline"];
 	musicPlayerCornerRadius = [file doubleForKey:@"musicPlayerCornerRadius"];
 	notifCornerRadius = [file doubleForKey:@"notifsCornerRadius"];
@@ -973,6 +1071,7 @@ static void localLSNotif(){
 	hideHomeBar = [file boolForKey:@"hideHomeBar"];
 	retroNotifBackgroundColor = [file integerForKey:@"retroNotifBackgroundColor"];
 	hideDock = [file boolForKey:@"hideDock"];
+	hideLockscreenDots = [file boolForKey:@"hideLockscreenDots"];
 	enableGestures = [file boolForKey:@"enableGestures"];
 	haveQuickActions = [file boolForKey:@"haveQuickActions"];
 	showsPercentage = [file boolForKey:@"showsPercentage"];
@@ -986,12 +1085,17 @@ static void localLSNotif(){
 	dateLabelColored = [file boolForKey:@"dateLabelColored"];
 	customRetroNotifTextColor = [file boolForKey:@"customRetroNotifTextColor"];
 	dateFormat = [file objectForKey:@"dateFormat"];
+	hideFolderBackground = [file boolForKey:@"hideFolderBackground"];
 	customFont = [file boolForKey:@"customFont"];
+	haveWeatherIcon = [file boolForKey:@"haveWeatherIcon"];
 	customLockscreenColor = [file boolForKey:@"customLockscreenColor"];
+	weatherIconColored = [file boolForKey:@"weatherIconColored"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
+	[file registerBool:&hideFolderBackground default:NO forKey:@"hideFolderBackground"];
+	[file registerBool:&hideFolderLabel default:NO forKey:@"hideFolderLabel"];
 	[file registerBool:&hideHomeBar default:NO forKey:@"hideHomeBar"];
 	[file registerBool:&haveQuickActions default:NO forKey:@"haveQuickActions"];
 	[file registerBool:&enableGestures default:NO forKey:@"enableGestures"];
@@ -1005,10 +1109,11 @@ static void localLSNotif(){
 	[file registerBool:&isBatteryHidden default:NO forKey:@"isBatteryHidden"];
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
+	[file registerBool:&weatherIconColored default:NO forKey:@"weatherIconColored"];
 	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
 	[file registerBool:&newKeyboard default:NO forKey:@"newKeyboard"];
 	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStatusBarSectionEnabled"];
-	[file registerBool:&isRoutingButtonHidden default:NO forKey:@"isRoutingButtonHidden"];
+	[file registerBool:&hideSwipeToUnlock default:NO forKey:@"hideSwipeToUnlock"];
 	[file registerBool:&oldieNotifHaveShadow default:1 forKey:@"oldieNotifHaveShadow"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
 	[file registerDouble:&notifShadowOpacity default:.25 forKey:@"oldieNotifShadowOpacity"];
@@ -1022,6 +1127,7 @@ static void localLSNotif(){
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];
 	[file registerBool:&customRetroNotifTextColor default:NO forKey:@"customRetroNotifTextColor"];
+	[file registerBool:&haveWeatherIcon default:NO forKey:@"haveWeatherIcon"];
 	[file registerBool:&customLockscreenColor default:NO forKey:@"customLockscreenColor"];
 	[file registerBool:&musicPlayerColorsEnabled default:NO forKey:@"isColorsEnabled"];
 	[file registerBool:&haveNotifs default:NO forKey:@"notifications?"];
@@ -1033,7 +1139,7 @@ static void localLSNotif(){
 	[file registerBool:&isNotificationSectionEnabled default:NO forKey:@"isNotificationSectionEnabled"];
 	[file registerDouble:&outlineSize default:5 forKey:@"sizeOfOutline"];
 	[file registerDouble:&musicPlayerCornerRadius default:5 forKey:@"musicPlayerCornerRadius"];
-	[file registerDouble:&notifCornerRadius default:5 forKey:@"notifsCornerRadius"];
+	[file registerDouble:&notifCornerRadius default:13 forKey:@"notifsCornerRadius"];
 	[file registerBool:&haveOutlineSecondaryColorMusicPlayer default:NO forKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	[file registerBool:&isSpringySectionEnabled default:NO forKey:@"isSpringySectionEnabled"];
 	[file registerBool:&isLockscreenSectionEnabled default:YES forKey:@"isLockscreenSectionEnabled"];
@@ -1041,6 +1147,7 @@ static void localLSNotif(){
 	[file registerBool:&leafCornerNotifs default:NO forKey:@"leafCornerNotifs"];
 	[file registerBool:&musicPlayerLeafLook default:NO forKey:@"musicPlayerLeafLook"];
 	[file registerBool:&customImageBackgroundBOOL default:NO forKey:@"customImageBackground?"];
+	[file registerBool:&hideLockscreenDots default:NO forKey:@"hideLockscreenDots"];
 	[file registerBool:&hidePageDots default:NO forKey:@"hidePageDots"];
 	[file registerBool:&newStatusBar default:NO forKey:@"newStatusBar"];
 	[file registerBool:&showsPercentage default:NO forKey:@"showsPercentage"];

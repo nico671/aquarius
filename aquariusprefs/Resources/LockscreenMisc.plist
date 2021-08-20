@@ -26,7 +26,34 @@
 				<key>default</key>
 				<false />
 			</dict>
-			
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideSwipeToUnlock</string>
+				<key>label</key>
+				<string>Hide Swipe To Unlock Text</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideLockscreenDots</string>
+				<key>label</key>
+				<string>Hide Lockscreen Dots</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
 		 </array>
         <key>title</key>
         <string>Misc</string>
