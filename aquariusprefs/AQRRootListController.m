@@ -98,12 +98,10 @@
     [self.navigationItem setRightBarButtonItem:self.item];
 	
 
-    NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"]];	
     
-	NSNumber *didShowOBWelcomeController = [settings valueForKey:@"didShowOBWelcomeController"] ?: @0;
+	long long didShowOBWelcomeController = [self.preferences integerForKey:@"didShowOBWelcomeController"] ?: 0;
 
-    if ([didShowOBWelcomeController isEqual:@0]) {
+    if (didShowOBWelcomeController == 0) {
 		[self setupWelcomeController];
     }
 
@@ -120,10 +118,7 @@
 
 }
 - (void)dismissWelcomeController {
-	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist"]];
-	[settings setObject:@1 forKey:@"didShowOBWelcomeController"];
-	[settings writeToFile:@"/var/mobile/Library/Preferences/aquariusprefs.plist" atomically:YES];
+	[self.preferences setInteger:1 forKey:@"didShowOBWelcomeController"];
 	[welcomeController dismissViewControllerAnimated:YES completion:nil];
 }
 
