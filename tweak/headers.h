@@ -495,7 +495,6 @@
 @property (getter=_titleLabel,nonatomic,readonly) UILabel * titleLabel; 
 @property (getter=_dateLabel,nonatomic,readonly) UILabel * dateLabel; 
 @property (nonatomic,copy,readwrite) NSArray *icons;
-
 @end
 
 @interface PLPlatterCustomContentView : UIView

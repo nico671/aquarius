@@ -258,22 +258,20 @@
 %property (nonatomic,retain) UIImageView *modernStyleIconImageView; 
 - (void) layoutSubviews{
 	%orig;
- 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
+	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
-	if (notifStyle == 2){
-		notifBackgroundView.hidden = YES;
+	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
+			iconContentView = [self.subviews objectAtIndex:1];
 	}
-	
 	}
+ 	
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
-	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
-			iconContentView = [self.subviews objectAtIndex:1];
-	}
+	
 	if (notifStyle == 0){
 		// original look
 			if (ogNotifBackgroundColor == 1){
@@ -362,6 +360,36 @@
 	// end of retro notifs
 			}
 		if (notifStyle == 2){
+				if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
+				[self bringSubviewToFront:notifBackgroundView];
+				notifBackgroundView.layer.cornerRadius = notifCornerRadius;
+				if (modernNotifBackgroundColor == 1){
+					notifBackgroundView.backgroundColor = [iconImage averageColor];
+				}
+				if (modernNotifBackgroundColor == 2){
+					notifBackgroundView.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+				}
+				
+			if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
+			UIImage *iconImage = iconContentView.icons[0];
+			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
+			self.modernStyleIconImageView.image = iconImage;
+			[self addSubview:self.modernStyleIconImageView];
+			[self bringSubviewToFront:self.modernStyleIconImageView];
+			}
+
+			if (leafCornerNotifs){
+				self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+				self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+			}
+			if (self.modernStyleIconImageView){
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
+			[self addSubview:self.notificationContentView];
+			[self bringSubviewToFront:self.notificationContentView];
+			iconContentView.hidden = YES;
+			}
+		}
+		else {
 			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
 				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
 				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
@@ -382,7 +410,7 @@
 				[self addSubview:self.modernNotifBackground];
 				[self bringSubviewToFront:self.modernNotifBackground];
 			}
-			if (!self.modernStyleIconImageView && self.modernNotifBackground){
+			if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
 			UIImage *iconImage = iconContentView.icons[0];
 			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
 			self.modernStyleIconImageView.image = iconImage;
@@ -399,7 +427,8 @@
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
 			}
-		} //end of modern notifs
+		}
+		}  //end of modern notifs
 }
 %new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -421,7 +450,6 @@
                                alpha:a];
     return nil;
 }
-%new 
 %end
 %end
 %group springy
@@ -992,7 +1020,7 @@ static void localSBNotif(){
 	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
 	bulletin.title = @"Aquarius";
     bulletin.message = @"Test Banner!";
-    bulletin.sectionID = @"com.apple.Preferences";
+    bulletin.sectionID = @"com.apple.MobileSMS";
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
