@@ -122,7 +122,7 @@
                 <key>cellClass</key>
                 <string>GcColorPickerCell</string>
                 <key>label</key>
-                <string>Custom Title Label</string>
+                <string>Custom Lockscreen Color</string>
                 <key>defaults</key>
                 <string>aquariusprefs</string>
                 <key>key</key>

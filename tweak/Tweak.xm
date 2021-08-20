@@ -49,6 +49,7 @@
 	}
 	topLabel.adjustsFontSizeToFitWidth = YES;
 	[self addSubview:topLabel];  
+	[topLabel restartLabel];
 	}
 	if (!bottomLabel){
 	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
@@ -57,6 +58,7 @@
 		bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
 	}
 	[self addSubview:bottomLabel];
+	[bottomLabel restartLabel];
 	}
 	if (configurations == 3) {
 	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
@@ -254,7 +256,7 @@
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
 %property (nonatomic,retain) UIImageView *modernStyleIconImageView; 
-- (void) layoutSubviews {
+- (void) layoutSubviews{
 	%orig;
  	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
@@ -262,42 +264,30 @@
 	if (notifStyle == 2){
 		notifBackgroundView.hidden = YES;
 	}
-	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
-	iconContentView = [self.subviews objectAtIndex:1];
-	}
+	
 	}
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
+	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
+			iconContentView = [self.subviews objectAtIndex:1];
+	}
 	if (notifStyle == 0){
 		// original look
-		[self setUpOGView];
+			if (ogNotifBackgroundColor == 1){
+				notifBackgroundView.hidden = YES;
+				UIColor *tempNotifColor = [iconImage averageColor];
+				self.backgroundColor = tempNotifColor;
+			}
+			else if (ogNotifBackgroundColor == 2){
+				notifBackgroundView.hidden = YES;
+				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
+				self.topOldieNotifView.backgroundColor = tempNotifColor;
+			}
 	}
-	if (notifStyle == 1){
-		[self setUpRetroLook];
-	}
-	if (notifStyle == 2){
-		[self setUpModernStyle];
-	} //end of modern notifs
-}
-%new
--(void) setUpOGView{
-	if (ogNotifBackgroundColor == 1){
-		notifBackgroundView.hidden = YES;
-		UIColor *tempNotifColor = [iconImage averageColor];
-		self.backgroundColor = tempNotifColor;
-	}
-	else if (ogNotifBackgroundColor == 2){
-		notifBackgroundView.hidden = YES;
-		UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-		self.topOldieNotifView.backgroundColor = tempNotifColor;
-	}
-}
-%new 
--(void)setUpRetroLook {
-	if (!self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
+	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
 		NSLog(@"[aquarius] this should be called 1 time");
 			self.topOldieNotifView = [[UIView alloc]init];
 			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
@@ -354,17 +344,25 @@
 			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
 			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
 		
-			[self addSubview:self.topOldieNotifView];
-			[self bringSubviewToFront:self.topOldieNotifView];
-			[self addSubview:iconContentView];
-			[self bringSubviewToFront:iconContentView];	
+			
+			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
+				[self addSubview:self.topOldieNotifView];
+				[self bringSubviewToFront:self.topOldieNotifView];
+				[self bringSubviewToFront:self.subviews[1]];
+			}
+			else {
+				[self addSubview:self.topOldieNotifView];
+				[self bringSubviewToFront:self.topOldieNotifView];
+				[self bringSubviewToFront:iconContentView];
+				[self bringSubviewToFront:self.subviews[2]];
+			}
+		
+			
 	
 	// end of retro notifs
 			}
-}
-%new 
--(void)setUpModernStyle{
-	if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
+		if (notifStyle == 2){
+			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
 				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
 				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
 				self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
@@ -401,6 +399,7 @@
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
 			}
+		} //end of modern notifs
 }
 %new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -712,7 +711,15 @@ else {
 		[self.weatherIconView.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
 		[self addSubview:self.weatherIconView];
 		[self.weatherIconView.centerYAnchor constraintEqualToAnchor:self.weatherLabel.centerYAnchor].active = YES;
-		[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:-15].active = YES;
+		if (alignment == 0){
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:15].active = YES;
+		}
+		else if (alignment == 2){
+			[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:-15].active = YES;
+		}
+		else {
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:self.frame.size.width/4].active = YES;
+		}
 	
 	}
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];

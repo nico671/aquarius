@@ -247,10 +247,7 @@
 @property (nonatomic,retain) UIView *topOldieNotifView;
 @property (nonatomic,retain) UIImageView *modernStyleIconImageView;
 @property UIColor *tempNotifColor;
--(void)setUpModernStyle;
--(void)setUpOGView;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
--(void)setUpRetroLook;
 @property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 - (UIColor *)darkerColorForColor:(UIColor *)c;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
