@@ -6,6 +6,7 @@
 #import <PeterDev/libpddokdo.h>
 #include <CoreFoundation/CoreFoundation.h>
 #import <dlfcn.h>
+#import <CoreLocation/CoreLocation.h>
 #import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioServices.h>
@@ -73,16 +74,35 @@
 @property (nonatomic,retain) WFTemperature * temperature;
 @end
 
+@interface WAForecastModel : NSObject
+@property(nonatomic,retain) WACurrentForecast* currentConditions;
+@end
+
+@interface UIStatusBarBreadcrumbItemView
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+
+@interface WALockscreenWidgetViewController : UIViewController
+- (WAForecastModel *)currentForecastModel;
+@end
+
 @interface PDDokdo (Private)
 @property(nonatomic, retain, readonly)WALockscreenWidgetViewController* weatherWidget;
 @end
 
+
+
 @interface NCNotificationListSectionRevealHintView
 @property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
 @end
-
 @interface SBFStaticWallpaperImageView : UIImageView
 
+@end
+
+@interface SBUILegibilityLabel : UIView                       //@synthesize attributedText=_attributedText - In the implementation block
+@property (nonatomic,copy) NSString * string;   
+                               //@synthesize string=_string - In the implementation block
+@property (nonatomic,copy) UIColor * textColor;
 @end
 
 @interface NCNotificationMasterListView : UIView
@@ -102,6 +122,8 @@
 - (BOOL)isOnAC;
 - (int)batteryCapacityAsPercentage;
 @end
+
+
 
 @interface SBDashBoardNotificationAdjunctListViewController : UIViewController
 @end
@@ -305,8 +327,14 @@
 @property (assign,nonatomic) id delegate;
 @end
 
+@interface SBDashBoardMediaControlsViewController : UIViewController // iOS 12
+@end
+
+@interface CSMediaControlsViewController : UIViewController // iOS 13
+@end
 @class MPCPlayerResponseItem, MRUVisualStylingProvider, UIView, UILabel, CAGradientLayer, CADisplayLink, AVTimeFormatter, NSString;
 @interface MRUNowPlayingTimeControlsView : UIView // iOS 14
+
 @property (nonatomic,retain) UILabel * elapsedTimeLabel;
 @property (nonatomic,retain) UILabel * remainingTimeLabel;
 @property (nonatomic,retain) UIView * elapsedTrack;
@@ -315,9 +343,48 @@
 @property (nonatomic,retain) AVTimeFormatter * elapsedTimeFormatter;
 @end
 
+
+
+@interface MPVolumeSlider : UISlider
+@property (nonatomic,readonly) UIView * thumbView;
+@end
+
+@interface MediaControlsVolumeSlider : MPVolumeSlider // iOS 12 & 13
+-(void)setVisualStylingProvider:(id)arg1;
+@end
+
+@interface MRUNowPlayingVolumeSlider : MPVolumeSlider // iOS 14
+-(void)setVisualStylingProvider:(id)arg1;
+@property (nonatomic,readonly) UIView * growingThumbView;
+@end
+
+@interface MediaControlsVolumeContainerView : UIView // iOS 12 & 13
+@property (nonatomic,retain) MediaControlsVolumeSlider * volumeSlider;
+@end
+
+@interface MRUNowPlayingVolumeControlsView : UIView // iOS 14
+@property (nonatomic,retain) MRUNowPlayingVolumeSlider * slider;
+@end
+
+@interface MediaControlsTransportButton : UIButton // iOS 12 & 13
+@property (nonatomic,retain) UIImageView *imageView;
+@end
+
 @interface MRUTransportButton : UIButton // iOS 14
 @property (nonatomic,retain) UIImageView *imageView;
 -(void)setStylingProvider:(id)arg1;
+@end
+
+@interface MediaControlsTransportStackView : UIView // iOS 12 & 13
+@property (nonatomic,retain) MediaControlsTransportButton * tvRemoteButton;
+@property (nonatomic,retain) MediaControlsTransportButton * leftButton;
+@property (nonatomic,retain) MediaControlsTransportButton * middleButton;
+@property (nonatomic,retain) MediaControlsTransportButton * rightButton;
+@property (nonatomic,retain) MediaControlsTransportButton * languageOptionsButton;
+@end
+
+@interface WFLocation : NSObject
+@property (nonatomic,copy) CLLocation * geoLocation; 
 @end
 
 @interface MRUNowPlayingTransportControlsView : UIView // iOS 14
@@ -328,12 +395,50 @@
 @property (nonatomic,retain) MRUTransportButton * languageOptionsButton;
 @end
 
+@interface MediaControlsParentContainerView : UIView
+@end
+
+@interface CCUICAPackageView : UIView
+@property (assign,nonatomic) double scale; //only avaialble on iOS 13
+@end
+
 @interface MediaControlsRoutingButtonView : UIButton // iOS 12 & 13
 @property (nonatomic,retain) CCUICAPackageView * packageView;
 @end
 
 @interface MRUNowPlayingRoutingButton : UIButton // iOS 14
 @property (nonatomic,retain) CCUICAPackageView * packageView;
+@end
+
+@interface MPRouteLabel : UILabel
+@property (nonatomic,retain) UILabel * titleLabel;
+@property (assign,nonatomic) BOOL forcesUppercaseText;
+@end
+
+@interface SBMainSwitcherViewController
+@property (nonatomic, assign, readwrite, getter=isHidden) BOOL hidden;
+@end
+
+@interface MRUNowPlayingLabelView : UIView
+@property (nonatomic,retain) UILabel * titleLabel;
+@property (nonatomic,retain) UILabel * subtitleLabel;
+@property (nonatomic,retain) MPUMarqueeView * titleMarqueeView;
+@property (nonatomic,retain) MPUMarqueeView * subtitleMarqueeView;
+@property (nonatomic,retain) MPRouteLabel * routeLabel;
+@end
+
+
+
+@interface MRUArtworkView : UIView
+@property (nonatomic, retain) UIImage *iconImage;
+@property (nonatomic, retain) UIImage *plceholderImage;
+@property (nonatomic, retain) UIImage *artworkImage;
+@property (nonatomic, retain) UIImageView *iconView;
+@property (nonatomic, retain) UIView *iconShadowView;
+@property (nonatomic, retain) UIImageView *artworkImageView;
+@property (nonatomic, retain) UIView *artworkShadowView;
+@property (nonatomic, retain) UIImageView *placeholderImageView;
+@property (nonatomic, retain) UIView *placeholderBackground;
 @end
 
 @interface MRUNowPlayingHeaderView : UIView
@@ -357,6 +462,11 @@
 
 @interface MRUNowPlayingView : UIView
 @property (nonatomic, retain) MRUNowPlayingControlsView *controlsView;
+@end
+
+@interface WFWeatherConditions : NSObject 
+@property (nonatomic,retain) NSMutableDictionary * components; 
+@property (copy) WFLocation * location; 
 @end
 
 @interface MRUNowPlayingViewController : UIViewController
@@ -419,7 +529,7 @@ BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, download
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
 BOOL hideLabels, enableGestures, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
-NSInteger configurations, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
+NSInteger configurations, showCondition, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
 extern dispatch_queue_t __BBServerQueue;
 static BBServer* bbServer;
@@ -430,7 +540,6 @@ MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
 UIButton* songImageForSmall;
-LocationFetcher *locationFetcher;
 UIColor *rightButtonColor;
 UIColor *middleButtonColor;
 UIColor *leftButtonColor;
@@ -457,24 +566,27 @@ WFWeatherConditions *weatherConditions;
 WFLocation *wfLocation;
 MTMaterialView *notifBackgroundView;
 UIButton *pauseButton;
+UILabel *timeLabel;
+UILabel *dateLabel;
+UIView *topOldieNotifView;
 static void setUpTheArtworkBackground() {
 	songBackground = [UIButton new];
-    [songBackground setContentMode:UIViewContentModeScaleAspectFill];
-    [songBackground setClipsToBounds:YES];
-    [songBackground setAdjustsImageWhenHighlighted:NO];
-    [songBackground setAlpha:musicPlayerAlpha];
-    [songBackground.layer setCornerRadius:musicPlayerCornerRadius];
-    [songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+[songBackground setContentMode:UIViewContentModeScaleAspectFill];
+[songBackground setClipsToBounds:YES];
+[songBackground setAdjustsImageWhenHighlighted:NO];
+[songBackground setAlpha:musicPlayerAlpha];
+[songBackground.layer setCornerRadius:musicPlayerCornerRadius];
+[songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
 static void setUpCustomBackground() {
 	customImageBackground = [UIButton new];
-    [customImageBackground setContentMode:UIViewContentModeScaleAspectFill];
-    [customImageBackground setClipsToBounds:YES];
-    [customImageBackground setAdjustsImageWhenHighlighted:NO];
-    [customImageBackground setAlpha:musicPlayerAlpha];
-    [customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
-    [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+[customImageBackground setContentMode:UIViewContentModeScaleAspectFill];
+[customImageBackground setClipsToBounds:YES];
+[customImageBackground setAdjustsImageWhenHighlighted:NO];
+[customImageBackground setAlpha:musicPlayerAlpha];
+[customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
+[customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
 BOOL isDarkImage(UIImage* inputImage){

@@ -664,7 +664,14 @@ if (downloadBarEnabled){
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 	NSString *temperature = [weatherData objectForKey:@"temperature"];
 	NSString *conditions = [weatherData objectForKey:@"conditions"];
-	NSString *combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+	NSString *location = [weatherData objectForKey:@"location"];
+	NSString *combined;
+	if (showCondition == 0){
+		combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+	}
+	else {
+		combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
+	}
 	self.weatherLabel.text = combined;
 	[self addSubview:self.weatherLabel];
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
@@ -1065,6 +1072,7 @@ static void localLSNotif(){
 	hideSwipeToUnlock = [file boolForKey:@"hideSwipeToUnlock"];
 	configurations = [file integerForKey:@"configuration"];
 	lockscreenClockColor = [file integerForKey:@"lockscreenClockColor"];
+	showCondition = [file integerForKey:@"showCondition"];
 	notifStyle = [file integerForKey:@"notifStyle"];
 	topOldieColor = [file integerForKey:@"topOldieColor"];
 	alignment = [file integerForKey:@"alignment"];
@@ -1150,6 +1158,8 @@ static void localLSNotif(){
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
 	[file registerInteger:&modernNotifBackgroundColor default:0 forKey:@"modernNotifBackgroundColor"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
+	[file registerInteger:&showCondition default:0 forKey:@"showCondition"];
+	
 	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];

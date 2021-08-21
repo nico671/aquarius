@@ -22,9 +22,9 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class _UIStatusBarVisualProvider_iOS; @class MRUNowPlayingHeaderView; @class MRUNowPlayingControlsView; @class CSQuickActionsView; @class SBLockHardwareButtonActions; @class SBHDefaultIconListLayoutProvider; @class NCNotificationShortLookView; @class CSCoverSheetViewController; @class SBHomeHardwareButtonActions; @class SBIconView; @class _UIBatteryView; @class MRUNowPlayingLabelView; @class SBLockHardwareButton; @class MRUNowPlayingTransportControlsView; @class UIKeyboardImpl; @class MTLumaDodgePillSettings; @class SBClickGestureRecognizer; @class SBWallpaperViewController; @class SBLockScreenManager; @class SBPressGestureRecognizer; @class SBDockView; @class SBIconListPageControl; @class _UIStatusBarVisualProvider_Split54; @class SpringBoard; @class BBBulletin; @class SBFloatingDockPlatterView; @class _UIStatusBarData; @class BBServer; @class CSAdjunctItemView; @class SBFolderBackgroundView; @class SBHomeHardwareButton; @class SBVolumeHardwareButton; @class SBFLockScreenDateView; @class SBNotificationBannerDestination; @class SBUIController; @class SBIconProgressView; @class CSPageControl; @class NCNotificationListSectionRevealHintView; @class SBFolderTitleTextField; @class SBMediaController; @class UIWindow; @class SBUICallToActionLabel; @class BSPlatform; 
+@class MRUNowPlayingLabelView; @class _UIBatteryView; @class MTLumaDodgePillSettings; @class UIKeyboardImpl; @class SBFolderTitleTextField; @class SBUICallToActionLabel; @class SBNotificationBannerDestination; @class BBBulletin; @class MRUNowPlayingHeaderView; @class SBMediaController; @class MRUNowPlayingTransportControlsView; @class NCNotificationListSectionRevealHintView; @class SBPressGestureRecognizer; @class CSAdjunctItemView; @class _UIStatusBarData; @class CSQuickActionsView; @class CSPageControl; @class SBFLockScreenDateView; @class SBHomeHardwareButton; @class SBLockHardwareButtonActions; @class MRUNowPlayingControlsView; @class CSCoverSheetViewController; @class SBLockScreenManager; @class SBIconListPageControl; @class SBFloatingDockPlatterView; @class SBLockHardwareButton; @class NCNotificationShortLookView; @class SBClickGestureRecognizer; @class SpringBoard; @class SBDockView; @class BSPlatform; @class SBWallpaperViewController; @class SBHDefaultIconListLayoutProvider; @class UIWindow; @class _UIStatusBarVisualProvider_Split54; @class BBServer; @class SBIconProgressView; @class SBHomeHardwareButtonActions; @class SBFolderBackgroundView; @class SBIconView; @class _UIStatusBarVisualProvider_iOS; @class SBUIController; @class SBVolumeHardwareButton; 
 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }
 #line 3 "Tweak.xm"
 static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void (*_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic)(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$)(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); 
  
@@ -697,7 +697,14 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 	NSString *temperature = [weatherData objectForKey:@"temperature"];
 	NSString *conditions = [weatherData objectForKey:@"conditions"];
-	NSString *combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+	NSString *location = [weatherData objectForKey:@"location"];
+	NSString *combined;
+	if (showCondition == 0){
+		combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+	}
+	else {
+		combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
+	}
 	self.weatherLabel.text = combined;
 	[self addSubview:self.weatherLabel];
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
@@ -1082,7 +1089,7 @@ static void localLSNotif(){
     });
 }
 
-static __attribute__((constructor)) void _logosLocalCtor_2d9b0eb4(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_03bd71d6(int __unused argc, char __unused **argv, char __unused **envp) {
 	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
 	modernNotifBackgroundColor = [file integerForKey:@"modernNotifBackgroundColor"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
@@ -1098,6 +1105,7 @@ static __attribute__((constructor)) void _logosLocalCtor_2d9b0eb4(int __unused a
 	hideSwipeToUnlock = [file boolForKey:@"hideSwipeToUnlock"];
 	configurations = [file integerForKey:@"configuration"];
 	lockscreenClockColor = [file integerForKey:@"lockscreenClockColor"];
+	showCondition = [file integerForKey:@"showCondition"];
 	notifStyle = [file integerForKey:@"notifStyle"];
 	topOldieColor = [file integerForKey:@"topOldieColor"];
 	alignment = [file integerForKey:@"alignment"];
@@ -1183,6 +1191,8 @@ static __attribute__((constructor)) void _logosLocalCtor_2d9b0eb4(int __unused a
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
 	[file registerInteger:&modernNotifBackgroundColor default:0 forKey:@"modernNotifBackgroundColor"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
+	[file registerInteger:&showCondition default:0 forKey:@"showCondition"];
+	
 	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];
