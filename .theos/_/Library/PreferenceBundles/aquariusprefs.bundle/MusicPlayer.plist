@@ -81,7 +81,7 @@
                 <key>cellClass</key>
                 <string>SFSymbolsCell</string>
                 <key>icon</key>
-                <string>iphone.homebutton.circle.fill</string>
+                <string>scanner.fill</string>
                 <key>isController</key>
                 <false />
                 <key>label</key>

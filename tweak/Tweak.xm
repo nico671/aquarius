@@ -33,20 +33,18 @@
 		[songImageForSmall setAlpha:1];
 		[songImageForSmall.layer setCornerRadius:8];
 		songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
-
-
-	[self insertSubview:songImageForSmall atIndex:0];
-	[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
-	[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
+		[self insertSubview:songImageForSmall atIndex:0];
+		[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
+		[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
 	}
 	if (!topLabel){
-	topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
-	if (musicPlayerColorsEnabled){
-  		topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
-	}
-	topLabel.adjustsFontSizeToFitWidth = YES;
-	[self addSubview:topLabel];  
-	[topLabel restartLabel];
+		topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+		if (musicPlayerColorsEnabled){
+			topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
+		}
+		topLabel.adjustsFontSizeToFitWidth = YES;
+		[self addSubview:topLabel];  
+		[topLabel restartLabel];
 	}
 	if (!bottomLabel){
 	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
