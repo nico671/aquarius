@@ -1,6 +1,4 @@
 #line 1 "Tweak.xm"
-#import "headers.h"
-
 
 #include <substrate.h>
 #if defined(__clang__)
@@ -22,10 +20,11 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class MRUNowPlayingLabelView; @class _UIBatteryView; @class MTLumaDodgePillSettings; @class UIKeyboardImpl; @class SBFolderTitleTextField; @class SBUICallToActionLabel; @class SBNotificationBannerDestination; @class BBBulletin; @class MRUNowPlayingHeaderView; @class SBMediaController; @class MRUNowPlayingTransportControlsView; @class NCNotificationListSectionRevealHintView; @class SBPressGestureRecognizer; @class CSAdjunctItemView; @class _UIStatusBarData; @class CSQuickActionsView; @class CSPageControl; @class SBFLockScreenDateView; @class SBHomeHardwareButton; @class SBLockHardwareButtonActions; @class MRUNowPlayingControlsView; @class CSCoverSheetViewController; @class SBLockScreenManager; @class SBIconListPageControl; @class SBFloatingDockPlatterView; @class SBLockHardwareButton; @class NCNotificationShortLookView; @class SBClickGestureRecognizer; @class SpringBoard; @class SBDockView; @class BSPlatform; @class SBWallpaperViewController; @class SBHDefaultIconListLayoutProvider; @class UIWindow; @class _UIStatusBarVisualProvider_Split54; @class BBServer; @class SBIconProgressView; @class SBHomeHardwareButtonActions; @class SBFolderBackgroundView; @class SBIconView; @class _UIStatusBarVisualProvider_iOS; @class SBUIController; @class SBVolumeHardwareButton; 
+@class BBServer; @class _UIStatusBarData; @class SBFolderBackgroundView; @class SBFLockScreenDateView; @class CSAdjunctItemView; @class CSQuickActionsView; @class MRUNowPlayingTransportControlsView; @class SBVolumeHardwareButton; @class CSCoverSheetViewController; @class _UIStatusBarVisualProvider_Split54; @class CSPageControl; @class UIWindow; @class MTLumaDodgePillSettings; @class UIKeyboardImpl; @class MRUNowPlayingLabelView; @class SpringBoard; @class SBHomeHardwareButtonActions; @class NCNotificationListSectionRevealHintView; @class SBHDefaultIconListLayoutProvider; @class SBUICallToActionLabel; @class BSPlatform; @class SBIconListPageControl; @class SBLockHardwareButtonActions; @class MRUNowPlayingControlsView; @class SBFolderTitleTextField; @class BBBulletin; @class MRUNowPlayingHeaderView; @class SBNotificationBannerDestination; @class SBIconProgressView; @class SBUIController; @class SBClickGestureRecognizer; @class SBDockView; @class _UIBatteryView; @class SBPressGestureRecognizer; @class _UIStatusBarVisualProvider_iOS; @class SBMediaController; @class SBLockScreenManager; @class SBIconView; @class SBWallpaperViewController; @class SBHomeHardwareButton; @class NCNotificationShortLookView; @class SBLockHardwareButton; @class SBFloatingDockPlatterView; 
 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }
-#line 3 "Tweak.xm"
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBLockScreenManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBLockScreenManager"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBNotificationBannerDestination(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBNotificationBannerDestination"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$BBBulletin(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("BBBulletin"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBMediaController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBMediaController"); } return _klass; }
+#line 1 "Tweak.xm"
+#import "headers.h"
 static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, BOOL); static void (*_logos_orig$musicplayer$MRUNowPlayingHeaderView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST, SEL, CGRect *); static void (*_logos_orig$musicplayer$MRUNowPlayingControlsView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingLabelView$setNeedsLayout)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingLabelView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingLabelView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$MRUNowPlayingTransportControlsView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingTransportControlsView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$CSAdjunctItemView$_updateSizeToMimic)(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$_updateSizeToMimic(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void _logos_method$musicplayer$CSAdjunctItemView$setTheFuckUp(_LOGOS_SELF_TYPE_NORMAL CSAdjunctItemView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$musicplayer$SBMediaController$setNowPlayingInfo$)(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$musicplayer$SBMediaController$setNowPlayingInfo$(_LOGOS_SELF_TYPE_NORMAL SBMediaController* _LOGOS_SELF_CONST, SEL, id); 
  
 static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setShowRoutingButton$(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingHeaderView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, BOOL arg1) {
@@ -46,9 +45,7 @@ static void _logos_method$musicplayer$MRUNowPlayingHeaderView$setFrame$(_LOGOS_S
 	
 	self.artworkView.hidden = YES;
 	}
-	
 }
-
 
 
 static void _logos_method$musicplayer$MRUNowPlayingControlsView$setNeedsLayout(_LOGOS_SELF_TYPE_NORMAL MRUNowPlayingControlsView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
@@ -304,14 +301,14 @@ static void _logos_method$notifications$NCNotificationShortLookView$layoutSubvie
 	if (notifStyle == 0){
 		
 			if (ogNotifBackgroundColor == 1){
-				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [iconImage averageColor];
+				notifBackgroundView.hidden = YES;
 				self.backgroundColor = tempNotifColor;
 			}
 			else if (ogNotifBackgroundColor == 2){
 				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
+				self.backgroundColor = tempNotifColor;
 			}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
@@ -336,13 +333,13 @@ static void _logos_method$notifications$NCNotificationShortLookView$layoutSubvie
 				self.topOldieNotifView.backgroundColor = tempNotifColor;
 			}
  			if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
- 				notifBackgroundView.hidden = YES;
  				UIColor *tempNotifColor = [iconImage averageColor];
- 				self.backgroundColor = [self lighterColorForColor:tempNotifColor];
  				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+					 notifBackgroundView.hidden = YES;
  					self.backgroundColor = [self darkerColorForColor:tempNotifColor];
          
  				}else{
+					 notifBackgroundView.hidden = YES;
  					self.backgroundColor = [self lighterColorForColor:tempNotifColor];
      
 
@@ -350,14 +347,14 @@ static void _logos_method$notifications$NCNotificationShortLookView$layoutSubvie
 
  			}
  			else if (retroNotifBackgroundColor == 1){
- 				notifBackgroundView.hidden = YES;
+				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [iconImage averageColor];
 				self.backgroundColor = tempNotifColor;
 			}
 			else if (retroNotifBackgroundColor == 2){
 				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
+				self.backgroundColor = tempNotifColor;
 			}
 			if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
@@ -623,76 +620,77 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 
 	if (!self.timeLabel && (!CGRectIsEmpty(self.frame))){ 
 	self.timeLabel = [UILabel new];
-	self.timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,timeLabelHeight);
-	if (alignment == 0){
-		self.timeLabel.textAlignment = NSTextAlignmentLeft;
-	}
-	else if (alignment == 1){
-		self.timeLabel.textAlignment = NSTextAlignmentCenter;
-	}
-	else if (alignment == 2){
-		self.timeLabel.textAlignment = NSTextAlignmentRight;
-	}
-	[self addSubview:self.timeLabel];
-	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
-	}
+	[self.timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+	NSDate * now = [NSDate date];
+	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+	[timeFormatter setDateFormat:timeFormat];
+	NSString *newTimeString = [timeFormatter stringFromDate:now];
+	self.timeLabel.text = newTimeString;
 	if (customFont) {
 		[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
 	}
 	else {
 		[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
 	}
-	NSDate * now = [NSDate date];
-	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:timeFormat];
-	NSString *newTimeString = [timeFormatter stringFromDate:now];
-	self.timeLabel.text = newTimeString;
+	
+	CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width;	
+	NSLog(@"[aquarius] %f",timeLabelWidth);
+	[self.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
+	[self.timeLabel.heightAnchor constraintEqualToConstant:timeLabelHeight].active = YES;
+	[self addSubview:self.timeLabel];
+	if (alignment == 0){
+		[self.timeLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+	}
+	else if (alignment == 1){
+		[self.timeLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+	}
+	else if (alignment == 2){
+		[self.timeLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+	}
+	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.bottomAnchor].active = YES;
+	}
+	
 	
 	if (!self.dateLabel && (!CGRectIsEmpty(self.frame))){ 
 	self.dateLabel = [UILabel new];
-
-	if (alignment == 0){
-		self.dateLabel.textAlignment = NSTextAlignmentLeft;
-	}
-	else if (alignment == 1){
-		self.dateLabel.textAlignment = NSTextAlignmentCenter;
-	}
-	else if (alignment == 2){
-		self.dateLabel.textAlignment = NSTextAlignmentRight;
-	}
+	[self.dateLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+	NSDate * date = [NSDate date];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:dateFormat];
+	NSString *newDateString = [dateFormatter stringFromDate:date];
+	self.dateLabel.text = newDateString;
 	if (customFont) {
 		[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
 	}
 	else {
 		[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
 	}
-	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
+
+	CGFloat dateLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+	[self.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
+	[self.dateLabel.heightAnchor constraintEqualToConstant:dateLabelHeight].active = YES;
 	[self addSubview:self.dateLabel];
-	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
-	}
-	NSDate * date = [NSDate date];
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:dateFormat];
-	NSString *newDateString = [dateFormatter stringFromDate:date];
-	self.dateLabel.text = newDateString;
-	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ 
-	self.weatherLabel = [UILabel new];
 	if (alignment == 0){
-		self.weatherLabel.textAlignment = NSTextAlignmentLeft;
+		[self.dateLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
 	}
 	else if (alignment == 1){
-		self.weatherLabel.textAlignment = NSTextAlignmentCenter;
+		[self.dateLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
 	}
 	else if (alignment == 2){
-		self.weatherLabel.textAlignment = NSTextAlignmentRight;
+		[self.dateLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
 	}
+	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
+	}
+	
+	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ 
+	self.weatherLabel = [UILabel new];
+	[self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	if (customFont) {
 		[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
 	}
 	else {
 		[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
 	}
-	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
 	[[PDDokdo sharedInstance] refreshWeatherData];
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 	NSString *temperature = [weatherData objectForKey:@"temperature"];
@@ -706,12 +704,25 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 		combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
 	}
 	self.weatherLabel.text = combined;
+	CGFloat weatherLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+	[self.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+	[self.weatherLabel.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
 	[self addSubview:self.weatherLabel];
+	if (alignment == 0){
+		[self.weatherLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+	}
+	else if (alignment == 1){
+		[self.weatherLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+	}
+	else if (alignment == 2){
+		[self.weatherLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+	}
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
 	}
 	if (!self.weatherIconView && haveWeatherIcon && self.weatherLabel){
-		[[PDDokdo sharedInstance] refreshWeatherData];
-		WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
+	[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
+	[[PDDokdo sharedInstance] refreshWeatherData];
+	WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
 	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
 	WACurrentForecast* currentCond = [currentModel currentConditions];
 	NSInteger currentCode = [currentCond conditionCode];
@@ -772,13 +783,13 @@ static void _logos_method$Lockscreen$SBFLockScreenDateView$_updateLabels(_LOGOS_
 		[self addSubview:self.weatherIconView];
 		[self.weatherIconView.centerYAnchor constraintEqualToAnchor:self.weatherLabel.centerYAnchor].active = YES;
 		if (alignment == 0){
-			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:15].active = YES;
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.rightAnchor constant:5].active = YES;
 		}
 		else if (alignment == 2){
-			[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:-15].active = YES;
+			[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.leftAnchor constant:-5].active = YES;
 		}
 		else {
-			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:self.frame.size.width/4].active = YES;
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.rightAnchor constant:5].active = YES;
 		}
 	
 	}
@@ -1089,7 +1100,7 @@ static void localLSNotif(){
     });
 }
 
-static __attribute__((constructor)) void _logosLocalCtor_03bd71d6(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_c50633bd(int __unused argc, char __unused **argv, char __unused **envp) {
 	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
 	modernNotifBackgroundColor = [file integerForKey:@"modernNotifBackgroundColor"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];

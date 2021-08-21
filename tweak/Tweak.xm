@@ -1,5 +1,4 @@
 #import "headers.h"
-// TODO: allow for choosing between condition and location or maybe both, color mtmaterial views instead of the actual background
 %group musicplayer
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
@@ -20,9 +19,7 @@
 	//artworksetup
 	self.artworkView.hidden = YES;
 	}
-	
 }
-
 %end
 %hook MRUNowPlayingControlsView
 -(void)setNeedsLayout {
@@ -275,14 +272,14 @@
 	if (notifStyle == 0){
 		// original look
 			if (ogNotifBackgroundColor == 1){
-				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [iconImage averageColor];
+				notifBackgroundView.hidden = YES;
 				self.backgroundColor = tempNotifColor;
 			}
 			else if (ogNotifBackgroundColor == 2){
 				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
+				self.backgroundColor = tempNotifColor;
 			}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
@@ -307,13 +304,13 @@
 				self.topOldieNotifView.backgroundColor = tempNotifColor;
 			}
  			if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
- 				notifBackgroundView.hidden = YES;
  				UIColor *tempNotifColor = [iconImage averageColor];
- 				self.backgroundColor = [self lighterColorForColor:tempNotifColor];
  				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+					 notifBackgroundView.hidden = YES;
  					self.backgroundColor = [self darkerColorForColor:tempNotifColor];
          //is dark
  				}else{
+					 notifBackgroundView.hidden = YES;
  					self.backgroundColor = [self lighterColorForColor:tempNotifColor];
      //is light
 
@@ -321,14 +318,14 @@
 
  			}
  			else if (retroNotifBackgroundColor == 1){
- 				notifBackgroundView.hidden = YES;
+				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [iconImage averageColor];
 				self.backgroundColor = tempNotifColor;
 			}
 			else if (retroNotifBackgroundColor == 2){
 				notifBackgroundView.hidden = YES;
 				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
+				self.backgroundColor = tempNotifColor;
 			}
 			if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
@@ -590,76 +587,77 @@ if (downloadBarEnabled){
 
 	if (!self.timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
 	self.timeLabel = [UILabel new];
-	self.timeLabel.frame = CGRectMake(0,timeLabelToBeReplaced.frame.origin.y,self.frame.size.width,timeLabelHeight);
-	if (alignment == 0){
-		self.timeLabel.textAlignment = NSTextAlignmentLeft;
-	}
-	else if (alignment == 1){
-		self.timeLabel.textAlignment = NSTextAlignmentCenter;
-	}
-	else if (alignment == 2){
-		self.timeLabel.textAlignment = NSTextAlignmentRight;
-	}
-	[self addSubview:self.timeLabel];
-	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.topAnchor].active= YES;
-	}
+	[self.timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+	NSDate * now = [NSDate date];
+	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+	[timeFormatter setDateFormat:timeFormat];
+	NSString *newTimeString = [timeFormatter stringFromDate:now];
+	self.timeLabel.text = newTimeString;
 	if (customFont) {
 		[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
 	}
 	else {
 		[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
 	}
-	NSDate * now = [NSDate date];
-	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:timeFormat];
-	NSString *newTimeString = [timeFormatter stringFromDate:now];
-	self.timeLabel.text = newTimeString;
+	
+	CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width;	
+	NSLog(@"[aquarius] %f",timeLabelWidth);
+	[self.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
+	[self.timeLabel.heightAnchor constraintEqualToConstant:timeLabelHeight].active = YES;
+	[self addSubview:self.timeLabel];
+	if (alignment == 0){
+		[self.timeLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+	}
+	else if (alignment == 1){
+		[self.timeLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+	}
+	else if (alignment == 2){
+		[self.timeLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+	}
+	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.bottomAnchor].active = YES;
+	}
+	
 	// dateLabel setup
 	if (!self.dateLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
 	self.dateLabel = [UILabel new];
-
-	if (alignment == 0){
-		self.dateLabel.textAlignment = NSTextAlignmentLeft;
-	}
-	else if (alignment == 1){
-		self.dateLabel.textAlignment = NSTextAlignmentCenter;
-	}
-	else if (alignment == 2){
-		self.dateLabel.textAlignment = NSTextAlignmentRight;
-	}
+	[self.dateLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+	NSDate * date = [NSDate date];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:dateFormat];
+	NSString *newDateString = [dateFormatter stringFromDate:date];
+	self.dateLabel.text = newDateString;
 	if (customFont) {
 		[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
 	}
 	else {
 		[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
 	}
-	self.dateLabel.frame = CGRectMake(CGRectGetMinX(self.timeLabel.frame),CGRectGetMaxY(self.timeLabel.frame),self.frame.size.width,dateLabelHeight);
+
+	CGFloat dateLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+	[self.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
+	[self.dateLabel.heightAnchor constraintEqualToConstant:dateLabelHeight].active = YES;
 	[self addSubview:self.dateLabel];
-	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
-	}
-	NSDate * date = [NSDate date];
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:dateFormat];
-	NSString *newDateString = [dateFormatter stringFromDate:date];
-	self.dateLabel.text = newDateString;
-	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ // i hate having to do this
-	self.weatherLabel = [UILabel new];
 	if (alignment == 0){
-		self.weatherLabel.textAlignment = NSTextAlignmentLeft;
+		[self.dateLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
 	}
 	else if (alignment == 1){
-		self.weatherLabel.textAlignment = NSTextAlignmentCenter;
+		[self.dateLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
 	}
 	else if (alignment == 2){
-		self.weatherLabel.textAlignment = NSTextAlignmentRight;
+		[self.dateLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
 	}
+	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
+	}
+	
+	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ // i hate having to do this
+	self.weatherLabel = [UILabel new];
+	[self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 	if (customFont) {
 		[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
 	}
 	else {
 		[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
 	}
-	self.weatherLabel.frame = CGRectMake(CGRectGetMinX(self.dateLabel.frame),CGRectGetMaxY(self.dateLabel.frame),self.frame.size.width,weatherLabelHeight);
 	[[PDDokdo sharedInstance] refreshWeatherData];
 	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 	NSString *temperature = [weatherData objectForKey:@"temperature"];
@@ -673,12 +671,25 @@ if (downloadBarEnabled){
 		combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
 	}
 	self.weatherLabel.text = combined;
+	CGFloat weatherLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+	[self.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+	[self.weatherLabel.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
 	[self addSubview:self.weatherLabel];
+	if (alignment == 0){
+		[self.weatherLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+	}
+	else if (alignment == 1){
+		[self.weatherLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+	}
+	else if (alignment == 2){
+		[self.weatherLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+	}
 	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
 	}
 	if (!self.weatherIconView && haveWeatherIcon && self.weatherLabel){
-		[[PDDokdo sharedInstance] refreshWeatherData];
-		WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
+	[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
+	[[PDDokdo sharedInstance] refreshWeatherData];
+	WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
 	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
 	WACurrentForecast* currentCond = [currentModel currentConditions];
 	NSInteger currentCode = [currentCond conditionCode];
@@ -739,13 +750,13 @@ if (downloadBarEnabled){
 		[self addSubview:self.weatherIconView];
 		[self.weatherIconView.centerYAnchor constraintEqualToAnchor:self.weatherLabel.centerYAnchor].active = YES;
 		if (alignment == 0){
-			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:15].active = YES;
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.rightAnchor constant:5].active = YES;
 		}
 		else if (alignment == 2){
-			[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:-15].active = YES;
+			[self.weatherIconView.rightAnchor constraintEqualToAnchor:self.weatherLabel.leftAnchor constant:-5].active = YES;
 		}
 		else {
-			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.centerXAnchor constant:self.frame.size.width/4].active = YES;
+			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.rightAnchor constant:5].active = YES;
 		}
 	
 	}
