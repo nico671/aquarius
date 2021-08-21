@@ -111,26 +111,7 @@
                 <key>fallback</key>
                 <string>ffffffff</string>
             </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSGroupCell</string>
-                <key>label</key>
-                <string>Background of the Player</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSSwitchCell</string>
-                <key>default</key>
-                <false />
-                <key>defaults</key>
-                <string>aquariusprefs</string>
-                <key>PostNotification</key>
-                <string>com.nico671.preferenceschanged</string>
-                <key>key</key>
-                <string>isBackgroundColorEnabled</string>
-                <key>label</key>
-                <string>Artwork Color as Background</string>
-            </dict>
+           
 
         </array>
         <key>title</key>

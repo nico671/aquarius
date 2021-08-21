@@ -71,6 +71,22 @@
                 <key>label</key>
                 <string>Outline</string>
             </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>MusicPlayerBackground</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>CLCRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>iphone.homebutton.circle.fill</string>
+                <key>isController</key>
+                <false />
+                <key>label</key>
+                <string>Background</string>
+            </dict>
 
         </array>
         <key>title</key>
