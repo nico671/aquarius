@@ -103,8 +103,6 @@
 - (int)batteryCapacityAsPercentage;
 @end
 
-
-
 @interface SBDashBoardNotificationAdjunctListViewController : UIViewController
 @end
 
