@@ -25,49 +25,48 @@
 -(void)setNeedsLayout {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
 	if (controller.context == 2) {
-	if(!songImageForSmall){
-		songImageForSmall = [UIButton new];
-		[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
-		[songImageForSmall setClipsToBounds:YES];
-		[songImageForSmall setAdjustsImageWhenHighlighted:NO];
-		[songImageForSmall setAlpha:1];
-		[songImageForSmall.layer setCornerRadius:8];
-		songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
-		[self insertSubview:songImageForSmall atIndex:0];
-		[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
-		[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
-	}
-	if (!topLabel){
-		topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
-		if (musicPlayerColorsEnabled){
-			topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
+		if(!songImageForSmall){
+			songImageForSmall = [UIButton new];
+			[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
+			[songImageForSmall setClipsToBounds:YES];
+			[songImageForSmall setAdjustsImageWhenHighlighted:NO];
+			[songImageForSmall setAlpha:1];
+			[songImageForSmall.layer setCornerRadius:8];
+			songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
+			[self insertSubview:songImageForSmall atIndex:0];
+			[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
+			[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
 		}
-		topLabel.adjustsFontSizeToFitWidth = YES;
-		[self addSubview:topLabel];  
-		[topLabel restartLabel];
-	}
-	if (!bottomLabel){
-	bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
-	bottomLabel.adjustsFontSizeToFitWidth = YES;
-	if (musicPlayerColorsEnabled){
-		bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
-	}
-	[self addSubview:bottomLabel];
-	[bottomLabel restartLabel];
-	}
-	if (configurations == 3) {
-	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-	}
-	else if (configurations == 1){
-	[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-	}
-	else if (configurations == 2){
-	[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
-	[self.timeControlsView setHidden:YES];
-	[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
-	[self.headerView.artworkView setHidden:YES];
-	}
+		if (!topLabel){
+			topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+			if (musicPlayerColorsEnabled){
+				topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
+			}
+			topLabel.adjustsFontSizeToFitWidth = YES;
+			[self addSubview:topLabel];  
+			[topLabel restartLabel];
+		}
+		if (!bottomLabel){
+			bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
+			bottomLabel.adjustsFontSizeToFitWidth = YES;
+			if (musicPlayerColorsEnabled){
+				bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
+			}
+			[self addSubview:bottomLabel];
+			[bottomLabel restartLabel];
+		}
+		if (configurations == 3) {
+			[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+		}
+		else if (configurations == 1){
+			[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
+			[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+		}
+		else if (configurations == 2){
+			[self.volumeControlsView setFrame:CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 55, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
+			[self.timeControlsView setHidden:YES];
+			[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+		}
 	}
 }
 %end
@@ -112,81 +111,58 @@
 
 -(void)_updateSizeToMimic{
 		%orig;
-		NSString *musicPlayerFrameString = NSStringFromCGRect(self.frame);
-		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:musicPlayerFrameString forKey:@"frameString"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"musicplayerframe" object:nil userInfo:userInfo];
 		[[%c(SBMediaController) sharedInstance]setNowPlayingInfo:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTheFuckUp) name:@"com.nico671.updateColors" object:nil];
         [self setTheFuckUp];
         PLPlatterView *platterView = (PLPlatterView *)MSHookIvar<UIView *>(self, "_platterView");
 		if (!isArtworkBackground && !isBackgroundColored && !customImageBackgroundBOOL){
-        [platterView.backgroundView setAlpha:musicPlayerAlpha];
+        	[platterView.backgroundView setAlpha:musicPlayerAlpha];
 		}
         self.layer.cornerRadius = musicPlayerCornerRadius;
         if (musicPlayerLeafLook) {
-          self.layer.maskedCorners =
-              kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+          	self.layer.maskedCorners =
+            kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
         }
         if (configurations == 1 || configurations == 2) {
-          [platterView.heightAnchor constraintEqualToConstant:130].active =
-              true;
-          if (!isArtworkBackground && !isBackgroundColored &&
-              customImageBackgroundBOOL) {
-            setUpCustomBackground();
-            [self addSubview:customImageBackground];
-            UIImage *img =
-                [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
-                                              withKey:@"customBackgroundImage"];
-            [customImageBackground setImage:img forState:UIControlStateNormal];
-            [self sendSubviewToBack:customImageBackground];
-            [platterView.backgroundView setAlpha:0];
-            [customImageBackground
-                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                                    self.frame.size.width,
-                                    self.frame.size.height)];
-          }
-          if (isArtworkBackground && !isBackgroundColored) {
-            setUpTheArtworkBackground();
-            [self addSubview:songBackground];
-            [self sendSubviewToBack:songBackground];
-            [platterView.backgroundView setAlpha:0];
-            [songBackground
-                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                                    self.frame.size.width,
-                                    self.frame.size.height)];
-          }
+        	[platterView.heightAnchor constraintEqualToConstant:130].active = true;
+        	if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL) {
+            	setUpCustomBackground();
+           	 	[self addSubview:customImageBackground];
+           		UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
+            	[customImageBackground setImage:img forState:UIControlStateNormal];
+            	[self sendSubviewToBack:customImageBackground];
+            	[platterView.backgroundView setAlpha:0];
+            	[customImageBackground setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+          	}
+          	if (isArtworkBackground && !isBackgroundColored) {
+				setUpTheArtworkBackground();
+				[self addSubview:songBackground];
+				[self sendSubviewToBack:songBackground];
+				[platterView.backgroundView setAlpha:0];
+				[songBackground setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+         	 }
         }
-
         else if (configurations == 3) {
-          if (!isArtworkBackground && !isBackgroundColored &&
-              customImageBackgroundBOOL) {
-            setUpCustomBackground();
-            [self addSubview:customImageBackground];
-            UIImage *img =
-                [GcImagePickerUtils imageFromDefaults:@"aquariusprefs"
-                                              withKey:@"customBackgroundImage"];
-            [customImageBackground setImage:img forState:UIControlStateNormal];
-            [self sendSubviewToBack:customImageBackground];
-            [platterView.backgroundView setAlpha:0];
-            [customImageBackground
-                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                                    self.frame.size.width,
-                                    self.frame.size.height)];
-          }
-          if (isBackgroundColored) {
-            [platterView.backgroundView setAlpha:0];
-          }
-          [self.heightAnchor constraintEqualToConstant:100].active = true;
-          if (isArtworkBackground && !isBackgroundColored) {
-            setUpTheArtworkBackground();
-            [self addSubview:songBackground];
-            [self sendSubviewToBack:songBackground];
-            [platterView.backgroundView setAlpha:0];
-            [songBackground
-                setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
-                                    self.frame.size.width,
-                                    self.frame.size.height)];
-          }
+        	if (!isArtworkBackground && !isBackgroundColored && customImageBackgroundBOOL) {
+				setUpCustomBackground();
+				[self addSubview:customImageBackground];
+				UIImage *img = [GcImagePickerUtils imageFromDefaults:@"aquariusprefs" withKey:@"customBackgroundImage"];
+				[customImageBackground setImage:img forState:UIControlStateNormal];
+				[self sendSubviewToBack:customImageBackground];
+				[platterView.backgroundView setAlpha:0];
+				[customImageBackground setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width,self.frame.size.height)];
+          	}
+          	if (isBackgroundColored) {
+        		[platterView.backgroundView setAlpha:0];
+          	}
+          	[self.heightAnchor constraintEqualToConstant:100].active = true;
+          	if (isArtworkBackground && !isBackgroundColored) {
+				setUpTheArtworkBackground();
+				[self addSubview:songBackground];
+				[self sendSubviewToBack:songBackground];
+				[platterView.backgroundView setAlpha:0];
+				[songBackground	setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,self.frame.size.width,self.frame.size.height)];
+			}
 
         }
 
@@ -198,22 +174,20 @@
 %new
 -(void) setTheFuckUp{
 	PLPlatterView *platterView = (PLPlatterView *)MSHookIvar<UIView *>(self, "_platterView");
-  if (haveOutline) {
-    self.layer.borderWidth = outlineSize;
-    if (!haveOutlineSecondaryColorMusicPlayer) {
-      UIColor *customColor =
-          [GcColorPickerUtils colorFromDefaults:@"aquariusprefs"
-                                            withKey:@"outlineColor"];
-      self.layer.borderColor = [customColor CGColor];
-    } else {
-      self.layer.borderColor = [fuckingArtworkColor2 CGColor];
-    }
-    self.layer.cornerRadius = musicPlayerCornerRadius;
-  }
-  if (isBackgroundColored) {
-	  platterView.backgroundView.hidden = YES;
-    self.backgroundColor = fuckingArtworkColor;
-  }
+	if (haveOutline){
+		self.layer.borderWidth = outlineSize;
+		if (!haveOutlineSecondaryColorMusicPlayer){
+			UIColor *customColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"outlineColor"];
+			self.layer.borderColor = customColor.CGColor;
+		}
+		else {
+			self.layer.borderColor = fuckingArtworkColor2.CGColor;
+		}
+		if (isBackgroundColored) {
+	  		platterView.backgroundView.hidden = YES;
+    		self.backgroundColor = fuckingArtworkColor;
+  		}
+	}
 }
 %end
 
@@ -256,193 +230,184 @@
 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
-	if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
-			iconContentView = [self.subviews objectAtIndex:1];
+		if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
+				iconContentView = [self.subviews objectAtIndex:1];
+		}
 	}
-	}
- 	
+
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
-	self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-	self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+		self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+		self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
 	
 	if (notifStyle == 0){
 		// original look
-			if (ogNotifBackgroundColor == 1){
-				UIColor *tempNotifColor = [iconImage averageColor];
-				notifBackgroundView.hidden = YES;
-				self.backgroundColor = tempNotifColor;
-			}
-			else if (ogNotifBackgroundColor == 2){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-				self.backgroundColor = tempNotifColor;
-			}
+		if (ogNotifBackgroundColor == 1){
+			UIColor *tempNotifColor = [iconImage averageColor];
+			notifBackgroundView.hidden = YES;
+			self.backgroundColor = tempNotifColor;
+		}
+		else if (ogNotifBackgroundColor == 2){
+			notifBackgroundView.hidden = YES;
+			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
+			self.backgroundColor = tempNotifColor;
+		}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
 		NSLog(@"[aquarius] this should be called 1 time");
-			self.topOldieNotifView = [[UIView alloc]init];
-			[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-			if (oldieNotifHaveShadow){
-			self.topOldieNotifView.layer.shadowColor = [UIColor blackColor].CGColor;
-			self.topOldieNotifView.layer.shadowOffset = CGSizeMake(0, 4);
-			self.topOldieNotifView.layer.shadowRadius = 10;
-			self.topOldieNotifView.layer.shadowOpacity = notifShadowOpacity;
-			}
-			if (topOldieColor == 0){
-				self.topOldieNotifView.backgroundColor = [UIColor grayColor];
-			}
-			if (topOldieColor == 1){
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
-			}
-			if (topOldieColor == 2){
-				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
-				self.topOldieNotifView.backgroundColor = tempNotifColor;
-			}
- 			if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
- 				UIColor *tempNotifColor = [iconImage averageColor];
- 				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
-					 notifBackgroundView.hidden = YES;
- 					self.backgroundColor = [self darkerColorForColor:tempNotifColor];
-         //is dark
- 				}else{
-					 notifBackgroundView.hidden = YES;
- 					self.backgroundColor = [self lighterColorForColor:tempNotifColor];
-     //is light
+		self.topOldieNotifView = [[UIView alloc]init];
+		[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+		if (oldieNotifHaveShadow){
+		self.topOldieNotifView.layer.shadowColor = [UIColor blackColor].CGColor;
+		self.topOldieNotifView.layer.shadowOffset = CGSizeMake(0, 4);
+		self.topOldieNotifView.layer.shadowRadius = 10;
+		self.topOldieNotifView.layer.shadowOpacity = notifShadowOpacity;
+		}
+		if (topOldieColor == 0){
+			self.topOldieNotifView.backgroundColor = [UIColor grayColor];
+		}
+		if (topOldieColor == 1){
+			UIColor *tempNotifColor = [iconImage averageColor];
+			self.topOldieNotifView.backgroundColor = tempNotifColor;
+		}
+		if (topOldieColor == 2){
+			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
+			self.topOldieNotifView.backgroundColor = tempNotifColor;
+		}
+		if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
+		UIColor *tempNotifColor = [iconImage averageColor];
+		if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){ 	//is dark
+			notifBackgroundView.hidden = YES;
+			self.backgroundColor = [self darkerColorForColor:tempNotifColor];
 
- 				}
+		}else{ // light
+			notifBackgroundView.hidden = YES;
+			self.backgroundColor = [self lighterColorForColor:tempNotifColor];
+			}
 
- 			}
- 			else if (retroNotifBackgroundColor == 1){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [iconImage averageColor];
-				self.backgroundColor = tempNotifColor;
-			}
-			else if (retroNotifBackgroundColor == 2){
-				notifBackgroundView.hidden = YES;
-				UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
-				self.backgroundColor = tempNotifColor;
-			}
-			if (customRetroNotifTextColor){
+		}
+		else if (retroNotifBackgroundColor == 1){
+			notifBackgroundView.hidden = YES;
+			UIColor *tempNotifColor = [iconImage averageColor];
+			self.backgroundColor = tempNotifColor;
+		}
+		else if (retroNotifBackgroundColor == 2){
+			notifBackgroundView.hidden = YES;
+			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
+			self.backgroundColor = tempNotifColor;
+		}
+		if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
 			self.notificationContentView.secondaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
-			UIColor *tempLabelColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
-			iconContentView.titleLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
-			iconContentView.dateLabel.textColor = [tempLabelColor colorWithAlphaComponent:1];
-			}
-			
-			self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
-			self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
-			self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
+		}
 		
-			
-			if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
-				[self addSubview:self.topOldieNotifView];
-				[self bringSubviewToFront:self.topOldieNotifView];
-				[self bringSubviewToFront:self.subviews[1]];
-			}
-			else {
-				[self addSubview:self.topOldieNotifView];
-				[self bringSubviewToFront:self.topOldieNotifView];
-				[self bringSubviewToFront:iconContentView];
-				[self bringSubviewToFront:self.subviews[2]];
-			}
+		self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
+		self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
+		self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
+	
 		
+		if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
+			[self addSubview:self.topOldieNotifView];
+			[self bringSubviewToFront:self.topOldieNotifView];
+			[self bringSubviewToFront:self.subviews[1]];
+		}
+		else {
+			[self addSubview:self.topOldieNotifView];
+			[self bringSubviewToFront:self.topOldieNotifView];
+			[self bringSubviewToFront:iconContentView];
+			[self bringSubviewToFront:self.subviews[2]];
+		}
+	
 			
 	
 	// end of retro notifs
-			}
-		if (notifStyle == 2){
-				if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
-				[self bringSubviewToFront:notifBackgroundView];
-				notifBackgroundView.layer.cornerRadius = notifCornerRadius;
-				if (modernNotifBackgroundColor == 1){
-					notifBackgroundView.backgroundColor = [iconImage averageColor];
-				}
-				if (modernNotifBackgroundColor == 2){
-					notifBackgroundView.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
-				}
-				
-			if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
+	}
+	if (notifStyle == 2){
+		if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
+			[self bringSubviewToFront:notifBackgroundView];
+			notifBackgroundView.layer.cornerRadius = notifCornerRadius;
+		if (modernNotifBackgroundColor == 1){
+			notifBackgroundView.backgroundColor = [iconImage averageColor];
+		}
+		if (modernNotifBackgroundColor == 2){
+			notifBackgroundView.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+		}
+		
+		if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
 			UIImage *iconImage = iconContentView.icons[0];
 			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
 			self.modernStyleIconImageView.image = iconImage;
 			[self addSubview:self.modernStyleIconImageView];
 			[self bringSubviewToFront:self.modernStyleIconImageView];
-			}
-
-			if (leafCornerNotifs){
-				self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-				self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-			}
-			if (self.modernStyleIconImageView){
-			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
-			[self addSubview:self.notificationContentView];
-			[self bringSubviewToFront:self.notificationContentView];
-			iconContentView.hidden = YES;
-			}
 		}
-		else {
-			if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
-				self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
-				self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
-				self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
-				self.modernNotifBackground.translatesAutoresizingMaskIntoConstraints = YES;
-				if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
-					[self.modernNotifBackground setRecipeName:@"plattersDark"];
-			//is dark
-				}else{
-					[self.modernNotifBackground setRecipeName:@"platters"];
-				}
-				if (modernNotifBackgroundColor == 1){
-				self.modernNotifBackground.backgroundColor = [iconImage averageColor];
-				}
-				if (modernNotifBackgroundColor == 2){
-				self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
-				}
-				[self addSubview:self.modernNotifBackground];
-				[self bringSubviewToFront:self.modernNotifBackground];
+
+		if (leafCornerNotifs){
+			self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+			self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+		}
+		if (self.modernStyleIconImageView){
+		self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
+		[self addSubview:self.notificationContentView];
+		[self bringSubviewToFront:self.notificationContentView];
+		iconContentView.hidden = YES;
+		}
+	}
+	else {
+		if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
+			self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
+			self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+			self.modernNotifBackground.layer.cornerRadius = notifCornerRadius;
+			self.modernNotifBackground.translatesAutoresizingMaskIntoConstraints = YES;
+			if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
+				[self.modernNotifBackground setRecipeName:@"plattersDark"];
+		//is dark
+			}else{
+				[self.modernNotifBackground setRecipeName:@"platters"];
 			}
-			if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
+			if (modernNotifBackgroundColor == 1){
+			self.modernNotifBackground.backgroundColor = [iconImage averageColor];
+			}
+			if (modernNotifBackgroundColor == 2){
+			self.modernNotifBackground.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
+			}
+			[self addSubview:self.modernNotifBackground];
+			[self bringSubviewToFront:self.modernNotifBackground];
+		}
+		if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
 			UIImage *iconImage = iconContentView.icons[0];
 			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
 			self.modernStyleIconImageView.image = iconImage;
 			[self addSubview:self.modernStyleIconImageView];
 			[self bringSubviewToFront:self.modernStyleIconImageView];
-			}
+		}
 
-			if (leafCornerNotifs){
-				self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-				self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-			}
-			if (self.modernStyleIconImageView){
+		if (leafCornerNotifs){
+			self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+			self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
+		}
+		if (self.modernStyleIconImageView){
 			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
-			}
 		}
-		}  //end of modern notifs
+	}
+	}  //end of modern notifs
 }
 %new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
     CGFloat r, g, b, a;
-    if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MIN(r + 0.2, 1.0)
-                               green:MIN(g + 0.2, 1.0)
-                                blue:MIN(b + 0.2, 1.0)
-                               alpha:a];
+    if ([c getRed:&r green:&g blue:&b alpha:&a]){
+		return [UIColor colorWithRed:MIN(r + 0.2, 1.0) green:MIN(g + 0.2, 1.0) blue:MIN(b + 0.2, 1.0) alpha:a];
+	}
     return nil;
 }
 %new
 - (UIColor *)darkerColorForColor:(UIColor *)c{
     CGFloat h, s, b, a;
-    if ([c getHue:&h saturation:&s brightness:&b alpha:&a])
-        return [UIColor colorWithHue:h
-                          saturation:s
-                          brightness:b * 0.75
-                               alpha:a];
+    if ([c getHue:&h saturation:&s brightness:&b alpha:&a]){
+        return [UIColor colorWithHue:h saturation:s brightness:b * 0.75 alpha:a];
+	}
     return nil;
 }
 %end
