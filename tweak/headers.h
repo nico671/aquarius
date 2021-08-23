@@ -227,6 +227,7 @@
 @end
 @interface NCNotificationShortLookViewController : UIViewController
 @property (nonatomic, assign, readonly) UIView *viewForPreview;
+@property (nonatomic, retain) NCNotificationShortLookView *actualView;
 @property (nonatomic, weak) id delegate;
 @end
 @interface NCNotificationListCell : UIView
@@ -246,6 +247,7 @@
 @property (nonatomic,retain) UIView *topOldieNotifView;
 @property (nonatomic,retain) UIImageView *modernStyleIconImageView;
 @property UIColor *tempNotifColor;
+-(void)createThatMan;
 - (UIColor *)lighterColorForColor:(UIColor *)c ;
 @property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 - (UIColor *)darkerColorForColor:(UIColor *)c;

@@ -9,6 +9,8 @@
                 <string>PSGroupCell</string>
                 <key>label</key>
                 <string>Color Of The Lockscreen Clock</string>
+                <key>footerText</key>
+                <string>Based on Your Wallpaper</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -26,7 +28,7 @@
                 <key>key</key>
                 <string>lockscreenClockColor</string>
                 <key>label</key>
-                <string>Choose Color</string>
+                <string>Adaptive Lockscreen Color</string>
                 <key>PostNotification</key>
                 <string>com.nico671.preferenceschanged</string>
                 <key>id</key>
