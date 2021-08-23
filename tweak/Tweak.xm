@@ -224,9 +224,13 @@
 %hook NCNotificationShortLookView
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
-%property (nonatomic,retain) UIImageView *modernStyleIconImageView; 
-- (void) layoutSubviews{
+%property (nonatomic,retain) UIImageView *modernStyleIconImageView;   
+- (void) didMoveToWindow{
 	%orig;
+	[self createThatMan]; //end of modern notifs
+}
+%new
+-(void)createThatMan{
 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
 	notifBackgroundView = [self.subviews objectAtIndex:0];
@@ -234,24 +238,22 @@
 				iconContentView = [self.subviews objectAtIndex:1];
 		}
 	}
-
+	UIColor *tempNotifColor = [iconImage averageColor];
 	self.layer.cornerRadius = notifCornerRadius;
 	if (leafCornerNotifs){
 		self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 		self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
 	}
-	
 	if (notifStyle == 0){
 		// original look
 		if (ogNotifBackgroundColor == 1){
-			UIColor *tempNotifColor = [iconImage averageColor];
 			notifBackgroundView.hidden = YES;
 			self.backgroundColor = tempNotifColor;
 		}
 		else if (ogNotifBackgroundColor == 2){
 			notifBackgroundView.hidden = YES;
-			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
-			self.backgroundColor = tempNotifColor;
+			UIColor *customNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOGNotifColor"];
+			self.backgroundColor = customNotifColor;
 		}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
@@ -268,15 +270,14 @@
 			self.topOldieNotifView.backgroundColor = [UIColor grayColor];
 		}
 		if (topOldieColor == 1){
-			UIColor *tempNotifColor = [iconImage averageColor];
+
 			self.topOldieNotifView.backgroundColor = tempNotifColor;
 		}
 		if (topOldieColor == 2){
-			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
-			self.topOldieNotifView.backgroundColor = tempNotifColor;
+			UIColor *customNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTopOldieNotifColor"];
+			self.topOldieNotifView.backgroundColor = customNotifColor;
 		}
 		if (retroNotifBackgroundColor == 1 && topOldieColor == 1){
-		UIColor *tempNotifColor = [iconImage averageColor];
 		if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){ 	//is dark
 			notifBackgroundView.hidden = YES;
 			self.backgroundColor = [self darkerColorForColor:tempNotifColor];
@@ -289,13 +290,12 @@
 		}
 		else if (retroNotifBackgroundColor == 1){
 			notifBackgroundView.hidden = YES;
-			UIColor *tempNotifColor = [iconImage averageColor];
 			self.backgroundColor = tempNotifColor;
 		}
 		else if (retroNotifBackgroundColor == 2){
 			notifBackgroundView.hidden = YES;
-			UIColor *tempNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
-			self.backgroundColor = tempNotifColor;
+			UIColor *customNotifColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customBackgroundOldieNotifColor"];
+			self.backgroundColor = customNotifColor;
 		}
 		if (customRetroNotifTextColor){
 			self.notificationContentView.primaryLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customOldieTextNotifColor"];
@@ -323,37 +323,9 @@
 	
 	// end of retro notifs
 	}
+	self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
 	if (notifStyle == 2){
-		if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
-			[self bringSubviewToFront:notifBackgroundView];
-			notifBackgroundView.layer.cornerRadius = notifCornerRadius;
-		if (modernNotifBackgroundColor == 1){
-			notifBackgroundView.backgroundColor = [iconImage averageColor];
-		}
-		if (modernNotifBackgroundColor == 2){
-			notifBackgroundView.backgroundColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customModernNotifBackgroundColor"];
-		}
-		
-		if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
-			UIImage *iconImage = iconContentView.icons[0];
-			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
-			self.modernStyleIconImageView.image = iconImage;
-			[self addSubview:self.modernStyleIconImageView];
-			[self bringSubviewToFront:self.modernStyleIconImageView];
-		}
-
-		if (leafCornerNotifs){
-			self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-			self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-		}
-		if (self.modernStyleIconImageView){
-		self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
-		[self addSubview:self.notificationContentView];
-		[self bringSubviewToFront:self.notificationContentView];
-		iconContentView.hidden = YES;
-		}
-	}
-	else {
+	
 		if (!self.modernNotifBackground && !CGRectIsEmpty(self.frame)){
 			self.modernNotifBackground = [NSClassFromString(@"MTMaterialView") materialViewWithRecipeNamed:@"platters" inBundle:nil configuration:1 initialWeighting:1.0 scaleAdjustment:nil];
 			self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
@@ -376,23 +348,21 @@
 		}
 		if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
 			UIImage *iconImage = iconContentView.icons[0];
-			self.modernStyleIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2)];
+			self.modernStyleIconImageView = [[UIImageView alloc]init];
+			self.modernStyleIconImageView.frame = CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2);
 			self.modernStyleIconImageView.image = iconImage;
 			[self addSubview:self.modernStyleIconImageView];
 			[self bringSubviewToFront:self.modernStyleIconImageView];
 		}
-
-		if (leafCornerNotifs){
-			self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-			self.modernNotifBackground.layer.maskedCorners =  kCALayerMinXMinYCorner | kCALayerMaxXMaxYCorner;
-		}
 		if (self.modernStyleIconImageView){
-			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame),CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame)+10,CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
 		}
+	self.modernStyleIconImageView.frame = CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2);
+	self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
 	}
-	}  //end of modern notifs
+	 
 }
 %new
 - (UIColor *)lighterColorForColor:(UIColor *)c {
@@ -581,7 +551,7 @@ if (downloadBarEnabled){
 		[timeFormatter setDateFormat:timeFormat];
 		NSString *newDateString = [timeFormatter stringFromDate:now];
 		timeDateView.timeLabel.text = newDateString;
-		CGFloat timeLabelWidth = timeDateView.timeLabel.intrinsicContentSize.width;
+		CGFloat timeLabelWidth = timeDateView.timeLabel.intrinsicContentSize.width+20;
 		[timeDateView.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
 }
 %end
@@ -637,7 +607,7 @@ if (downloadBarEnabled){
 			[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
 		}
 		
-		CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width;	
+		CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width+20;	
 		[self.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
 		[self.timeLabel.heightAnchor constraintEqualToConstant:timeLabelHeight].active = YES;
 		[self addSubview:self.timeLabel];
@@ -897,7 +867,7 @@ if (downloadBarEnabled){
 	NSDate* todayEvents = [calendar dateByAddingComponents:todayEventsComponents toDate:[NSDate date] options:0];
 
 	NSDateComponents* todayRemindersComponents = [NSDateComponents new];
-	todayRemindersComponents.day = -1;
+	todayRemindersComponents.day = -7;
 	NSDate* todayReminders = [calendar dateByAddingComponents:todayRemindersComponents toDate:[NSDate date] options:0];
 
 	NSDateComponents* daysFromNowComponents = [NSDateComponents new];
@@ -928,7 +898,7 @@ if (downloadBarEnabled){
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 					NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
 					NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-					NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+					[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
 					return;
 				});
 				}
@@ -936,10 +906,10 @@ if (downloadBarEnabled){
 		}
 		else if (lockscreenPriority == 1) {
 			if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
 				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-				NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+				[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
 				return;
 			});
 			}
@@ -962,7 +932,7 @@ if (downloadBarEnabled){
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
 				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-				NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+				[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
 				return;
 			});
 			}
@@ -1194,7 +1164,7 @@ static void localSBNotif(){
 	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
 	bulletin.title = @"Aquarius";
     bulletin.message = @"Test Banner!";
-    bulletin.sectionID = @"com.apple.preferences";
+    bulletin.sectionID = @"com.apple.Preferences";
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
