@@ -116,6 +116,22 @@
 			</dict>
 			<dict>
 				<key>AquariusSub</key>
+				<string>LockscreenUpNext</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>calendar.badge.plus</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Up Next Label Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
 				<string>LockscreenMisc</string>
 				<key>cell</key>
 				<string>PSLinkCell</string>

@@ -255,7 +255,7 @@
 		}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
-		NSLog(@"[aquarius] this should be called 1 time");
+		HBLogDebug(@"[aquarius] this should be called 1 time");
 		self.topOldieNotifView = [[UIView alloc]init];
 		[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
 		if (oldieNotifHaveShadow){
@@ -427,16 +427,7 @@ if (downloadBarEnabled){
 	[[progressView layer]setMasksToBounds:TRUE];
 	progressView.clipsToBounds = YES;
 	[self addSubview:progressView];
-	[self bringSubviewToFront: progressView];
-	if (self.displayingPaused == YES){
-		pauseButton = [[UIButton alloc]init];
-		[pauseButton setContentMode:UIViewContentModeScaleAspectFill];
-		[pauseButton setClipsToBounds:YES];
-		[pauseButton setAdjustsImageWhenHighlighted:NO];
-		[pauseButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-		[pauseButton setTintColor: [UIColor cyanColor]];
-		[pauseButton setImage:[UIImage systemImageNamed:@"pause"] forState:UIControlStateNormal];
-	}
+	[self bringSubviewToFront:progressView];
 }
 }
 %end
@@ -470,7 +461,9 @@ if (downloadBarEnabled){
 %hook SBIconListPageControl
 -(void)setNeedsLayout{
 	%orig;
-	if (hidePageDots) self.hidden = YES;
+	if (hidePageDots) {
+		self.hidden = YES;
+	}
 }
 %end
 %hook SBDockView
@@ -510,20 +503,35 @@ if (downloadBarEnabled){
 %end
 
 %hook SBUIController
-
 - (void)ACPowerChanged { // heartlines s/o littttten
 
 	%orig;
 
 	if ([self isOnAC]) {
-        [UIView transitionWithView:timeDateView.dateLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-			[timeDateView.dateLabel setText:[NSString stringWithFormat:@"%d%% Charged", [self batteryCapacityAsPercentage]]];
+        [UIView transitionWithView:timeDateView.dateLabel duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+			[timeDateView.weatherLabel setText:[NSString stringWithFormat:@"%d%% Charged", [self batteryCapacityAsPercentage]]];
+			CGFloat weatherLabelWidth = timeDateView.weatherLabel.intrinsicContentSize.width;	
+			[timeDateView.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+			justPluggedIn = YES;
 		} completion:^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [UIView transitionWithView:timeDateView.dateLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                    NSDateFormatter* timeFormat = [NSDateFormatter new];
-                    [timeFormat setDateFormat:dateFormat];
-                    [timeDateView.dateLabel setText:[timeFormat stringFromDate:[NSDate date]]];
+                [UIView transitionWithView:timeDateView.weatherLabel duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    [[PDDokdo sharedInstance] refreshWeatherData];
+					NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
+					NSString *temperature = [weatherData objectForKey:@"temperature"];
+					NSString *conditions = [weatherData objectForKey:@"conditions"];
+					NSString *location = [weatherData objectForKey:@"location"];
+					NSString *combined;
+					if (showCondition == 0){
+						combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+					}
+					else {
+						combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
+					}
+					timeDateView.weatherLabel.text = combined;
+					CGFloat weatherLabelWidth = timeDateView.weatherLabel.intrinsicContentSize.width;	
+					[timeDateView.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+					justPluggedIn = NO;
                 } completion:nil];
             });
         }];
@@ -532,13 +540,81 @@ if (downloadBarEnabled){
 }
 
 %end
+%hook SBFLockScreenDateViewController
+-(void)viewDidLoad{
+	%orig;
+	[self requestHeartlinesTimeAndDateUpdate];
+	if (!timeAndDateTimer){
+		timeAndDateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(requestHeartlinesTimeAndDateUpdate) userInfo:nil repeats:YES];
+	}
+}
+%new 
+-(void)requestHeartlinesTimeAndDateUpdate{
+	if (!justPluggedIn){
+		[[PDDokdo sharedInstance] refreshWeatherData];
+		NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
+		NSString *temperature = [weatherData objectForKey:@"temperature"];
+		NSString *conditions = [weatherData objectForKey:@"conditions"];
+		NSString *location = [weatherData objectForKey:@"location"];
+		NSString *combined;
+		if (showCondition == 0){
+			combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+		}
+		else {
+			combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
+		}
+		timeDateView.weatherLabel.text = combined;
+		CGFloat weatherLabelWidth = timeDateView.weatherLabel.intrinsicContentSize.width;	
+		[timeDateView.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+	}
+	if (!isTimerRunning){
+		NSDate * date = [NSDate date];
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:dateFormat];
+		NSString *newDateString = [dateFormatter stringFromDate:date];
+		timeDateView.dateLabel.text = newDateString;
+		CGFloat dateLabelWidth = timeDateView.dateLabel.intrinsicContentSize.width;
+		[timeDateView.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
+	}
+		NSDate * now = [NSDate date];
+		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+		[timeFormatter setDateFormat:timeFormat];
+		NSString *newDateString = [timeFormatter stringFromDate:now];
+		timeDateView.timeLabel.text = newDateString;
+		CGFloat timeLabelWidth = timeDateView.timeLabel.intrinsicContentSize.width;
+		[timeDateView.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
+}
+%end
+%hook SBFLockScreenDateSubtitleView
+
+- (void)setString:(NSString *)arg1 { // apply running timer to the date label from heartlines
+    %orig;
+	self.hidden = YES;
+    if ([arg1 containsString:@":"]) {
+        isTimerRunning = YES;
+        [timeDateView.dateLabel setText:arg1];
+		CGFloat dateLabelWidth = timeDateView.dateLabel.intrinsicContentSize.width;	
+		[timeDateView.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
+    } else {
+        isTimerRunning = NO;
+    }
+	
+}
+%end
 %hook SBFLockScreenDateView
 %property (nonatomic, retain) UILabel *timeLabel;
 %property (nonatomic, retain) UILabel *dateLabel;
 %property (nonatomic, retain) UILabel *weatherLabel;
+%property (nonatomic, retain) UILabel *upNextLabel;
+%property (nonatomic, retain) UILabel *eventLabel;
 %property (nonatomic, retain) UIImageView *weatherIconView;
--(void)_updateLabels{
+- (id)initWithFrame:(CGRect)frame { // create the shit man
+    timeDateView = self;
+    return %orig;
+}
+-(void)didMoveToWindow{
 	%orig;
+	
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	// hiding original stuff
 
@@ -549,116 +625,115 @@ if (downloadBarEnabled){
 	// the time label setup
 
 	if (!self.timeLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
-	self.timeLabel = [UILabel new];
-	[self.timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	NSDate * now = [NSDate date];
-	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:timeFormat];
-	NSString *newTimeString = [timeFormatter stringFromDate:now];
-	self.timeLabel.text = newTimeString;
-	if (customFont) {
-		[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
-	}
-	else {
-		[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
-	}
-	
-	CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width;	
-	NSLog(@"[aquarius] %f",timeLabelWidth);
-	[self.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
-	[self.timeLabel.heightAnchor constraintEqualToConstant:timeLabelHeight].active = YES;
-	[self addSubview:self.timeLabel];
-	if (alignment == 0){
-		[self.timeLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-	}
-	else if (alignment == 1){
-		[self.timeLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-	}
-	else if (alignment == 2){
-		[self.timeLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
-	}
-	[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.bottomAnchor].active = YES;
+		self.timeLabel = [UILabel new];
+		[self.timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+		[timeFormatter setDateFormat:timeFormat];
+		[self.timeLabel setText:[timeFormatter stringFromDate:[NSDate date]]];
+		if (customFont) {
+			[self.timeLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:timeLabelHeight]];
+		}
+		else {
+			[self.timeLabel setFont:[UIFont systemFontOfSize:timeLabelHeight]];
+		}
+		
+		CGFloat timeLabelWidth = self.timeLabel.intrinsicContentSize.width;	
+		[self.timeLabel.widthAnchor constraintEqualToConstant:timeLabelWidth].active = YES;
+		[self.timeLabel.heightAnchor constraintEqualToConstant:timeLabelHeight].active = YES;
+		[self addSubview:self.timeLabel];
+		if (alignment == 0){
+			[self.timeLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+		}
+		else if (alignment == 1){
+			[self.timeLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+		}
+		else if (alignment == 2){
+			[self.timeLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
+		}
+		[self.timeLabel.bottomAnchor constraintEqualToAnchor:timeLabelToBeReplaced.bottomAnchor].active = YES;
 	}
 	
 	// dateLabel setup
 	if (!self.dateLabel && (!CGRectIsEmpty(self.frame))){ // i hate having to do this
-	self.dateLabel = [UILabel new];
-	[self.dateLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	NSDate * date = [NSDate date];
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:dateFormat];
-	NSString *newDateString = [dateFormatter stringFromDate:date];
-	self.dateLabel.text = newDateString;
-	if (customFont) {
-		[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
-	}
-	else {
-		[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
-	}
+		self.dateLabel = [UILabel new];
+		[self.dateLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+		if (!isTimerRunning){
+		NSDate * date = [NSDate date];
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:dateFormat];
+		NSString *newDateString = [dateFormatter stringFromDate:date];
+		self.dateLabel.text = newDateString;
+		}
+		if (customFont) {
+			[self.dateLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:dateLabelHeight]];
+		}
+		else {
+			[self.dateLabel setFont:[UIFont systemFontOfSize:dateLabelHeight]];
+		}
 
-	CGFloat dateLabelWidth = self.dateLabel.intrinsicContentSize.width;	
-	[self.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
-	[self.dateLabel.heightAnchor constraintEqualToConstant:dateLabelHeight].active = YES;
-	[self addSubview:self.dateLabel];
-	if (alignment == 0){
-		[self.dateLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-	}
-	else if (alignment == 1){
-		[self.dateLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-	}
-	else if (alignment == 2){
-		[self.dateLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
-	}
-	[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active= YES;
+		CGFloat dateLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+		[self.dateLabel.widthAnchor constraintEqualToConstant:dateLabelWidth].active = YES;
+		[self.dateLabel.heightAnchor constraintEqualToConstant:dateLabelHeight].active = YES;
+		[self addSubview:self.dateLabel];
+		if (alignment == 0){
+			[self.dateLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+		}
+		else if (alignment == 1){
+			[self.dateLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+		}
+		else if (alignment == 2){
+			[self.dateLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
+		}
+		[self.dateLabel.topAnchor constraintEqualToAnchor:self.timeLabel.bottomAnchor].active = YES;
 	}
 	
 	if (!self.weatherLabel && (!CGRectIsEmpty(self.frame)) && weatherLabelEnabled){ // i hate having to do this
-	self.weatherLabel = [UILabel new];
-	[self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-	if (customFont) {
-		[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
-	}
-	else {
-		[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
-	}
-	[[PDDokdo sharedInstance] refreshWeatherData];
-	NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
-	NSString *temperature = [weatherData objectForKey:@"temperature"];
-	NSString *conditions = [weatherData objectForKey:@"conditions"];
-	NSString *location = [weatherData objectForKey:@"location"];
-	NSString *combined;
-	if (showCondition == 0){
-		combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
-	}
-	else {
-		combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
-	}
-	self.weatherLabel.text = combined;
-	CGFloat weatherLabelWidth = self.dateLabel.intrinsicContentSize.width;	
-	[self.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
-	[self.weatherLabel.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
-	[self addSubview:self.weatherLabel];
-	if (alignment == 0){
-		[self.weatherLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-	}
-	else if (alignment == 1){
-		[self.weatherLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-	}
-	else if (alignment == 2){
-		[self.weatherLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
-	}
-	[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
+		self.weatherLabel = [UILabel new];
+		[self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+		if (customFont) {
+			[self.weatherLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:weatherLabelHeight]];
+		}
+		else {
+			[self.weatherLabel setFont:[UIFont systemFontOfSize:weatherLabelHeight]];
+		}
+		[[PDDokdo sharedInstance] refreshWeatherData];
+		NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
+		NSString *temperature = [weatherData objectForKey:@"temperature"];
+		NSString *conditions = [weatherData objectForKey:@"conditions"];
+		NSString *location = [weatherData objectForKey:@"location"];
+		NSString *combined;
+		if (showCondition == 0){
+			combined = [NSString stringWithFormat:@"%@, %@", temperature,conditions];
+		}
+		else {
+			combined = [NSString stringWithFormat:@"%@, %@", temperature,location];
+		}
+		self.weatherLabel.text = combined;
+		CGFloat weatherLabelWidth = self.dateLabel.intrinsicContentSize.width;	
+		[self.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
+		[self.weatherLabel.heightAnchor constraintEqualToConstant:weatherLabelHeight].active = YES;
+		[self addSubview:self.weatherLabel];
+		if (alignment == 0){
+			[self.weatherLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+		}
+		else if (alignment == 1){
+			[self.weatherLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+		}
+		else if (alignment == 2){
+			[self.weatherLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
+		}
+		[self.weatherLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
 	}
 	if (!self.weatherIconView && haveWeatherIcon && self.weatherLabel){
-	[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
-	[[PDDokdo sharedInstance] refreshWeatherData];
-	WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
-	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
-	WACurrentForecast* currentCond = [currentModel currentConditions];
-	NSInteger currentCode = [currentCond conditionCode];
-	int hour = [[NSCalendar currentCalendar] component:NSCalendarUnitHour fromDate:[NSDate date]];
-	UIImage *tempConditionImage;
-	
+		[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
+		[[PDDokdo sharedInstance] refreshWeatherData];
+		WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
+		WAForecastModel* currentModel = [weatherWidget currentForecastModel];
+		WACurrentForecast* currentCond = [currentModel currentConditions];
+		NSInteger currentCode = [currentCond conditionCode];
+		int hour = [[NSCalendar currentCalendar] component:NSCalendarUnitHour fromDate:[NSDate date]];
+		UIImage *tempConditionImage;
+			// s/o litten for doing the hard work of figuring out the codes and stuff also my code monket just leveled up so yay
 		self.weatherIconView = [[UIImageView alloc]init];
 		[self.weatherIconView setTranslatesAutoresizingMaskIntoConstraints:NO];
 		if (currentCode <= 2)
@@ -721,7 +796,64 @@ if (downloadBarEnabled){
 		else {
 			[self.weatherIconView.leftAnchor constraintEqualToAnchor:self.weatherLabel.rightAnchor constant:5].active = YES;
 		}
-	
+	}
+	if (!self.upNextLabel && (!CGRectIsEmpty(self.frame)) && upNextLabelEnabled){ // i hate having to do this
+		self.upNextLabel = [UILabel new];
+		[self.upNextLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+		if (customFont) {
+			[self.upNextLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:upNextLabelHeight]];
+		}
+		else {
+			[self.upNextLabel setFont:[UIFont systemFontOfSize:upNextLabelHeight]];
+		}
+		self.upNextLabel.text = @"Up Next";
+		CGFloat upNextLabelWidth = self.upNextLabel.intrinsicContentSize.width;	
+		[self.upNextLabel.widthAnchor constraintEqualToConstant:upNextLabelWidth].active = YES;
+		[self.upNextLabel.heightAnchor constraintEqualToConstant:upNextLabelHeight].active = YES;
+		[self addSubview:self.upNextLabel];
+		if (alignment == 0){
+			[self.upNextLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+		}
+		else if (alignment == 1){
+			[self.upNextLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+		}
+		else if (alignment == 2){
+			[self.upNextLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
+		}
+		if (!weatherLabelEnabled){
+			[self.upNextLabel.topAnchor constraintEqualToAnchor:self.dateLabel.bottomAnchor].active= YES;
+		}
+		else if (weatherLabelEnabled){
+			[self.upNextLabel.topAnchor constraintEqualToAnchor:self.weatherLabel.bottomAnchor].active= YES;
+		}
+	}
+	if (!self.eventLabel && (!CGRectIsEmpty(self.frame)) && upNextLabelEnabled){ // i hate having to do this
+		self.eventLabel = [UILabel new];
+		[self.eventLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+		if (customFont) {
+			[self.eventLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:upNextLabelHeight]];
+		}
+		else {
+			[self.upNextLabel setFont:[UIFont systemFontOfSize:upNextLabelHeight]];
+		}
+		[self setUpUpNext];
+		CGFloat eventLabelWidth = self.eventLabel.intrinsicContentSize.width;	
+		[self.eventLabel.widthAnchor constraintEqualToConstant:eventLabelWidth].active = YES;
+		[self.eventLabel.heightAnchor constraintEqualToConstant:eventLabelHeight].active = YES;
+		[self addSubview:self.eventLabel];
+		if (alignment == 0){
+			[self.eventLabel.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+		}
+		else if (alignment == 1){
+			[self.eventLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+		}
+		else if (alignment == 2){
+			[self.eventLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
+		}
+		
+		
+		[self.eventLabel.topAnchor constraintEqualToAnchor:self.upNextLabel.bottomAnchor].active= YES;
+		
 	}
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
@@ -736,6 +868,9 @@ if (downloadBarEnabled){
 			if (weatherLabelColored){
 				self.dateLabel.textColor = wallpaperAverageColor2;
 			}
+			if (upNextLabelColored){
+				self.upNextLabel.textColor = wallpaperAverageColor2;
+			}
 			if (weatherIconColored){
 				self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:wallpaperAverageColor2 renderingMode:UIImageRenderingModeAlwaysOriginal];
 			}
@@ -747,40 +882,106 @@ if (downloadBarEnabled){
 		self.timeLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
 		self.dateLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
 		self.weatherLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+		self.upNextLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+		self.eventLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
+		self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:[GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"] renderingMode:UIImageRenderingModeAlwaysOriginal];
 	}	
 }
+%new 
+-(void)setUpUpNext{
+	EKEventStore* store = [EKEventStore new];
+	NSCalendar* calendar = [NSCalendar currentCalendar];
+
+	NSDateComponents* todayEventsComponents = [NSDateComponents new];
+	todayEventsComponents.day = 0;
+	NSDate* todayEvents = [calendar dateByAddingComponents:todayEventsComponents toDate:[NSDate date] options:0];
+
+	NSDateComponents* todayRemindersComponents = [NSDateComponents new];
+	todayRemindersComponents.day = -1;
+	NSDate* todayReminders = [calendar dateByAddingComponents:todayRemindersComponents toDate:[NSDate date] options:0];
+
+	NSDateComponents* daysFromNowComponents = [NSDateComponents new];
+	daysFromNowComponents.day = 7;
+	NSDate* daysFromNow = [calendar dateByAddingComponents:daysFromNowComponents toDate:[NSDate date] options:0];
+
+	NSPredicate* calendarPredicate = [store predicateForEventsWithStartDate:todayEvents endDate:daysFromNow calendars:nil];
+
+	NSArray* events = [store eventsMatchingPredicate:calendarPredicate];
+	NSPredicate* reminderPredicate = [store predicateForIncompleteRemindersWithDueDateStarting:todayReminders ending:daysFromNow calendars:nil];
+	__block NSArray* availableReminders;
+
+	[store fetchRemindersMatchingPredicate:reminderPredicate completion:^(NSArray *reminders) {      
+
+	availableReminders = reminders;      
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (lockscreenPriority == 0) {
+			if ([availableReminders count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"Reminder: %@",[availableReminders[0] title]]];
+				return;
+			}
+			else if ([events count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
+				return;
+			}
+			else {
+				if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+					NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
+					NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
+					NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+					return;
+				});
+				}
+			}
+		}
+		else if (lockscreenPriority == 1) {
+			if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
+				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
+				NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+				return;
+			});
+			}
+			else if ([availableReminders count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"%@",[availableReminders[0] title]]];
+				return;
+			}
+			else if ([events count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
+				return;
+			}
+			
+		}
+		else if (lockscreenPriority == 2) {
+			if ([events count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
+				return;
+			}
+			else if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
+				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
+				NSLog(@"Alarm: %02ld:%02ld", [components hour], [components minute]);
+				return;
+			});
+			}
+			else if ([availableReminders count]){
+				[self.eventLabel setText:[NSString stringWithFormat:@"%@",[availableReminders[0] title]]];
+				return;
+			}
+		}
+	});
+}];
+}
 %end
-%hook SBWallpaperViewController
-- (void)viewDidLoad {
-	%orig;
-	UIImage* tempWallpaperImage = self.lockscreenWallpaperView.wallpaperImage;
-	
-	NSArray *colorArray = [tempWallpaperImage dominantColors];
-	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
-	if ([colorArray count] > lockscreenClockColor-1){
-		wallpaperAverageColor = colorArray[lockscreenClockColor];
-		if (timeLabelColored){
-			timeDateView.timeLabel.textColor = wallpaperAverageColor;
-		}
-		if (dateLabelColored){
-			timeDateView.weatherLabel.textColor = wallpaperAverageColor;
-		}
-		if (weatherLabelColored){
-			timeDateView.dateLabel.textColor = wallpaperAverageColor;
-		}
+%hook CSCombinedListViewController
+- (double)_minInsetsToPushDateOffScreen {
+	double orig = %orig;
+	if (weatherLabelEnabled && upNextLabelEnabled){
+		return orig + 60;
 	}
-	else lockscreenClockColor = 0;
-	
-	
-	int i = 0;
-	for (UIColor *color in colorArray){
-		NSString *tempArrayColorString = [UIColor hexStringFromColor:color];
-		[mutableColorArray insertObject:tempArrayColorString atIndex:i];
-		i++;
-	}
-	
-	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
-	[preferences setObject:mutableColorArray forKey:@"colorArray"];
+	return orig;
 }
 %end
 %hook CSPageControl 
@@ -993,7 +1194,7 @@ static void localSBNotif(){
 	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
 	bulletin.title = @"Aquarius";
     bulletin.message = @"Test Banner!";
-    bulletin.sectionID = @"com.apple.MobileSMS";
+    bulletin.sectionID = @"com.apple.preferences";
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
     bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -1033,6 +1234,7 @@ static void localLSNotif(){
 %ctor {
 	isTweakEnabled = [file boolForKey:@"isTweakEnabled"];
 	modernNotifBackgroundColor = [file integerForKey:@"modernNotifBackgroundColor"];
+	howManyDaysInAdvance = [file integerForKey:@"howManyDaysInAdvance"];
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
 	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
@@ -1050,6 +1252,7 @@ static void localLSNotif(){
 	notifStyle = [file integerForKey:@"notifStyle"];
 	topOldieColor = [file integerForKey:@"topOldieColor"];
 	alignment = [file integerForKey:@"alignment"];
+	lockscreenPriority = [file integerForKey:@"lockscreenPriority"];
 	musicPlayerAlpha = [file doubleForKey:@"musicPlayerAlpha"];
 	weatherLabelHeight = [file doubleForKey:@"weatherLabelHeight"];
 	rightOffsetForText = [file doubleForKey:@"textOffset"];
@@ -1066,6 +1269,7 @@ static void localLSNotif(){
 	notifCornerRadius = [file doubleForKey:@"notifsCornerRadius"];
 	dateLabelHeight = [file doubleForKey:@"dateLabelHeight"];
 	timeLabelHeight = [file doubleForKey:@"timeLabelHeight"];
+	upNextLabelHeight = [file doubleForKey:@"upNextLabelHeight"];
 	notifShadowOpacity = [file doubleForKey:@"oldieNotifShadowOpacity"];
 	haveOutlineSecondaryColorMusicPlayer = [file boolForKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	isSpringySectionEnabled = [file boolForKey:@"isSpringySectionEnabled"];
@@ -1077,9 +1281,11 @@ static void localLSNotif(){
 	isLockscreenSectionEnabled = [file boolForKey:@"isLockscreenSectionEnabled"];
 	hideNoOlderNotifs = [file boolForKey:@"hideNoOlderNotifs"];
 	weatherLabelEnabled = [file boolForKey:@"weatherLabelEnabled"];
+	upNextLabelEnabled = [file boolForKey:@"upNextLabelEnabled"];
 	hideHomeBar = [file boolForKey:@"hideHomeBar"];
 	retroNotifBackgroundColor = [file integerForKey:@"retroNotifBackgroundColor"];
 	hideDock = [file boolForKey:@"hideDock"];
+	upNextLabelColored = [file boolForKey:@"upNextLabelColored"];
 	hideLockscreenDots = [file boolForKey:@"hideLockscreenDots"];
 	enableGestures = [file boolForKey:@"enableGestures"];
 	haveQuickActions = [file boolForKey:@"haveQuickActions"];
@@ -1103,6 +1309,7 @@ static void localLSNotif(){
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
+	[file registerBool:&upNextLabelEnabled default:NO forKey:@"upNextLabelEnabled"];
 	[file registerBool:&hideFolderBackground default:NO forKey:@"hideFolderBackground"];
 	[file registerBool:&hideFolderLabel default:NO forKey:@"hideFolderLabel"];
 	[file registerBool:&hideHomeBar default:NO forKey:@"hideHomeBar"];
@@ -1119,18 +1326,21 @@ static void localLSNotif(){
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
 	[file registerBool:&weatherIconColored default:NO forKey:@"weatherIconColored"];
+	[file registerBool:&upNextLabelColored default:NO forKey:@"upNextLabelColored"];	
 	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
 	[file registerBool:&newKeyboard default:NO forKey:@"newKeyboard"];
 	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStatusBarSectionEnabled"];
 	[file registerBool:&hideSwipeToUnlock default:NO forKey:@"hideSwipeToUnlock"];
 	[file registerBool:&oldieNotifHaveShadow default:1 forKey:@"oldieNotifHaveShadow"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
+	[file registerDouble:&eventLabelHeight default:1 forKey:@"eventLabelHeight"];
 	[file registerDouble:&notifShadowOpacity default:.25 forKey:@"oldieNotifShadowOpacity"];
 	[file registerDouble:&timeLabelHeight default:72 forKey:@"timeLabelHeight"];
 	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
 	[file registerDouble:&weatherLabelHeight default:24 forKey:@"weatherLabelHeight"];
 	[file registerDouble:&rightOffsetForText default:1 forKey:@"textOffset"];
 	[file registerInteger:&modernNotifBackgroundColor default:0 forKey:@"modernNotifBackgroundColor"];
+	[file registerInteger:&howManyDaysInAdvance default:1 forKey:@"howManyDaysInAdvance"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
 	[file registerInteger:&showCondition default:0 forKey:@"showCondition"];
 	
@@ -1150,7 +1360,9 @@ static void localLSNotif(){
 	[file registerBool:&isNotificationSectionEnabled default:NO forKey:@"isNotificationSectionEnabled"];
 	[file registerDouble:&outlineSize default:5 forKey:@"sizeOfOutline"];
 	[file registerDouble:&musicPlayerCornerRadius default:5 forKey:@"musicPlayerCornerRadius"];
+	[file registerDouble:&eventLabelHeight default:24 forKey:@"eventLabelHeight"];
 	[file registerDouble:&notifCornerRadius default:13 forKey:@"notifsCornerRadius"];
+	[file registerDouble:&upNextLabelHeight default:24 forKey:@"upNextLabelHeight"];
 	[file registerBool:&haveOutlineSecondaryColorMusicPlayer default:NO forKey:@"haveOutlineSecondaryColorMusicPlayer"];
 	[file registerBool:&isSpringySectionEnabled default:NO forKey:@"isSpringySectionEnabled"];
 	[file registerBool:&isLockscreenSectionEnabled default:YES forKey:@"isLockscreenSectionEnabled"];
@@ -1171,6 +1383,7 @@ static void localLSNotif(){
 	[file registerBool:&weatherLabelColored default:NO forKey:@"weatherLabelColored"];
 	[file registerInteger:&retroNotifBackgroundColor default:0 forKey:@"retroNotifBackgroundColor"];
 	[file registerInteger:&lockscreenClockColor default:0 forKey:@"lockscreenClockColor"];
+	[file registerInteger:&lockscreenPriority default:0 forKey:@"lockscreenPriority"];
 	[file registerInteger:&ogNotifBackgroundColor default:0 forKey:@"ogNotifBackgroundColor"];
 	
 	if (isTweakEnabled){
@@ -1193,5 +1406,4 @@ static void localLSNotif(){
 	}
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localLSNotif, CFSTR("com.nico671.testNotif"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)localSBNotif, CFSTR("com.nico671.testBanner"), NULL, (CFNotificationSuspensionBehavior)kNilOptions);
-	
 }

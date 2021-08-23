@@ -6,6 +6,7 @@
 #import <PeterDev/libpddokdo.h>
 #include <CoreFoundation/CoreFoundation.h>
 #import <dlfcn.h>
+#import <EventKit/EventKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
@@ -194,13 +195,12 @@
 @interface SBFLockScreenDateView : UIView
 @property (nonatomic, retain) UIImageView *weatherIconView;
 @property (nonatomic, retain) UILabel *dateLabel;
+@property (nonatomic, retain) UILabel *upNextLabel;
 @property (nonatomic, retain) UILabel *timeLabel;
 @property (nonatomic, retain) UILabel *weatherLabel;
+@property (nonatomic, retain) UILabel *eventLabel;
 @property (nonatomic, retain) UIImageView *weatherImageView;
--(void) setTextColorToWallpaperColor:(NSNotification *) notification ;
-@end
-
-@interface MPUMarqueeView
+-(void)setUpUpNext;
 @end
 
 @interface UIScreen (Private)
@@ -420,30 +420,14 @@
 @end
 
 @interface MRUNowPlayingLabelView : UIView
-@property (nonatomic,retain) UILabel * titleLabel;
-@property (nonatomic,retain) UILabel * subtitleLabel;
-@property (nonatomic,retain) MPUMarqueeView * titleMarqueeView;
-@property (nonatomic,retain) MPUMarqueeView * subtitleMarqueeView;
-@property (nonatomic,retain) MPRouteLabel * routeLabel;
 @end
 
 
 
 @interface MRUArtworkView : UIView
-@property (nonatomic, retain) UIImage *iconImage;
-@property (nonatomic, retain) UIImage *plceholderImage;
-@property (nonatomic, retain) UIImage *artworkImage;
-@property (nonatomic, retain) UIImageView *iconView;
-@property (nonatomic, retain) UIView *iconShadowView;
-@property (nonatomic, retain) UIImageView *artworkImageView;
-@property (nonatomic, retain) UIView *artworkShadowView;
-@property (nonatomic, retain) UIImageView *placeholderImageView;
-@property (nonatomic, retain) UIView *placeholderBackground;
 @end
 
 @interface MRUNowPlayingHeaderView : UIView
-@property UIButton *songImageForSmall;
--(void) moveRoutingButton:(NSNotification *) notification;
 @property (nonatomic,retain) MRUArtworkView * artworkView;
 @property (nonatomic,retain) MRUNowPlayingLabelView * labelView;
 @property (nonatomic,retain) MRUNowPlayingRoutingButton * routingButton;
@@ -490,6 +474,25 @@
 @property (nonatomic,retain) MTMaterialView * backgroundView;
 @end
 
+@interface MTAlarm
+@property(nonatomic, readonly)NSDate* nextFireDate;
+@end
+
+@interface MTAlarmCache
+@property(nonatomic, retain)MTAlarm* nextAlarm; 
+@end
+
+@interface MTAlarmManager
+@property(nonatomic, retain)MTAlarmCache* cache;
+@end
+
+@interface SBScheduledAlarmObserver : NSObject {
+    MTAlarmManager* _alarmManager;
+}
++ (id)sharedInstance;
+@end
+
+
 @interface PLPlatterHeaderContentView : UIView
 @property (getter=_titleLabel,nonatomic,readonly) UILabel * titleLabel; 
 @property (getter=_dateLabel,nonatomic,readonly) UILabel * dateLabel; 
@@ -506,6 +509,14 @@
 @property (nonatomic,retain) SBFWallpaperView * lockscreenWallpaperView;
 @end
 @interface CSCoverSheetViewController : UIViewController
+@end
+
+@interface SBFLockScreenDateViewController
+-(void)requestHeartlinesTimeAndDateUpdate;
+@end
+
+@interface SBHomeHardwareButton : NSObject                                         //@synthesize screenshotGestureRecognizer=_screenshotGestureRecognizer - In the implementation block
+@property (assign,nonatomic) long long homeButtonType;  
 @end
 
 @interface SBFolderBackgroundView
@@ -527,15 +538,15 @@ BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificatio
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isArtworkImageDark, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels, enableGestures, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
+BOOL hideLabels,justPluggedIn, enableGestures, upNextLabelColored, upNextLabelEnabled, isTimerRunning, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
-NSInteger configurations, showCondition, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
+NSInteger configurations, lockscreenPriority, howManyDaysInAdvance, showCondition, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
 extern dispatch_queue_t __BBServerQueue;
 static BBServer* bbServer;
 NSString *dateFormat;
 NSString *timeFormat;
-double musicPlayerAlpha, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight, modernNotifHeight;
+double musicPlayerAlpha, eventLabelHeight, upNextLabelHeight, outlineSize, notifShadowOpacity, rightOffsetForText, notifCornerRadius, musicPlayerCornerRadius, timeLabelHeight, dateLabelHeight, weatherLabelHeight, modernNotifHeight;
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
@@ -556,6 +567,7 @@ NSData* lastArtworkData;
 NSData* lastArtworkData2;
 UIView *coloredBackground;
 UIView *test;
+NSTimer *timeAndDateTimer;
 UIColor *customColor;
 UIColor *wallpaperAverageColor;
 NSString *songLabel;
