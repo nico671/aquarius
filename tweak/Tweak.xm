@@ -1,5 +1,6 @@
 #import "headers.h"
-%group musicplayer
+// TODO set up self roles in discord
+%group musicplayer 
 %hook MRUNowPlayingHeaderView // hides the little routing button
 - (void)setShowRoutingButton:(BOOL)arg1 {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor];
@@ -199,7 +200,6 @@
 			NSDictionary *dict = (__bridge NSDictionary *)information;
 			currentArtwork = [UIImage imageWithData:[dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData]];
 			if (dict) {
-				lastArtworkData = [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData];
 				subtitleLabel = [NSString stringWithFormat:@"%@ - %@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtist], [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoAlbum]];
 				songLabel = [NSString stringWithFormat:@"%@ ", [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoTitle]];
 				topLabel.text = songLabel;
@@ -210,7 +210,6 @@
 				NSArray *tempArtworkColorArray = [tempArtworkColorDict objectForKey:@"colours"];
 				fuckingArtworkColor = tempArtworkColorArray[0];
 				fuckingArtworkColor2 = [NCImageUtils averageColor:currentArtwork];
-				[shuffleButton setImage:[UIImage systemImageNamed:@"shuffle"] forState: UIControlStateNormal];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"com.nico671.updateColors" object:nil];
 			}
 		}
@@ -225,7 +224,7 @@
 %property (nonatomic,retain) MTMaterialView *modernNotifBackground;
 %property (nonatomic,retain) UIView *topOldieNotifView;
 %property (nonatomic,retain) UIImageView *modernStyleIconImageView;   
-- (void) didMoveToWindow{
+- (void) layoutSubviews{
 	%orig;
 	[self createThatMan]; //end of modern notifs
 }
@@ -233,6 +232,7 @@
 -(void)createThatMan{
 	if (self.icons[0] && [self.subviews objectAtIndex:0] && [self.subviews objectAtIndex:1] && [self.subviews objectAtIndex:2]) {
 	iconImage = self.icons[0];
+
 	notifBackgroundView = [self.subviews objectAtIndex:0];
 		if ([self.subviews[1] isKindOfClass:NSClassFromString(@"PLPlatterHeaderContentView")]){
 				iconContentView = [self.subviews objectAtIndex:1];
@@ -347,20 +347,19 @@
 			[self bringSubviewToFront:self.modernNotifBackground];
 		}
 		if (!self.modernStyleIconImageView && notifBackgroundView && !CGRectIsEmpty(self.frame)){
-			UIImage *iconImage = iconContentView.icons[0];
 			self.modernStyleIconImageView = [[UIImageView alloc]init];
 			self.modernStyleIconImageView.frame = CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2);
-			self.modernStyleIconImageView.image = iconImage;
+			self.modernStyleIconImageView.image = self.icons[0];
 			[self addSubview:self.modernStyleIconImageView];
 			[self bringSubviewToFront:self.modernStyleIconImageView];
 		}
-		if (self.modernStyleIconImageView){
-			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame)+10,CGRectGetMinY(self.modernStyleIconImageView.frame)-self.frame.size.height/10,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
+		if (self.modernStyleIconImageView && !CGRectIsEmpty(self.modernStyleIconImageView.frame)){
+			self.notificationContentView.frame = CGRectMake(CGRectGetMaxX(self.modernStyleIconImageView.frame)+10,CGRectGetMinY(self.modernStyleIconImageView.frame)-self.notificationContentView.frame.size.height/4,self.notificationContentView.frame.size.width-(self.modernStyleIconImageView.frame.size.height+10),self.notificationContentView.frame.size.height);
 			[self addSubview:self.notificationContentView];
 			[self bringSubviewToFront:self.notificationContentView];
 		}
-	self.modernStyleIconImageView.frame = CGRectMake(10,self.frame.size.height/4,self.frame.size.height/2,self.frame.size.height/2);
 	self.modernNotifBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+	self.modernStyleIconImageView.frame = CGRectMake(10,self.modernNotifBackground.frame.size.height/4,self.modernNotifBackground.frame.size.height/2,self.modernNotifBackground.frame.size.height/2);
 	}
 	 
 }
@@ -386,19 +385,25 @@
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
 -(void)_drawPieWithCenter:(CGPoint)arg1{
-if (downloadBarEnabled){
-    UIProgressView *progressView;
-	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-	progressView.progressTintColor = [UIColor cyanColor];
-	[progressView.layer setFrame:CGRectMake(self.center.x-25, self.center.y+15, 50, 7.5)];
-	progressView.trackTintColor = [UIColor systemGrayColor];
-	[progressView setProgress:self.displayedFraction animated:NO];
-	[[progressView layer]setCornerRadius:5];
-	[[progressView layer]setMasksToBounds:TRUE];
-	progressView.clipsToBounds = YES;
-	[self addSubview:progressView];
-	[self bringSubviewToFront:progressView];
+	if (downloadBarEnabled){
+		UIProgressView *progressView;
+		progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+		progressView.progressTintColor = [UIColor cyanColor];
+		[progressView.layer setFrame:CGRectMake(self.center.x-25, self.center.y+15, 50, 7.5)];
+		progressView.trackTintColor = [UIColor systemGrayColor];
+		[progressView setProgress:self.displayedFraction animated:NO];
+		[[progressView layer]setCornerRadius:5];
+		[[progressView layer]setMasksToBounds:TRUE];
+		progressView.clipsToBounds = YES;
+		[self addSubview:progressView];
+		[self bringSubviewToFront:progressView];
+	}
 }
+-(void)_drawOutgoingCircleWithCenter:(CGPoint)arg1{
+
+}
+-(void)_drawIncomingCircleWithCenter:(CGPoint)arg1{
+
 }
 %end
 
@@ -451,7 +456,8 @@ if (downloadBarEnabled){
 }
 %end
 %end
-%group Lockscreen
+
+%group Lockscreen 
 %hook SBUICallToActionLabel
 -(void)setNeedsLayout{
 	if (hideSwipeToUnlock){
@@ -468,7 +474,9 @@ if (downloadBarEnabled){
 %end
 %hook NCNotificationListSectionRevealHintView
 -(void)setNeedsLayout{
-	if (hideNoOlderNotifs) self.hidden = YES;
+	if (hideNoOlderNotifs) {
+		self.hidden = YES;
+	}
 }
 %end
 
@@ -482,7 +490,7 @@ if (downloadBarEnabled){
 			[timeDateView.weatherLabel setText:[NSString stringWithFormat:@"%d%% Charged", [self batteryCapacityAsPercentage]]];
 			CGFloat weatherLabelWidth = timeDateView.weatherLabel.intrinsicContentSize.width;	
 			[timeDateView.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
-			justPluggedIn = YES;
+			didJustPlugIn = YES;
 		} completion:^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 [UIView transitionWithView:timeDateView.weatherLabel duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
@@ -501,7 +509,7 @@ if (downloadBarEnabled){
 					timeDateView.weatherLabel.text = combined;
 					CGFloat weatherLabelWidth = timeDateView.weatherLabel.intrinsicContentSize.width;	
 					[timeDateView.weatherLabel.widthAnchor constraintEqualToConstant:weatherLabelWidth].active = YES;
-					justPluggedIn = NO;
+					didJustPlugIn = NO;
                 } completion:nil];
             });
         }];
@@ -520,7 +528,7 @@ if (downloadBarEnabled){
 }
 %new 
 -(void)requestHeartlinesTimeAndDateUpdate{
-	if (!justPluggedIn){
+	if (!didJustPlugIn){
 		[[PDDokdo sharedInstance] refreshWeatherData];
 		NSDictionary *weatherData = [[PDDokdo sharedInstance] weatherData];
 		NSString *temperature = [weatherData objectForKey:@"temperature"];
@@ -569,6 +577,33 @@ if (downloadBarEnabled){
         isTimerRunning = NO;
     }
 	
+}
+%end
+%hook SBWallpaperViewController
+-(void)viewDidLoad {
+	%orig;
+	file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
+	NSMutableArray *finalColorArray = [[NSMutableArray alloc] init];
+	if (self.lockscreenWallpaperView){
+		NSArray *tempColorArray = [self.lockscreenWallpaperView.sampleImage dominantColors];
+		int x = 0;
+		for (UIColor *c in tempColorArray){
+			NSString *tempHexString = [UIColor hexStringFromColor:c];
+			[finalColorArray insertObject:tempHexString atIndex:x];
+			x++;
+		}
+		[file setObject:finalColorArray forKey:@"colorArray"];
+	}
+	else {
+		NSArray *tempColorArray = [self.sharedWallpaperView.sampleImage dominantColors];
+		int x = 0;
+		for (UIColor *c in tempColorArray){
+			NSString *tempHexString = [UIColor hexStringFromColor:c];
+			[finalColorArray insertObject:tempHexString atIndex:x];
+			x++;
+		}
+		[file setObject:finalColorArray forKey:@"colorArray"];
+	}
 }
 %end
 %hook SBFLockScreenDateView
@@ -804,10 +839,13 @@ if (downloadBarEnabled){
 			[self.eventLabel setFont:[UIFont fontWithName:[file objectForKey:@"lockscreenClockCustomFont"] size:upNextLabelHeight]];
 		}
 		else {
-			[self.upNextLabel setFont:[UIFont systemFontOfSize:upNextLabelHeight]];
+			[self.eventLabel setFont:[UIFont systemFontOfSize:upNextLabelHeight]];
 		}
 		[self setUpUpNext];
+		NSLog(@"[aquarius] does the text exist? %@",self.eventLabel.text);
 		CGFloat eventLabelWidth = self.eventLabel.intrinsicContentSize.width;	
+		NSLog(@"[aquarius] the height of the event label mannnnnnn %f",eventLabelHeight);
+		NSLog(@"[aquarius] the width of the event label mannnnnnn %f",eventLabelWidth);
 		[self.eventLabel.widthAnchor constraintEqualToConstant:eventLabelWidth].active = YES;
 		[self.eventLabel.heightAnchor constraintEqualToConstant:eventLabelHeight].active = YES;
 		[self addSubview:self.eventLabel];
@@ -820,10 +858,7 @@ if (downloadBarEnabled){
 		else if (alignment == 2){
 			[self.eventLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-5].active = YES;
 		}
-		
-		
 		[self.eventLabel.topAnchor constraintEqualToAnchor:self.upNextLabel.bottomAnchor].active= YES;
-		
 	}
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	NSArray *tempColorArray = [preferences objectForKey:@"colorArray"];
@@ -841,6 +876,9 @@ if (downloadBarEnabled){
 			if (upNextLabelColored){
 				self.upNextLabel.textColor = wallpaperAverageColor2;
 			}
+			if (eventLabelColored){
+				self.eventLabel.textColor = wallpaperAverageColor2;
+			}
 			if (weatherIconColored){
 				self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:wallpaperAverageColor2 renderingMode:UIImageRenderingModeAlwaysOriginal];
 			}
@@ -856,102 +894,79 @@ if (downloadBarEnabled){
 		self.eventLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"];
 		self.weatherIconView.image = [self.weatherIconView.image imageWithTintColor:[GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customLockscreenClockColor"] renderingMode:UIImageRenderingModeAlwaysOriginal];
 	}	
+	[self setUpUpNext];
 }
 %new 
 -(void)setUpUpNext{
-	EKEventStore* store = [EKEventStore new];
-	NSCalendar* calendar = [NSCalendar currentCalendar];
+		EKEventStore* store = [EKEventStore new];
+		NSCalendar* calendar = [NSCalendar currentCalendar];
 
-	NSDateComponents* todayEventsComponents = [NSDateComponents new];
-	todayEventsComponents.day = 0;
-	NSDate* todayEvents = [calendar dateByAddingComponents:todayEventsComponents toDate:[NSDate date] options:0];
+		NSDateComponents* todayEventsComponents = [NSDateComponents new];
+		todayEventsComponents.day = 0;
+		NSDate* todayEvents = [calendar dateByAddingComponents:todayEventsComponents toDate:[NSDate date] options:0];
 
-	NSDateComponents* todayRemindersComponents = [NSDateComponents new];
-	todayRemindersComponents.day = -7;
-	NSDate* todayReminders = [calendar dateByAddingComponents:todayRemindersComponents toDate:[NSDate date] options:0];
+		NSDateComponents* todayRemindersComponents = [NSDateComponents new];
+		todayRemindersComponents.day = 7;
+		NSDate* todayReminders = [calendar dateByAddingComponents:todayRemindersComponents toDate:[NSDate date] options:0];
 
-	NSDateComponents* daysFromNowComponents = [NSDateComponents new];
-	daysFromNowComponents.day = 7;
-	NSDate* daysFromNow = [calendar dateByAddingComponents:daysFromNowComponents toDate:[NSDate date] options:0];
+		NSDateComponents* daysFromNowComponents = [NSDateComponents new];
+		daysFromNowComponents.day = 7;
+		NSDate* daysFromNow = [calendar dateByAddingComponents:daysFromNowComponents toDate:[NSDate date] options:0];
 
-	NSPredicate* calendarPredicate = [store predicateForEventsWithStartDate:todayEvents endDate:daysFromNow calendars:nil];
+		NSPredicate* calendarPredicate = [store predicateForEventsWithStartDate:todayEvents endDate:daysFromNow calendars:nil];
 
-	NSArray* events = [store eventsMatchingPredicate:calendarPredicate];
-	NSPredicate* reminderPredicate = [store predicateForIncompleteRemindersWithDueDateStarting:todayReminders ending:daysFromNow calendars:nil];
-	__block NSArray* availableReminders;
+		NSArray* events = [store eventsMatchingPredicate:calendarPredicate];
+		NSPredicate* reminderPredicate = [store predicateForIncompleteRemindersWithDueDateStarting:todayReminders ending:daysFromNow calendars:nil];
+		__block NSArray* availableReminders;
 
-	[store fetchRemindersMatchingPredicate:reminderPredicate completion:^(NSArray *reminders) {      
-
-	availableReminders = reminders;      
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (lockscreenPriority == 0) {
-			if ([availableReminders count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"Reminder: %@",[availableReminders[0] title]]];
-				return;
-			}
-			else if ([events count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
-				return;
+		if (lockscreenPriority == 0){
+			[store fetchRemindersMatchingPredicate:reminderPredicate completion:^(NSArray* reminders) {
+                availableReminders = reminders;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([reminders count]) {
+                        [self.eventLabel setText:[NSString stringWithFormat:@"%@", [reminders[0] title]]];
+                    }
+					else {
+						[self.eventLabel setText:@"No Upcoming Reminders"];
+					}
+                });
+            }];
+			
+		} // TODO set up logic for this shit so it can have a fallback
+		else if (lockscreenPriority == 1){
+			 if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
+                    NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
+                   [self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld", [components hour], [components minute]]];
+				});
 			}
 			else {
-				if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-					NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
-					NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-					[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
-					return;
-				});
-				}
+				[self.eventLabel setText:@"No Upcoming Alarms"];
 			}
 		}
-		else if (lockscreenPriority == 1) {
-			if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
-				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-				[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
-				return;
-			});
-			}
-			else if ([availableReminders count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"%@",[availableReminders[0] title]]];
-				return;
-			}
-			else if ([events count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
-				return;
-			}
-			
-		}
-		else if (lockscreenPriority == 2) {
-			if ([events count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"Event: %@",[events[0] title]]];
-				return;
-			}
-			else if ([[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm]) {
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-				NSDate* fireDate = [[[[[%c(SBScheduledAlarmObserver) sharedInstance] valueForKey:@"_alarmManager"] cache] nextAlarm] nextFireDate];
-				NSDateComponents* components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:fireDate];
-				[self.eventLabel setText:[NSString stringWithFormat:@"Alarm: %02ld:%02ld",[components hour], [components minute]]];
-				return;
-			});
-			}
-			else if ([availableReminders count]){
-				[self.eventLabel setText:[NSString stringWithFormat:@"%@",[availableReminders[0] title]]];
-				return;
-			}
-		}
-	});
-}];
+		else {
+			if ([events count]) {
+            [self.eventLabel setText:[NSString stringWithFormat:@"%@", [events[0] title]]];
+        } else {
+            [self.eventLabel setText:@"No Upcoming Events"];
+        }
+	}
 }
 %end
 %hook CSCombinedListViewController
-- (double)_minInsetsToPushDateOffScreen {
-	double orig = %orig;
+- (UIEdgeInsets)_listViewDefaultContentInsets { // adjust notification list position depending on style
+	UIEdgeInsets originalInsets = %orig;
 	if (weatherLabelEnabled && upNextLabelEnabled){
-		return orig + 60;
+		originalInsets.top += weatherLabelHeight+upNextLabelHeight+eventLabelHeight;
 	}
-	return orig;
+	else if (weatherLabelEnabled){
+		originalInsets.top += weatherLabelHeight;
+	}
+	else if (upNextLabelEnabled){
+		originalInsets.top += upNextLabelHeight+eventLabelHeight;
+	}
+	return originalInsets;
 }
 %end
 %hook CSPageControl 
@@ -1275,9 +1290,11 @@ static void localLSNotif(){
 	haveWeatherIcon = [file boolForKey:@"haveWeatherIcon"];
 	customLockscreenColor = [file boolForKey:@"customLockscreenColor"];
 	weatherIconColored = [file boolForKey:@"weatherIconColored"];
+	eventLabelColored = [file boolForKey:@"eventLabelColored"];
 	timeFormat = [file objectForKey:@"timeFormat"];
 	HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"aquariusprefs"];
 	[file registerBool:&musicPlayerEnabled default:NO forKey:@"isMusicSectionEnabled"];
+	[file registerBool:&eventLabelColored default:NO forKey:@"eventLabelColored"];
 	[file registerBool:&isTweakEnabled default:NO forKey:@"isTweakEnabled"];
 	[file registerBool:&upNextLabelEnabled default:NO forKey:@"upNextLabelEnabled"];
 	[file registerBool:&hideFolderBackground default:NO forKey:@"hideFolderBackground"];
@@ -1303,7 +1320,7 @@ static void localLSNotif(){
 	[file registerBool:&hideSwipeToUnlock default:NO forKey:@"hideSwipeToUnlock"];
 	[file registerBool:&oldieNotifHaveShadow default:1 forKey:@"oldieNotifHaveShadow"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];
-	[file registerDouble:&eventLabelHeight default:1 forKey:@"eventLabelHeight"];
+	[file registerDouble:&eventLabelHeight default:24 forKey:@"eventLabelHeight"];
 	[file registerDouble:&notifShadowOpacity default:.25 forKey:@"oldieNotifShadowOpacity"];
 	[file registerDouble:&timeLabelHeight default:72 forKey:@"timeLabelHeight"];
 	[file registerDouble:&dateLabelHeight default:24 forKey:@"dateLabelHeight"];
@@ -1313,7 +1330,6 @@ static void localLSNotif(){
 	[file registerInteger:&howManyDaysInAdvance default:1 forKey:@"howManyDaysInAdvance"];
 	[file registerInteger:&configurations default:3 forKey:@"configuration"];
 	[file registerInteger:&showCondition default:0 forKey:@"showCondition"];
-	
 	[file registerInteger:&notifStyle default:0 forKey:@"notifStyle"];
 	[file registerInteger:&topOldieColor default:0 forKey:@"topOldieColor"];
 	[file registerInteger:&alignment default:0 forKey:@"alignment"];

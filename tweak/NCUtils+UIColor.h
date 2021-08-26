@@ -4,3 +4,6 @@
 + (NSString *) hexStringFromColor:(UIColor *) color;
 @end
 
+@interface UIImage (Resize)
+- (UIImage*)scaleToSize:(CGSize)size;
+@end

@@ -82,7 +82,7 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>label</key>
-				<string>Choose What Gets Priority</string>
+				<string>Choose What Gets Shown In The Up Next Label</string>
 			</dict>
 			<dict>
 				<key>cell</key>

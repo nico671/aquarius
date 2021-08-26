@@ -225,15 +225,17 @@
 +(double)cornerRadius;
 @property NSArray *subviews;
 @end
+
 @interface NCNotificationShortLookViewController : UIViewController
 @property (nonatomic, assign, readonly) UIView *viewForPreview;
-@property (nonatomic, retain) NCNotificationShortLookView *actualView;
 @property (nonatomic, weak) id delegate;
 @end
+
 @interface NCNotificationListCell : UIView
 -(id<NCNotificationListCellDelegate>)delegate;
 @property (nonatomic, copy, readwrite) UIColor *backgroundColor;
 @end
+
 @interface NCNotificationContentView : UIView
 @property (getter=_secondaryLabel,nonatomic,readonly) UILabel * secondaryLabel;   
 @property (setter=_setPrimarySubtitleLabel:,getter=_primarySubtitleLabel,nonatomic,retain) UILabel * primarySubtitleLabel;
@@ -241,9 +243,8 @@
 @property (nonatomic,copy,readwrite) NSString *primaryText;
 @property (nonatomic,copy,readwrite) NSString *secondaryText;
 @end
-@interface NCNotificationShortLookView : UIView {
-	BOOL _banner;
-}
+
+@interface NCNotificationShortLookView : UIView
 @property (nonatomic,retain) UIView *topOldieNotifView;
 @property (nonatomic,retain) UIImageView *modernStyleIconImageView;
 @property UIColor *tempNotifColor;
@@ -504,10 +505,12 @@
 @interface PLPlatterCustomContentView : UIView
 @end
 
-@interface SBFWallpaperView : UIView                  
+@interface SBFWallpaperView : UIView   
+@property (nonatomic,strong,readwrite, getter = _sampleImage, setter = _setSampleImage:) UIImage *sampleImage;               
 @property (nonatomic,readonly) UIImage * wallpaperImage;
 @end
 @interface SBWallpaperViewController : UIViewController 
+@property (nonatomic,retain) SBFWallpaperView * sharedWallpaperView;
 @property (nonatomic,retain) SBFWallpaperView * lockscreenWallpaperView;
 @end
 @interface CSCoverSheetViewController : UIViewController
@@ -515,6 +518,10 @@
 
 @interface SBFLockScreenDateViewController
 -(void)requestHeartlinesTimeAndDateUpdate;
+@end
+
+@interface UIImage (Private)
+-(id)_imageScaledToProportion:(double)arg1 interpolationQuality:(int)arg2 ;
 @end
 
 @interface SBHomeHardwareButton : NSObject                                         //@synthesize screenshotGestureRecognizer=_screenshotGestureRecognizer - In the implementation block
@@ -536,11 +543,11 @@
 - (id)initWithControlCenter:(BOOL)controlCenter defaultStyle:(long long)style;
 @end
 
-BOOL musicPlayerEnabled, isTweakEnabled, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
+BOOL musicPlayerEnabled, isTweakEnabled, eventLabelColored, musicPlayerColorsEnabled, isNotificationSectionEnabled, hideSnapImage, haveOutlineSecondaryColorMusicPlayer, isSpringySectionEnabled;
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isArtworkImageDark, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels,justPluggedIn, enableGestures, upNextLabelColored, upNextLabelEnabled, isTimerRunning, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
+BOOL hideLabels,didJustPlugIn, enableGestures, upNextLabelColored, upNextLabelEnabled, isTimerRunning, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
 NSInteger configurations, lockscreenPriority, howManyDaysInAdvance, showCondition, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
@@ -565,8 +572,6 @@ PLPlatterHeaderContentView *iconContentView;
 UIButton *customImageBackground;
 UIImage *currentArtwork;
 UIImage *iconImage;
-NSData* lastArtworkData;
-NSData* lastArtworkData2;
 UIView *coloredBackground;
 UIView *test;
 NSTimer *timeAndDateTimer;
@@ -579,28 +584,25 @@ UIColor *fuckingArtworkColor2;
 WFWeatherConditions *weatherConditions;
 WFLocation *wfLocation;
 MTMaterialView *notifBackgroundView;
-UIButton *pauseButton;
-UILabel *timeLabel;
-UILabel *dateLabel;
-UIView *topOldieNotifView;
+
 static void setUpTheArtworkBackground() {
 	songBackground = [UIButton new];
-[songBackground setContentMode:UIViewContentModeScaleAspectFill];
-[songBackground setClipsToBounds:YES];
-[songBackground setAdjustsImageWhenHighlighted:NO];
-[songBackground setAlpha:musicPlayerAlpha];
-[songBackground.layer setCornerRadius:musicPlayerCornerRadius];
-[songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+    [songBackground setContentMode:UIViewContentModeScaleAspectFill];
+    [songBackground setClipsToBounds:YES];
+    [songBackground setAdjustsImageWhenHighlighted:NO];
+    [songBackground setAlpha:musicPlayerAlpha];
+    [songBackground.layer setCornerRadius:musicPlayerCornerRadius];
+    [songBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
 static void setUpCustomBackground() {
 	customImageBackground = [UIButton new];
-[customImageBackground setContentMode:UIViewContentModeScaleAspectFill];
-[customImageBackground setClipsToBounds:YES];
-[customImageBackground setAdjustsImageWhenHighlighted:NO];
-[customImageBackground setAlpha:musicPlayerAlpha];
-[customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
-[customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
+    [customImageBackground setContentMode:UIViewContentModeScaleAspectFill];
+    [customImageBackground setClipsToBounds:YES];
+    [customImageBackground setAdjustsImageWhenHighlighted:NO];
+    [customImageBackground setAlpha:musicPlayerAlpha];
+    [customImageBackground.layer setCornerRadius:musicPlayerCornerRadius];
+    [customImageBackground setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
 BOOL isDarkImage(UIImage* inputImage){
@@ -615,8 +617,7 @@ BOOL isDarkImage(UIImage* inputImage){
     int length = CFDataGetLength(imageData);
     int const darkPixelThreshold = (inputImage.size.width*inputImage.size.height)*.45;
     
-    for(int i=0; i<length; i+=4)
-    {
+    for(int i=0; i<length; i+=4) {
         int r = pixels[i];
         int g = pixels[i+1];
         int b = pixels[i+2];
@@ -626,8 +627,7 @@ BOOL isDarkImage(UIImage* inputImage){
         if (luminance<150) darkPixels ++;
     }
     
-    if (darkPixels >= darkPixelThreshold)
-        isDark = YES;
+    if (darkPixels >= darkPixelThreshold)   isDark = YES;
 
     CFRelease(imageData);
     
