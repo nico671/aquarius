@@ -8,17 +8,18 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoardServices/SBSRestartRenderServerAction.h>
 #import <FrontBoardServices/FBSSystemService.h>
-
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
 #import <Cephei/HBRespringController.h>
 #import <CepheiPrefs/HBRootListController.h>
 #include <spawn.h>
+
 @interface SPRRootListController : PSListController
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @property(nonatomic, retain)UIBlurEffect* blur;
 @property(nonatomic, retain)UIVisualEffectView* blurView;
 @end
+
 @implementation SPRRootListController
 
 - (void)respring {

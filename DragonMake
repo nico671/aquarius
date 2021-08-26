@@ -16,11 +16,13 @@ aquarius:
         - gcuniversal
         - pddokdo
     frameworks:
+        - Foundation
         - MediaRemote
         - CoreGraphics
         - QuartzCore
         - UIKit
         - Cephei
+        - BulletinBoard
 aquariusprefs:
     type: prefs
     dir: aquariusprefs
@@ -28,15 +30,7 @@ aquariusprefs:
         - gcuniversal
         - NCUtils
     files:
-        - AQRRootListController.m
-        - CLCRootListController.m
-        - LKSRootListController.m
-        - MSPRootListController.m
-        - OTLRootListController.m
-        - SETRootListController.m
-        - SPRRootListController.m
-        - STSRootListController.m
-        - NTFRootListController.m
+        - "*.m"
     frameworks:
         - Cephei
         - CepheiPrefs 

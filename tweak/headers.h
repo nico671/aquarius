@@ -495,6 +495,8 @@
 + (id)sharedInstance;
 @end
 
+@interface SBHLibraryCategoryPodBackgroundView : UIView
+@end
 
 @interface PLPlatterHeaderContentView : UIView
 @property (getter=_titleLabel,nonatomic,readonly) UILabel * titleLabel; 
@@ -520,11 +522,13 @@
 -(void)requestHeartlinesTimeAndDateUpdate;
 @end
 
+@interface SBIconBadgeView : UIView
+@end
 @interface UIImage (Private)
 -(id)_imageScaledToProportion:(double)arg1 interpolationQuality:(int)arg2 ;
 @end
 
-@interface SBHomeHardwareButton : NSObject                                         //@synthesize screenshotGestureRecognizer=_screenshotGestureRecognizer - In the implementation block
+@interface SBHomeHardwareButton : NSObject                                        
 @property (assign,nonatomic) long long homeButtonType;  
 @end
 
@@ -547,7 +551,7 @@ BOOL musicPlayerEnabled, isTweakEnabled, eventLabelColored, musicPlayerColorsEna
 BOOL isTimeHidden,showPercentage, modernStatusBar, isCellularThingyHidden, isWifiThingyHidden, isRoutingButtonHidden, isBackgroundColored, isArtworkImageDark, isArtworkBackground;
 BOOL haveNotifs, haveOutline, statusBarSectionEnabled, isBatteryHidden, downloadBarEnabled, colorNotifs, leafCornerNotifs, musicPlayerLeafLook;
 BOOL newButtonCombo,customImageBackgroundBOOL, hidePageDots, isLockscreenSectionEnabled, hideNoOlderNotifs, weatherLabelEnabled;
-BOOL hideLabels,didJustPlugIn, enableGestures, upNextLabelColored, upNextLabelEnabled, isTimerRunning, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
+BOOL hideLabels,didJustPlugIn, enableGestures, upNextLabelColored,hideAppLibraryPodBackground, hideBadges, upNextLabelEnabled, isTimerRunning, haveWeatherIcon,hideSwipeToUnlock,hideLockscreenDots, hideFolderLabel, hideFolderBackground, weatherIconColored, customLockscreenColor, newStatusBar, weatherLabelColored, dateLabelColored,timeLabelColored, customRetroNotifTextColor, newKeyboard, oldieNotifHaveShadow, hideHomeBar, haveQuickActions, customFont,showsPercentage, hideDock, hideBreadcrumbs, retroNotifVibe;
 id preferences, file, yes;
 NSInteger configurations, lockscreenPriority, howManyDaysInAdvance, showCondition, alignment,modernNotifBackgroundColor, topOldieColor, notifStyle, retroNotifBackgroundColor, ogNotifBackgroundColor, lockscreenClockColor;
 NSString *previousTitle;
@@ -559,15 +563,13 @@ double musicPlayerAlpha, eventLabelHeight, upNextLabelHeight, outlineSize, notif
 MarqueeLabel* bottomLabel;
 MarqueeLabel* topLabel;
 SBFLockScreenDateView* timeDateView = nil;
-UIButton* songImageForSmall;
+UIImageView* songImageForSmall;
 UIColor *rightButtonColor;
 UIColor *middleButtonColor;
 UIColor *leftButtonColor;
 int applicationDidFinishLaunching;
 UIButton* songBackground;
 UIImageView *iconImageView;
-UIButton* shuffleButton;
-PLPlatterCustomContentView *gottaDoWhatYouGottaDo;
 PLPlatterHeaderContentView *iconContentView;
 UIButton *customImageBackground;
 UIImage *currentArtwork;

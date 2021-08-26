@@ -112,7 +112,34 @@
 				<key>PostNotification</key>
 				<string>com.nico671.preferenceschanged</string>
 			</dict>
-			
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideAppLibraryPodBackground</string>
+				<key>label</key>
+				<string>Hide App Library Pod Background</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideBadges</string>
+				<key>label</key>
+				<string>Hide Notification Badges</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
 		</array>
 		<key>title</key>
 		<string>SpringBoard</string>

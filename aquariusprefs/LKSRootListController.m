@@ -15,6 +15,10 @@
 #import <Cephei/HBPreferences.h>
 #import <Cephei/HBRespringController.h>
 #import <CepheiPrefs/HBRootListController.h>
+@interface PSSpecifier (PrivateMethods)
+-(void)performSetterWithValue:(id)value;
+-(id)performGetter;
+@end
 @interface NSTask : NSObject
 -(void)setLaunchPath:(id)arg1;
 -(void)setArguments:(id)arg1;

@@ -26,38 +26,46 @@
 -(void)setNeedsLayout {
 	MRUNowPlayingViewController *controller = (MRUNowPlayingViewController *)[self _viewControllerForAncestor]; //s/o lightmann for this it allows me to only change the lockscreen player and not the cc player
 	if (controller.context == 2) {
-		if(!songImageForSmall){
-			songImageForSmall = [UIButton new];
-			[songImageForSmall setContentMode:UIViewContentModeScaleAspectFill];
-			[songImageForSmall setClipsToBounds:YES];
-			[songImageForSmall setAdjustsImageWhenHighlighted:NO];
-			[songImageForSmall setAlpha:1];
-			[songImageForSmall.layer setCornerRadius:8];
-			songImageForSmall.frame = CGRectMake(self.headerView.artworkView.frame.origin.x-10,self.headerView.artworkView.frame.origin.y-10,85,85);
-			[self insertSubview:songImageForSmall atIndex:0];
-			[songImageForSmall.leftAnchor constraintEqualToAnchor: self.headerView.artworkView.leftAnchor constant:-5].active = YES;
-			[songImageForSmall.topAnchor constraintEqualToAnchor: self.headerView.artworkView.topAnchor constant:-5].active = YES;
+		if (!songImageForSmall){
+			songImageForSmall = [[UIImageView alloc]init];
+			[songImageForSmall setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+			[songImageForSmall setTranslatesAutoresizingMaskIntoConstraints:NO];
+			[self addSubview:songImageForSmall];
+			[songImageForSmall.topAnchor constraintEqualToAnchor:self.headerView.artworkView.topAnchor].active = YES;
+			[songImageForSmall.bottomAnchor constraintEqualToAnchor:self.headerView.artworkView.bottomAnchor].active = YES;
+			[songImageForSmall.leftAnchor constraintEqualToAnchor:self.headerView.artworkView.leftAnchor].active = YES;
+			[songImageForSmall.rightAnchor constraintEqualToAnchor:self.headerView.artworkView.rightAnchor].active = YES;
 		}
 		if (!topLabel){
-			topLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y-7,320,20) duration:8 andFadeLength:10.0f];
+			topLabel = [[MarqueeLabel alloc]init];
+			[topLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+			[topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 			if (musicPlayerColorsEnabled){
-				topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
+				topLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
 			}
 			topLabel.adjustsFontSizeToFitWidth = YES;
 			[self addSubview:topLabel];  
-			[topLabel restartLabel];
+			[topLabel.topAnchor constraintEqualToAnchor:songImageForSmall.topAnchor].active = YES;
+			[topLabel.bottomAnchor constraintEqualToAnchor:songImageForSmall.centerYAnchor constant:-5].active = YES;
+			[topLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:5].active = YES;
+			[topLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-outlineSize].active = YES;
 		}
 		if (!bottomLabel){
-			bottomLabel = [[MarqueeLabel alloc]initWithFrame:CGRectMake(self.headerView.artworkView.frame.origin.x+songImageForSmall.frame.size.width,self.headerView.artworkView.frame.origin.y+15,320,20) duration:8 andFadeLength:10.0f];
+			bottomLabel = [[MarqueeLabel alloc]init];
+			[bottomLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+			[bottomLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 			bottomLabel.adjustsFontSizeToFitWidth = YES;
 			if (musicPlayerColorsEnabled){
-				bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customTitleLabelColor"];
+				bottomLabel.textColor = [GcColorPickerUtils colorFromDefaults:@"aquariusprefs" withKey:@"customSubtitleLabelColor"];
 			}
 			[self addSubview:bottomLabel];
-			[bottomLabel restartLabel];
+			[bottomLabel.topAnchor constraintEqualToAnchor:topLabel.bottomAnchor constant:5].active = YES;
+			[bottomLabel.bottomAnchor constraintEqualToAnchor:self.transportControlsView.topAnchor constant:-5].active = YES;
+			[bottomLabel.leftAnchor constraintEqualToAnchor:songImageForSmall.rightAnchor constant:5].active = YES;
+			[bottomLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-outlineSize].active = YES;
 		}
 		if (configurations == 3) {
-			[self.transportControlsView setFrame:CGRectMake(CGRectGetMidX(self.headerView.artworkView.frame),CGRectGetMaxY(bottomLabel.frame), self.transportControlsView.frame.size.width, self.transportControlsView.frame.size.height)];
+			[self.transportControlsView.bottomAnchor constraintEqualToAnchor:songImageForSmall.bottomAnchor].active = YES;
 		}
 		else if (configurations == 1){
 			[self.timeControlsView setFrame: CGRectMake(CGRectGetMinX(self.headerView.artworkView.frame),CGRectGetMinY(self.frame) + 50, self.timeControlsView.frame.size.width, self.timeControlsView.frame.size.height)];
@@ -205,7 +213,7 @@
 				topLabel.text = songLabel;
 				bottomLabel.text = subtitleLabel;
 				[songBackground setImage:currentArtwork forState:UIControlStateNormal];
-				[songImageForSmall setImage:currentArtwork forState:UIControlStateNormal];
+				songImageForSmall.image = currentArtwork;
 				NSDictionary * tempArtworkColorDict = [NCImageUtils dominantColors:currentArtwork detail:0];
 				NSArray *tempArtworkColorArray = [tempArtworkColorDict objectForKey:@"colours"];
 				fuckingArtworkColor = tempArtworkColorArray[0];
@@ -257,9 +265,9 @@
 		}
 	}
 	if (notifStyle == 1 && !self.topOldieNotifView && !CGRectIsEmpty(self.frame) && iconContentView){
-		HBLogDebug(@"[aquarius] this should be called 1 time");
 		self.topOldieNotifView = [[UIView alloc]init];
 		[self.topOldieNotifView setAutoresizingMask: UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+		[self.topOldieNotifView setTranslatesAutoresizingMaskIntoConstraints:NO];
 		if (oldieNotifHaveShadow){
 		self.topOldieNotifView.layer.shadowColor = [UIColor blackColor].CGColor;
 		self.topOldieNotifView.layer.shadowOffset = CGSizeMake(0, 4);
@@ -270,7 +278,6 @@
 			self.topOldieNotifView.backgroundColor = [UIColor grayColor];
 		}
 		if (topOldieColor == 1){
-
 			self.topOldieNotifView.backgroundColor = tempNotifColor;
 		}
 		if (topOldieColor == 2){
@@ -304,7 +311,7 @@
 		
 		self.topOldieNotifView.layer.cornerRadius = notifCornerRadius;
 		self.topOldieNotifView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
-		self.topOldieNotifView.frame = CGRectMake(iconContentView.frame.origin.x,iconContentView.frame.origin.y,iconContentView.frame.size.width,iconContentView.frame.size.height-5);
+		
 	
 		
 		if (![[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]){
@@ -382,6 +389,25 @@
 %end
 %end
 %group springy
+%hook SBHLibraryCategoryPodBackgroundView 
+-(void)_updateVisualStyle{
+	if (hideAppLibraryPodBackground){
+	}
+	else {
+		%orig;
+	}
+}
+%end
+%hook SBIconBadgeView
+-(void)setNeedsLayout{
+	if (hideBadges){
+		self.hidden = YES;
+	}
+	else {
+		%orig;
+	}
+}
+%end
 %hook SBIconProgressView //progressbar
 // i think this is more efficient than other progress bars out there im not sure tho??
 -(void)_drawPieWithCenter:(CGPoint)arg1{
@@ -842,10 +868,7 @@
 			[self.eventLabel setFont:[UIFont systemFontOfSize:upNextLabelHeight]];
 		}
 		[self setUpUpNext];
-		NSLog(@"[aquarius] does the text exist? %@",self.eventLabel.text);
 		CGFloat eventLabelWidth = self.eventLabel.intrinsicContentSize.width;	
-		NSLog(@"[aquarius] the height of the event label mannnnnnn %f",eventLabelHeight);
-		NSLog(@"[aquarius] the width of the event label mannnnnnn %f",eventLabelWidth);
 		[self.eventLabel.widthAnchor constraintEqualToConstant:eventLabelWidth].active = YES;
 		[self.eventLabel.heightAnchor constraintEqualToConstant:eventLabelHeight].active = YES;
 		[self addSubview:self.eventLabel];
@@ -1223,7 +1246,7 @@ static void localLSNotif(){
 	musicPlayerEnabled = [file boolForKey:@"isMusicSectionEnabled"];
 	newButtonCombo = [file boolForKey:@"notchedDeviceButtonCombo"];
 	statusBarSectionEnabled = [file boolForKey:@"isStatusBarSectionEnabled"];
-	hideSnapImage = [file boolForKey:@"hideSnapImage"];
+	hideBadges = [file boolForKey:@"hideBadges"];
 	leafCornerNotifs = [file boolForKey:@"leafCornerNotifs"];
 	isBatteryHidden = [file boolForKey:@"isBatteryHidden"];
 	isWifiThingyHidden = [file boolForKey:@"isWifiHidden"];
@@ -1270,6 +1293,7 @@ static void localLSNotif(){
 	hideHomeBar = [file boolForKey:@"hideHomeBar"];
 	retroNotifBackgroundColor = [file integerForKey:@"retroNotifBackgroundColor"];
 	hideDock = [file boolForKey:@"hideDock"];
+	hideAppLibraryPodBackground = [file boolForKey:@"hideAppLibraryPodBackground"];
 	upNextLabelColored = [file boolForKey:@"upNextLabelColored"];
 	hideLockscreenDots = [file boolForKey:@"hideLockscreenDots"];
 	enableGestures = [file boolForKey:@"enableGestures"];
@@ -1308,7 +1332,7 @@ static void localLSNotif(){
 	[file registerBool:&hideNoOlderNotifs default:NO forKey:@"hideNoOlderNotifs"];
 	[file registerBool:&hideLabels default:NO forKey:@"hideLabels"];
 	[file registerBool:&isTimeHidden default:NO forKey:@"isTimeHidden"];
-	[file registerBool:&hideSnapImage default:NO forKey:@"hideSnapImage"];
+	[file registerBool:&hideBadges default:NO forKey:@"hideBadges"];
 	[file registerBool:&isBatteryHidden default:NO forKey:@"isBatteryHidden"];
 	[file registerBool:&isCellularThingyHidden default:NO forKey:@"isCellularHidden"];
 	[file registerBool:&isWifiThingyHidden default:NO forKey:@"isWifiHidden"];
@@ -1316,7 +1340,7 @@ static void localLSNotif(){
 	[file registerBool:&upNextLabelColored default:NO forKey:@"upNextLabelColored"];	
 	[file registerBool:&modernStatusBar default:NO forKey:@"modernStatusBar"];
 	[file registerBool:&newKeyboard default:NO forKey:@"newKeyboard"];
-	[file registerBool:&statusBarSectionEnabled default:NO forKey:@"isStatusBarSectionEnabled"];
+	[file registerBool:&hideAppLibraryPodBackground default:NO forKey:@"hideAppLibraryPodBackground"];
 	[file registerBool:&hideSwipeToUnlock default:NO forKey:@"hideSwipeToUnlock"];
 	[file registerBool:&oldieNotifHaveShadow default:1 forKey:@"oldieNotifHaveShadow"];
 	[file registerDouble:&musicPlayerAlpha default:1 forKey:@"musicPlayerAlpha"];

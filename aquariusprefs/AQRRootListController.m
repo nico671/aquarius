@@ -198,7 +198,6 @@
         appearanceSettings.tintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
         appearanceSettings.navigationBarBackgroundColor = [UIColor colorWithRed:0.25 green:0.447 blue:0.58 alpha:1.0];
         appearanceSettings.tableViewCellSeparatorColor = [UIColor clearColor];
-        appearanceSettings.showsNavigationBarShadow = NO;
         appearanceSettings.navigationBarTitleColor = [UIColor whiteColor];
         appearanceSettings.translucentNavigationBar = YES;
         appearanceSettings.navigationBarTintColor = [UIColor colorWithRed:0.60 green:0.75 blue:0.85 alpha:1.0];
