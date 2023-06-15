@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true />
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>key</key>
+                <string>isNotificationSectionEnabled</string>
+                <key>label</key>
+                <string>Enable Notification Section</string>
+                <key>default</key>
+                <false />
+            </dict>
+
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Notifications Corner Settings</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSliderCell</string>
+                <key>default</key>
+                <real>13</real>
+                <key>min</key>
+                <real>0</real>
+                <key>max</key>
+                <real>20</real>
+                <key>showValue</key>
+                <true />
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+                <key>key</key>
+                <string>notifsCornerRadius</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false />
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>key</key>
+                <string>leafCornerNotifs</string>
+                <key>label</key>
+                <string>Enable Leaf Style Notifs</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Notification Style</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSegmentCell</string>
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+                <key>key</key>
+                <string>notifStyle</string>
+                <key>label</key>
+                <string>Notif Style</string>
+                <key>default</key>
+                <integer>0</integer>
+                <key>validTitles</key>
+                <array>
+                    <string>Original</string>
+                    <string>Retro</string>
+                    <string>Modern</string>
+                </array>
+                <key>validValues</key>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                    <integer>2</integer>
+                </array>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+                <key>id</key>
+                <string>SWITCH_ID</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>NotifOriginal</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>NTFRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>clock.arrow.2.circlepath</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Original Style Settings</string>
+                <key>id</key>
+                <string>hidden1</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>NotifRetro</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>NTFRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>clock.arrow.2.circlepath</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Retro Style Settings</string>
+                <key>id</key>
+                <string>hidden2</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>NotifModern</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>NTFRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>clock.arrow.2.circlepath</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Modern Style Settings</string>
+                <key>id</key>
+                <string>hidden3</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Test Notification</string>
+                <key>action</key>
+                <string>lsNotif</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Test Banner</string>
+                <key>action</key>
+                <string>testBanner</string>
+            </dict>
+        </array>
+        <key>title</key>
+        <string>Notifications</string>
+    </dict>
+</plist>

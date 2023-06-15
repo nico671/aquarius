@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+                <key>AquariusSub</key>
+                <string>MusicPlayer</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>MSPRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>music.note.list</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Music Player Settings</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>Notifications</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>NTFRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>scroll</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Notification Settings</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>Lockscreen</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>LKSRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>lock</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Lockscreen Settings</string>
+            </dict>
+            <dict>
+                <key>AquariusSub</key>
+                <string>GroupedNotifs</string>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>OTLRootListController</string>
+                <key>cellClass</key>
+                <string>SFSymbolsCell</string>
+                <key>icon</key>
+                <string>lock</string>
+                <key>isController</key>
+                <true />
+                <key>label</key>
+                <string>Grouped Notification Settings</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>VERSION: 2.0</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>label</key>
+                <string>Reset Preferences</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>action</key>
+                <string>resetPreferences</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>label</key>
+                <string>Source Code</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>action</key>
+                <string>sourceCode</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Buy Me A Coffee ☕️</string>
+                <key>action</key>
+                <string>venmo</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Beta Testing/Support!</string>
+                <key>action</key>
+                <string>discord</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTwitterCell</string>
+                <key>label</key>
+                <string>My Twitter</string>
+                <key>user</key>
+                <string>nico_carbone1</string>
+                <key>action</key>
+                <string>twitter</string>
+            </dict>
+
+        </array>
+        <key>title</key>
+        <string>Aquarius</string>
+    </dict>
+</plist>

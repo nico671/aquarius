@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+        <dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>weather label settings</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true/>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>weatherLabelEnabled</string>
+				<key>label</key>
+				<string>Enable weather label?</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>weather label height</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>24</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true/>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>weatherLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Weather Icon</string>
+            </dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>haveWeatherIcon</string>
+				<key>label</key>
+				<string>Enable Weather Icon</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false />
+			</dict>
+			<dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Weather Label Format</string>
+            </dict>
+			<dict>
+                <key>cell</key>
+                <string>PSSegmentCell</string>
+                <key>defaults</key>
+                <string>aquariusprefs</string>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+                <key>key</key>
+                <string>showCondition</string>
+                <key>label</key>
+                <string>Choose What Info the Weather Label Shows</string>
+                <key>default</key>
+                <integer>0</integer>
+                <key>validTitles</key>
+                <array>
+                    <string>Show Condition</string>
+                    <string>Show Location</string>
+                </array>
+                <key>validValues</key>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                </array>
+                <key>PostNotification</key>
+                <string>com.nico671.preferenceschanged</string>
+            </dict>
+        </array>
+        <key>title</key>
+        <string>Weather</string>
+    </dict>
+</plist>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>isLockscreenSectionEnabled</string>
+				<key>label</key>
+				<string>Enable Lockscreen Section</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<true />
+				<key>id</key>
+				<string>bigSwitchID</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>Alignment Of The Clock</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSegmentCell</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>alignment</string>
+				<key>label</key>
+				<string>Configuration</string>
+				<key>default</key>
+				<integer>0</integer>
+				<key>validTitles</key>
+				<array>
+					<string>Left</string>
+					<string>Centered</string>
+					<string>Right</string>
+				</array>
+				<key>validValues</key>
+				<array>
+					<integer>0</integer>
+					<integer>1</integer>
+					<integer>2</integer>
+				</array>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
+				<string>LockscreenColor</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>eyedropper.halffull</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Color Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
+				<string>LockscreenFont</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>square.and.pencil</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Text and Font Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
+				<string>LockscreenWeather</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>cloud.bolt</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Weather Label Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
+				<string>LockscreenUpNext</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>calendar.badge.plus</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Up Next Label Settings</string>
+			</dict>
+			<dict>
+				<key>AquariusSub</key>
+				<string>LockscreenMisc</string>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>detail</key>
+				<string>LKSRootListController</string>
+				<key>cellClass</key>
+				<string>SFSymbolsCell</string>
+				<key>icon</key>
+				<string>questionmark.circle</string>
+				<key>isController</key>
+				<true />
+				<key>label</key>
+				<string>Miscellaneous Settings</string>
+			</dict>
+
+
+		</array>
+		<key>title</key>
+		<string>Lockscreen</string>
+	</dict>
+</plist>

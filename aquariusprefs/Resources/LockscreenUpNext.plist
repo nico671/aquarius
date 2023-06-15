@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>items</key>
+		<array>
+
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>up next label settings</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>upNextLabelEnabled</string>
+				<key>label</key>
+				<string>Enable Up Next label?</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false />
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>up next label height</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>24</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>upNextLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>Event Label Height</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>24</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>eventLabelHeight</string>
+			</dict>
+			
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>Choose What Gets Shown In The Up Next Label</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSegmentCell</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>lockscreenPriority</string>
+				<key>label</key>
+				<string>Configuration</string>
+				<key>default</key>
+				<integer>0</integer>
+				<key>validTitles</key>
+				<array>
+					<string>Reminders</string>
+					<string>Alarms</string>
+					<string>Calendar Events</string>
+				</array>
+				<key>validValues</key>
+				<array>
+					<integer>0</integer>
+					<integer>1</integer>
+					<integer>2</integer>
+				</array>
+			</dict>
+		</array>
+		<key>title</key>
+		<string>Up Next</string>
+	</dict>
+</plist>

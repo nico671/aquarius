@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>misc settings</string>
+			</dict>
+            <dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideNoOlderNotifs</string>
+				<key>label</key>
+				<string>Hide the no older notifications label</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>default</key>
+				<false />
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideSwipeToUnlock</string>
+				<key>label</key>
+				<string>Hide Swipe To Unlock Text</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>hideLockscreenDots</string>
+				<key>label</key>
+				<string>Hide Lockscreen Dots</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+		 </array>
+        <key>title</key>
+        <string>Misc</string>
+    </dict>
+</plist>

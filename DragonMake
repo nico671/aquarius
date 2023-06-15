@@ -1,0 +1,40 @@
+name: aquarius
+icmd: sbreload 
+all:
+    targetvers: 14.0
+    archs:
+        - arm64
+        - arm64e
+aquarius:
+    type: tweak 
+    dir: tweak
+    files:
+        - Tweak.xm
+        - "*.m"
+    libs:
+        - gcuniversal
+        - pddokdo
+    frameworks:
+        - Foundation
+        - MediaRemote
+        - CoreGraphics
+        - QuartzCore
+        - UIKit
+        - Cephei
+        - BulletinBoard
+        - UserNotificationsKit
+aquariusprefs:
+    type: prefs
+    dir: aquariusprefs
+    libs:
+        - gcuniversal
+    files:
+        - "*.m"
+    frameworks:
+        - Cephei
+        - CepheiPrefs 
+        - CoreGraphics
+        - QuartzCore
+        - Preferences 
+        - SpringBoardServices
+        - OnBoardingKit

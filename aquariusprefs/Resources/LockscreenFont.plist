@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>key</key>
+				<string>customFont</string>
+				<key>label</key>
+				<string>Have Custom Font</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>cellClass</key>
+                <string>HBTintedTableCell</string>
+                <key>label</key>
+                <string>Pick Font</string>
+                <key>action</key>
+                <string>showFontPicker</string>
+            </dict>
+            <dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>time label format</string>
+                <key>footerText</key>
+				<string>time label font size</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSEditTextCell</string>
+				<key>default</key>
+				<string>h:mm</string>
+				<key>placeholder</key>
+				<string>h:mm</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>label</key>
+				<string>Date Format:</string>
+				<key>key</key>
+				<string>timeFormat</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>72</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>timeLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+            <dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>label</key>
+				<string>date label format</string>
+                <key>footerText</key>
+				<string>date label font size</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSEditTextCell</string>
+				<key>default</key>
+				<string>EEEE, MMMM dd</string>
+				<key>placeholder</key>
+				<string>EEEE, MMMM dd</string>
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>label</key>
+				<string>Date Format:</string>
+				<key>key</key>
+				<string>dateFormat</string>
+            </dict>
+			<dict>
+				<key>cell</key>
+				<string>PSSliderCell</string>
+				<key>default</key>
+				<real>24</real>
+				<key>min</key>
+				<real>1</real>
+				<key>max</key>
+				<real>150</real>
+				<key>showValue</key>
+				<true />
+				<key>defaults</key>
+				<string>aquariusprefs</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+				<key>key</key>
+				<string>dateLabelHeight</string>
+				<key>PostNotification</key>
+				<string>com.nico671.preferenceschanged</string>
+			</dict>
+        </array>
+        <key>title</key>
+        <string>Fonts</string>
+    </dict>
+</plist>
