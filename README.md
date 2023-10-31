@@ -1,7 +1,5 @@
 # Aquarius (No Longer Under Development)
 
-![Aquarius Logo](https://path_to_your_logo.png)
-
 Aquarius is an iPhone tweak designed to run on jailbroken iPhones running iOS 14.0-14.2.
 
 Aquarius empowers users with more personal choice over the visual customization of their iPhones. It allows them to modify the appearance of various iOS UI elements, ranging from the lockscreen music player to the presentation of notifications.
