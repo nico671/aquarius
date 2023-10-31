@@ -1,12 +1,21 @@
-# aquarius
- 
-Beautify your iDevice. Available on [Twickd](https://repo.twickd.com/package/com.twickd.nico-carbone.aquarius).
+# Aquarius (No Longer Under Development)
 
-Aquarius is an iPhone tweak meant to run on jailbroken iPhones running iOS 14.0-14.2
+![Aquarius Logo](https://path_to_your_logo.png)
 
-Aquarius aimed to give users more personal choice over how they wanted their iPhone to look, allowing them to edit the appearance of a variety of iOS UI elements such as the lockscreen music player to the appearance of notifications.
+Aquarius is an iPhone tweak designed to run on jailbroken iPhones running iOS 14.0-14.2.
 
-Aquarius ultimately gained over 2.6k concurrent users who downloaded it off the [Twickd](https://repo.twickd.com/package/com.twickd.nico-carbone.aquarius) tweak repository.
+Aquarius empowers users with more personal choice over the visual customization of their iPhones. It allows them to modify the appearance of various iOS UI elements, ranging from the lockscreen music player to the presentation of notifications.
 
-<img width="1112" alt="image" src="https://github.com/nico671/AquariusArchive/assets/68139913/f90b83e7-7c34-4ba1-9540-a9150791582e">
+## Features
 
+- **UI Customization:** Modify the appearance of essential iOS elements.
+- **Compatibility:** Designed to work on jailbroken iPhones running iOS 14.0-14.2.
+- **Community Driven:** Aquarius gained popularity with over 2.6k concurrent users downloading it from the Twickd tweak repository.
+
+## No Longer Under Development
+
+Please note that as of 2021, this project is no longer under active development. Feel free to fork and continue the project if you wish.
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.
