@@ -1,4 +1,4 @@
-# Aquarius (No Longer Under Development)
+# Aquarius (Archived)
 
 Aquarius is an iPhone tweak designed to run on jailbroken iPhones running iOS 14.0-14.2.
 
