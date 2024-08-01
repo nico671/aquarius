@@ -13,3 +13,7 @@ Aquarius empowers users with more personal choice over the visual customization 
 ## No Longer Under Development
 
 Please note that as of 2021, this project is no longer under active development. Feel free to fork and continue the project if you wish.
+
+## Links
+https://repo.twickd.com/get/com.twickd.nico-carbone.aquarius
+https://www.idownloadblog.com/2021/03/04/aquarius/
